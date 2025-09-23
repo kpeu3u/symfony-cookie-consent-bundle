@@ -12,9 +12,9 @@ your visitors to decide what information are collected. This cookie consent bann
 [![PHP Version](https://img.shields.io/packagist/php-v/kpeu3u/symfony-cookie-consent-bundle.svg)](https://packagist.org/packages/kpeu3u/symfony-cookie-consent-bundle)
 
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/kpeu3u/symfony-cookie-consent-bundle/badges/quality-score.png?b=master&s=15b793ae2474fa313d343c43f30ce4f9aa594f00)](https://scrutinizer-ci.com/g/kpeu3u/symfony-cookie-consent-bundle/?branch=master)
-[![Code Coverage](https://scrutinizer-ci.com/g/kpeu3u/symfony-cookie-consent-bundle/badges/coverage.png?b=master&s=d8e84bcf2e3e5bed47d4c6aa4702f246de74dbdf)](https://scrutinizer-ci.com/g/kpeu3u/symfony-cookie-consent-bundle/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/kpeu3u/symfony-cookie-consent-bundle/badges/build.png?b=master&s=bcccde957df75df8622fa346ba348dee002efebb)](https://scrutinizer-ci.com/g/kpeu3u/symfony-cookie-consent-bundle/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/kpeu3u/symfony-cookie-consent-bundle/badges/quality-score.png?b=main&s=15b793ae2474fa313d343c43f30ce4f9aa594f00)](https://scrutinizer-ci.com/g/kpeu3u/symfony-cookie-consent-bundle/?branch=main)
+[![Code Coverage](https://scrutinizer-ci.com/g/kpeu3u/symfony-cookie-consent-bundle/badges/coverage.png?b=main&s=d8e84bcf2e3e5bed47d4c6aa4702f246de74dbdf)](https://scrutinizer-ci.com/g/kpeu3u/symfony-cookie-consent-bundle/?branch=main)
+[![Build Status](https://scrutinizer-ci.com/g/kpeu3u/symfony-cookie-consent-bundle/badges/build.png?b=main&s=bcccde957df75df8622fa346ba348dee002efebb)](https://scrutinizer-ci.com/g/kpeu3u/symfony-cookie-consent-bundle/build-status/main)
 
 
 Symfony bundle to integrate a cookie consent dialog to your website and to handle cookies according to AVG/GDPR.
@@ -159,7 +159,7 @@ AVG/GDPR requires all given cookie preferences of users to be explainable by the
 preferences to the database. IP addresses are anonymized. You can disable logging the given consent by
 setting `persist_consent` to *false*.
 
-![Database logging](https://raw.githubusercontent.com/kpeu3u/symfony-cookie-consent-bundle/master/docs/log.png)
+![Database logging](https://raw.githubusercontent.com/kpeu3u/symfony-cookie-consent-bundle/main/docs/log.png)
 
 ### TwigExtension
 
