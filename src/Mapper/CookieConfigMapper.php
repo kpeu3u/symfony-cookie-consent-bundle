@@ -38,9 +38,9 @@ class CookieConfigMapper
             return null;
         }
 
-//        if (!isset($domain)) {
-//            return null;
-//        }
+        if (!isset($domain)) {
+            return null;
+        }
 
         if (!isset($expires)) {
             return null;

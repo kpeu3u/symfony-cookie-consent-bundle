@@ -42,7 +42,7 @@ class CookieConsentBundle extends AbstractBundle
             ->bind('string $readMoreRoute', $config['read_more_route']);
 
         // the controller has to be public
-        $services->set(CookieConsentController::class)->public()->autowire(true);
+        $services->set(CookieConsentController::class)->public()->autowire();
 
         // configure manually wired constructor arguments for private services
         $services->set(CookieConsentService::class)->args([$config['consent_configuration'], $config['persist_consent']]);

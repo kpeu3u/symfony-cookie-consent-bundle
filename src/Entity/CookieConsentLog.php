@@ -102,14 +102,14 @@ class CookieConsentLog
         return $this->cookieValue;
     }
 
-    public function setTimestamp(DateTime $timestamp): self
+    public function setTimestamp(DateTimeImmutable $timestamp): self
     {
         $this->timestamp = $timestamp;
 
         return $this;
     }
 
-    public function getTimestamp(): DateTime
+    public function getTimestamp(): DateTimeImmutable
     {
         return $this->timestamp;
     }

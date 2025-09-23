@@ -101,7 +101,7 @@ class CookieConsentService
 
     public function saveConsentSettings(ConsentDetailedTypeModel $formData, Request $request): ResponseHeaderBag
     {
-        // always set value to true as the user did give the consent to at least some cookies
+        // always set value to true as the user did give the consent to at least some of the cookies
         $consentCookie = CookieConfigMapper::mapToCookie($this->consentConfiguration['consent_cookie'], ConsentType::CUSTOM_CONSENT);
 
         if ($consentCookie == null) {
