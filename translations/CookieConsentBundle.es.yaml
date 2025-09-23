@@ -25,3 +25,4 @@ cookie_consent:
     show_details: 'Mostrar detalles'
     hide_details: 'Ocultar detalles'
     reject_all: 'Rechazar todas las cookies'
+    settings: 'Configuración'
