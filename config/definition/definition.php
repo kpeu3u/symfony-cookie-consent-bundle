@@ -34,7 +34,7 @@ return static function (DefinitionConfigurator $definition) {
                     ->defaultTrue()
                 ->end()
                 ->scalarNode('form_action')
-                    ->defaultValue('cookie-consent.update')
+                    ->defaultValue('cookie_consent.update')
                 ->end()
                 ->scalarNode('read_more_route')
                     ->defaultNull()
