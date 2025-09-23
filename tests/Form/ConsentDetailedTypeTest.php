@@ -1,15 +1,15 @@
 <?php
 
-namespace huppys\CookieConsentBundle\tests\Form;
+namespace kpeu3u\CookieConsentBundle\tests\Form;
 
-use huppys\CookieConsentBundle\Enum\FormSubmitName;
-use huppys\CookieConsentBundle\Form\ConsentCategoryType;
-use huppys\CookieConsentBundle\Form\ConsentCategoryTypeModel;
-use huppys\CookieConsentBundle\Form\ConsentDetailedType;
-use huppys\CookieConsentBundle\Form\ConsentDetailedTypeModel;
-use huppys\CookieConsentBundle\Form\ConsentSimpleType;
-use huppys\CookieConsentBundle\Form\ConsentVendorType;
-use huppys\CookieConsentBundle\Form\ConsentVendorTypeModel;
+use kpeu3u\CookieConsentBundle\Enum\FormSubmitName;
+use kpeu3u\CookieConsentBundle\Form\ConsentCategoryType;
+use kpeu3u\CookieConsentBundle\Form\ConsentCategoryTypeModel;
+use kpeu3u\CookieConsentBundle\Form\ConsentDetailedType;
+use kpeu3u\CookieConsentBundle\Form\ConsentDetailedTypeModel;
+use kpeu3u\CookieConsentBundle\Form\ConsentSimpleType;
+use kpeu3u\CookieConsentBundle\Form\ConsentVendorType;
+use kpeu3u\CookieConsentBundle\Form\ConsentVendorTypeModel;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Exception;

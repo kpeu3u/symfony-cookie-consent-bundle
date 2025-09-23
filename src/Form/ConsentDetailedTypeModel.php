@@ -1,6 +1,6 @@
 <?php
 
-namespace huppys\CookieConsentBundle\Form;
+namespace kpeu3u\CookieConsentBundle\Form;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

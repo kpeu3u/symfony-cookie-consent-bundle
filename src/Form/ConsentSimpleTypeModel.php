@@ -1,8 +1,8 @@
 <?php
 
-namespace huppys\CookieConsentBundle\Form;
+namespace kpeu3u\CookieConsentBundle\Form;
 
-use huppys\CookieConsentBundle\Enum\FormSubmitName;
+use kpeu3u\CookieConsentBundle\Enum\FormSubmitName;
 
 class ConsentSimpleTypeModel
 {

@@ -4,7 +4,7 @@
       <settings>
         <option name="imageTag" value="php-dev:latest" />
         <option name="command" value="/bin/bash" />
-        <option name="containerName" value="cookie-consent-bundle-dev-helper" />
+        <option name="containerName" value="symfony-cookie-consent-bundle-dev-helper" />
         <option name="envVars">
           <list>
             <DockerEnvVarImpl>

@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 
-namespace huppys\CookieConsentBundle\tests\Cookie;
+namespace kpeu3u\CookieConsentBundle\tests\Cookie;
 
 use Doctrine\ORM\EntityManagerInterface;
-use huppys\CookieConsentBundle\Cookie\CookieLogger;
-use huppys\CookieConsentBundle\Entity\CookieConsentLog;
+use kpeu3u\CookieConsentBundle\Cookie\CookieLogger;
+use kpeu3u\CookieConsentBundle\Entity\CookieConsentLog;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

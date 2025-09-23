@@ -1,9 +1,9 @@
 <?php
 
-namespace huppys\CookieConsentBundle\tests\Controller;
+namespace kpeu3u\CookieConsentBundle\tests\Controller;
 
-use huppys\CookieConsentBundle\Enum\ConsentType;
-use huppys\CookieConsentBundle\Enum\CookieName;
+use kpeu3u\CookieConsentBundle\Enum\ConsentType;
+use kpeu3u\CookieConsentBundle\Enum\CookieName;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;

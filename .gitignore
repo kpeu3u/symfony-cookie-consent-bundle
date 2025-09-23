@@ -9,6 +9,7 @@ gen
 ###> symfony/framework-bundle ###
 /var/
 /vendor/
+/node_modules/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
@@ -24,3 +25,4 @@ gen
 ###> test database ###
 /data/test.db
 ###< test database ###!/.idea/
+

@@ -1,13 +1,13 @@
 <?php
 
-namespace huppys\CookieConsentBundle\Service;
+namespace kpeu3u\CookieConsentBundle\Service;
 
-use huppys\CookieConsentBundle\Enum\ConsentType;
-use huppys\CookieConsentBundle\Enum\CookieName;
-use huppys\CookieConsentBundle\Form\ConsentCategoryTypeModel;
-use huppys\CookieConsentBundle\Form\ConsentDetailedTypeModel;
-use huppys\CookieConsentBundle\Form\ConsentVendorTypeModel;
-use huppys\CookieConsentBundle\Mapper\CookieConfigMapper;
+use kpeu3u\CookieConsentBundle\Enum\ConsentType;
+use kpeu3u\CookieConsentBundle\Enum\CookieName;
+use kpeu3u\CookieConsentBundle\Form\ConsentCategoryTypeModel;
+use kpeu3u\CookieConsentBundle\Form\ConsentDetailedTypeModel;
+use kpeu3u\CookieConsentBundle\Form\ConsentVendorTypeModel;
+use kpeu3u\CookieConsentBundle\Mapper\CookieConfigMapper;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;

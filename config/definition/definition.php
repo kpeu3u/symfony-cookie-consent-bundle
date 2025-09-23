@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use huppys\CookieConsentBundle\Enum\ConsentBannerPosition;
-use huppys\CookieConsentBundle\Enum\CookieName;
+use kpeu3u\CookieConsentBundle\Enum\ConsentBannerPosition;
+use kpeu3u\CookieConsentBundle\Enum\CookieName;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 require_once __DIR__ . '/utils/cookie.php';

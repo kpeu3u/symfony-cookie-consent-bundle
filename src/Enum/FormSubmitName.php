@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace huppys\CookieConsentBundle\Enum;
+namespace kpeu3u\CookieConsentBundle\Enum;
 
 class FormSubmitName
 {

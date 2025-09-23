@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use huppys\CookieConsentBundle\Controller\CookieConsentController;
+use kpeu3u\CookieConsentBundle\Controller\CookieConsentController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return function (RoutingConfigurator $routes): void {

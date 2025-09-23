@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace huppys\CookieConsentBundle\Mapper;
+namespace kpeu3u\CookieConsentBundle\Mapper;
 
 use DateInterval;
 use Symfony\Component\HttpFoundation\Cookie;

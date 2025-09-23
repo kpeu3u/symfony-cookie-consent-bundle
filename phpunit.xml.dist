@@ -9,7 +9,7 @@
          displayDetailsOnTestsThatTriggerWarnings="true"
          cacheDirectory=".phpunit.cache">
     <php>
-        <env name="KERNEL_CLASS" value="huppys\CookieConsentBundle\tests\Fixtures\App\AppKernel"/>
+        <env name="KERNEL_CLASS" value="kpeu3u\CookieConsentBundle\tests\Fixtures\App\AppKernel"/>
     </php>
 
     <coverage/>

@@ -1,8 +1,8 @@
 <?php
 
-namespace huppys\CookieConsentBundle\tests\Bundle;
+namespace kpeu3u\CookieConsentBundle\tests\Bundle;
 
-use huppys\CookieConsentBundle\Controller\CookieConsentController;
+use kpeu3u\CookieConsentBundle\Controller\CookieConsentController;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

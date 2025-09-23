@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 
-namespace huppys\CookieConsentBundle\Twig;
+namespace kpeu3u\CookieConsentBundle\Twig;
 
-use huppys\CookieConsentBundle\Service\CookieConsentService;
+use kpeu3u\CookieConsentBundle\Service\CookieConsentService;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

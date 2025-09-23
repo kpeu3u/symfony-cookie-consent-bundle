@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace huppys\CookieConsentBundle\tests\Controller;
+namespace kpeu3u\CookieConsentBundle\tests\Controller;
 
-use huppys\CookieConsentBundle\Controller\CookieConsentController;
-use huppys\CookieConsentBundle\Form\ConsentDetailedType;
-use huppys\CookieConsentBundle\Form\ConsentSimpleType;
-use huppys\CookieConsentBundle\Service\CookieConsentService;
+use kpeu3u\CookieConsentBundle\Controller\CookieConsentController;
+use kpeu3u\CookieConsentBundle\Form\ConsentDetailedType;
+use kpeu3u\CookieConsentBundle\Form\ConsentSimpleType;
+use kpeu3u\CookieConsentBundle\Service\CookieConsentService;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;

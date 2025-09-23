@@ -1,5 +1,5 @@
 {
-  "name": "cookie-consent-bundle",
+  "name": "symfony-cookie-consent-bundle",
   "version": "1.0.0",
   "description": "Symfony bundle to ask the visitors for their consent to use cookies to comply to AVG/GDPR.",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Huppys/cookie-consent-bundle.git"
+    "url": "git+https://github.com/kpeu3u/symfony-cookie-consent-bundle.git"
   },
   "module": "assets/js/cookie-consent.mjs",
   "keywords": [
@@ -26,9 +26,9 @@
   },
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Huppys/cookie-consent-bundle/issues"
+    "url": "https://github.com/kpeu3u/symfony-cookie-consent-bundle/issues"
   },
-  "homepage": "https://github.com/Huppys/cookie-consent-bundle#readme",
+  "homepage": "https://github.com/kpeu3u/symfony-cookie-consent-bundle#readme",
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
     "autoprefixer": "^10.4.16",

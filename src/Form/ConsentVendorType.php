@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-namespace huppys\CookieConsentBundle\Form;
+namespace kpeu3u\CookieConsentBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

@@ -1,6 +1,6 @@
 <?php
 
-namespace huppys\CookieConsentBundle\Entity;
+namespace kpeu3u\CookieConsentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

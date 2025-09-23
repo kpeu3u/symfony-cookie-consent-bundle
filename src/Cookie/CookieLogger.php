@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 
 
-namespace huppys\CookieConsentBundle\Cookie;
+namespace kpeu3u\CookieConsentBundle\Cookie;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use huppys\CookieConsentBundle\Entity\CookieConsentLog;
+use kpeu3u\CookieConsentBundle\Entity\CookieConsentLog;
 use Symfony\Component\HttpFoundation\Request;
 
 class CookieLogger

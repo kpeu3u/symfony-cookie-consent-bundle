@@ -1,5 +1,5 @@
 {
-  "name": "huppys/cookie-consent-bundle",
+  "name": "kpeu3u/symfony-cookie-consent-bundle",
   "type": "symfony-bundle",
   "description": "Symfony bundle to ask the visitors for their consent to use cookies to comply to AVG/GDPR.",
   "license": "MIT",
@@ -37,12 +37,12 @@
       "/node_modules/"
     ],
     "psr-4": {
-      "huppys\\CookieConsentBundle\\": "src/"
+      "kpeu3u\\CookieConsentBundle\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "huppys\\CookieConsentBundle\\tests\\": "tests/"
+      "kpeu3u\\CookieConsentBundle\\tests\\": "tests/"
     }
   },
   "config": {

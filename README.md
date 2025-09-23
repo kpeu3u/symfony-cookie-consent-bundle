@@ -12,7 +12,7 @@ Symfony bundle to integrate a cookie consent dialog to your website and to handl
 In a Symfony application run this command to install and integrate Cookie Consent bundle in your application:
 
 ```bash
-composer require huppys/cookie-consent-bundle
+composer require kpeu3u/symfony-cookie-consent-bundle
 ```
 
 ### Step 2: Enable the bundle
@@ -29,7 +29,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new huppys\CookieConsentBundle\CookieConsentBundle(),
+        new kpeu3u\CookieConsentBundle\CookieConsentBundle(),
         // ...
     );
 }
@@ -42,7 +42,7 @@ or in config/bundles.php add the following line to the array:
 
 return [
     // ...
-    huppys\CookieConsentBundle\CookieConsentBundle::class => ['all' => true],
+    kpeu3u\CookieConsentBundle\CookieConsentBundle::class => ['all' => true],
     // ...
 ];
 ```
@@ -137,7 +137,7 @@ AVG/GDPR requires all given cookie preferences of users to be explainable by the
 preferences to the database. IP addresses are anonymized. You can disable logging the given consent by
 setting `persist_consent` to *false*.
 
-![Database logging](https://raw.githubusercontent.com/huppys/cookie-consent-bundle/master/docs/log.png)
+![Database logging](https://raw.githubusercontent.com/kpeu3u/symfony-cookie-consent-bundle/master/docs/log.png)
 
 ### TwigExtension
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace huppys\CookieConsentBundle\Ui;
+namespace kpeu3u\CookieConsentBundle\Ui;
 
 use Symfony\Component\Form\FormView;
 

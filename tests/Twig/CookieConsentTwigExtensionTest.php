@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 
-namespace huppys\CookieConsentBundle\tests\Twig;
+namespace kpeu3u\CookieConsentBundle\tests\Twig;
 
-use huppys\CookieConsentBundle\Service\CookieConsentService;
-use huppys\CookieConsentBundle\Twig\CookieConsentTwigExtension;
+use kpeu3u\CookieConsentBundle\Service\CookieConsentService;
+use kpeu3u\CookieConsentBundle\Twig\CookieConsentTwigExtension;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

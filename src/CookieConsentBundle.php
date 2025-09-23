@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace huppys\CookieConsentBundle;
+namespace kpeu3u\CookieConsentBundle;
 
-use huppys\CookieConsentBundle\Controller\CookieConsentController;
-use huppys\CookieConsentBundle\Form\ConsentDetailedType;
-use huppys\CookieConsentBundle\Form\ConsentSimpleType;
-use huppys\CookieConsentBundle\Repository\CookieConsentLogRepository;
-use huppys\CookieConsentBundle\Service\CookieConsentService;
+use kpeu3u\CookieConsentBundle\Controller\CookieConsentController;
+use kpeu3u\CookieConsentBundle\Form\ConsentDetailedType;
+use kpeu3u\CookieConsentBundle\Form\ConsentSimpleType;
+use kpeu3u\CookieConsentBundle\Repository\CookieConsentLogRepository;
+use kpeu3u\CookieConsentBundle\Service\CookieConsentService;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -33,7 +33,7 @@ class CookieConsentBundle extends AbstractBundle
             ->autoconfigure()
             ->private();
 
-        $services->load('huppys\\CookieConsentBundle\\', '../src/')
+        $services->load('kpeu3u\\CookieConsentBundle\\', '../src/')
             ->exclude('../src/{DependencyInjection,Entity,Enum,Kernel/*.php}');
 
         $services->defaults()

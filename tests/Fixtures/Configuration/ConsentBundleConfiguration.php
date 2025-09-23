@@ -1,9 +1,9 @@
 <?php
 
-namespace huppys\CookieConsentBundle\tests\Fixtures\Configuration;
+namespace kpeu3u\CookieConsentBundle\tests\Fixtures\Configuration;
 
 
-use huppys\CookieConsentBundle\Enum\CookieName;
+use kpeu3u\CookieConsentBundle\Enum\CookieName;
 use Symfony\Component\HttpFoundation\Cookie;
 
 class ConsentBundleConfiguration
