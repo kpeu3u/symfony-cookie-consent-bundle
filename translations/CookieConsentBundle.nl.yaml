@@ -25,4 +25,4 @@ cookie_consent:
     show_details: 'Toon details'
     hide_details: 'Verberg details'
     reject_all: 'Weiger alle cookies'
-    cookie_settings: 'Instellingen'
+    cookie_settings_button: 'Instellingen'

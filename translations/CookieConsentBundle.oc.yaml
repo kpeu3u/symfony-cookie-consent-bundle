@@ -25,4 +25,4 @@ cookie_consent:
     show_details: 'Afichar los detalhs'
     hide_details: 'Amagar los detalhs'
     reject_all: 'Refusar totes los cookies'
-    cookie_settings: 'Paramètres'
+    cookie_settings_button: 'Paramètres'

@@ -102,7 +102,28 @@ cookie_consent:
     - 'social_media'
   persist_consent: true # boolean; logs user actions to database
   position: 'dialog' # available values: 'bottom', 'dialog'
-  form_action: $routeName # When set, xhr-Requests will only be sent to this route. Take care of having the route available.
+  form_action: 'cookie_consent.update' # When set, xhr-Requests will only be sent to this route. Take care of having the route available.
+  csrf_protection: true # boolean; enable or disable csrf protection for the form
+
+
+cookie_consent:
+  consent_configuration:
+    consent_cookie:
+      expires: 'P180D' # available values: PHP formatted date string, 'P180D' (180 days), 'P1Y' (1 year) etc.
+      domain: null # optional: string or null, domain name, e.g. 'example.com'; null means 'use the current domain'
+      secure: true # boolean, true by deafult, enable or disable transport only over https
+      http_only: true # boolean, refer to mdn docs for more info
+      same_site: 'lax' # available values: 'strict', 'lax', 'none'; if value is 'none' the 'secure' flag will be set to true by default
+    consent_categories:
+      functional:
+        - bookmark
+        - shopping_cart
+      social_media:
+        - twitter
+      marketing:
+  persist_consent: true # boolean; logs user actions to database
+  position: 'dialog' # available values: 'bottom', 'dialog'
+  form_action: 'cookie_consent.update' # When set, xhr-Requests will only be sent to this route. Take care of having the route available.
   csrf_protection: true # boolean; enable or disable csrf protection for the form
 ```
 
