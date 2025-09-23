@@ -15,12 +15,12 @@
                 {% endblock title %}
 
                 {% block intro %}
-                    <p>{{ 'cookie_consent.intro'|trans({}, 'CookieConsentBundle') }}</p>
+                    <p>{{ 'cookie_consent.intro'|trans({}, 'CookieConsentBundle')|raw }}</p>
                 {% endblock intro %}
 
                 {% block read_more %}
                     {% if read_more_route %}
-                        <a href="{{ path(read_more_route) }}">{{ 'cookie_consent.read_more'|trans({}, 'CookieConsentBundle')|raw }}</a>
+                        <a href="{{ path(read_more_route) }}">{{ 'cookie_consent.read_more'|trans({}, 'CookieConsentBundle') }}</a>
                     {% endif %}
                 {% endblock read_more %}
             {% endblock header %}
