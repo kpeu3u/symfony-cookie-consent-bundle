@@ -1,6 +1,6 @@
 <?php
 
-namespace kpeu3u\CookieConsentBundle\Entity;
+namespace CookieConsentBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

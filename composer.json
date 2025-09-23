@@ -37,12 +37,12 @@
       "/node_modules/"
     ],
     "psr-4": {
-      "kpeu3u\\CookieConsentBundle\\": "src/"
+      "CookieConsentBundle\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "kpeu3u\\CookieConsentBundle\\tests\\": "tests/"
+      "CookieConsentBundle\\tests\\": "tests/"
     }
   },
   "config": {

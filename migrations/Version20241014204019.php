@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace kpeu3u\CookieConsentBundle;
+namespace CookieConsentBundle;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;

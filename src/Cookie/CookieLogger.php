@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 
 
-namespace kpeu3u\CookieConsentBundle\Cookie;
+namespace CookieConsentBundle\Cookie;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use kpeu3u\CookieConsentBundle\Entity\CookieConsentLog;
+use CookieConsentBundle\Entity\CookieConsentLog;
 use Symfony\Component\HttpFoundation\Request;
 
 class CookieLogger

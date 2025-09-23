@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace kpeu3u\CookieConsentBundle\Controller;
+namespace CookieConsentBundle\Controller;
 
 use Exception;
-use kpeu3u\CookieConsentBundle\Enum\FormSubmitName;
-use kpeu3u\CookieConsentBundle\Form\ConsentDetailedType;
-use kpeu3u\CookieConsentBundle\Form\ConsentSimpleType;
-use kpeu3u\CookieConsentBundle\Service\CookieConsentService;
-use kpeu3u\CookieConsentBundle\Ui\ConsentFormDto;
+use CookieConsentBundle\Enum\FormSubmitName;
+use CookieConsentBundle\Form\ConsentDetailedType;
+use CookieConsentBundle\Form\ConsentSimpleType;
+use CookieConsentBundle\Service\CookieConsentService;
+use CookieConsentBundle\Ui\ConsentFormDto;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;

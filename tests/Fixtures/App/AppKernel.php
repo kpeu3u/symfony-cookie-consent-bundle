@@ -1,11 +1,11 @@
 <?php
 
-namespace kpeu3u\CookieConsentBundle\tests\Fixtures\App;
+namespace CookieConsentBundle\tests\Fixtures\App;
 
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
-use kpeu3u\CookieConsentBundle\CookieConsentBundle;
-use kpeu3u\CookieConsentBundle\tests\Fixtures\Configuration\ConsentBundleConfiguration;
+use CookieConsentBundle\CookieConsentBundle;
+use CookieConsentBundle\tests\Fixtures\Configuration\ConsentBundleConfiguration;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\MakerBundle\MakerBundle;
@@ -64,12 +64,12 @@ class AppKernel extends Kernel
 
         $container->loadFromExtension('doctrine_migrations', [
             'migrations_paths' => [
-                "kpeu3u\\CookieConsentBundle" => "%kernel.project_dir%/migrations"
+                "CookieConsentBundle" => "%kernel.project_dir%/migrations"
             ]
         ]);
 
         $container->loadFromExtension('maker', [
-            'root_namespace' => "kpeu3u\\CookieConsentBundle"
+            'root_namespace' => "CookieConsentBundle"
         ]);
 
         $container->loadFromExtension('cookie_consent', ConsentBundleConfiguration::kernelTestCaseConfiguration());

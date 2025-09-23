@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace kpeu3u\CookieConsentBundle\Entity;
+namespace CookieConsentBundle\Entity;
 
 use DateTime;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use kpeu3u\CookieConsentBundle\Repository\CookieConsentLogRepository;
+use CookieConsentBundle\Repository\CookieConsentLogRepository;
 
 #[ORM\Entity(repositoryClass: CookieConsentLogRepository::class)]
 #[ORM\Table(name: "cookieconsent_log")]

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace kpeu3u\CookieConsentBundle\Repository;
+namespace CookieConsentBundle\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use kpeu3u\CookieConsentBundle\Entity\CookieConsentLog;
+use CookieConsentBundle\Entity\CookieConsentLog;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

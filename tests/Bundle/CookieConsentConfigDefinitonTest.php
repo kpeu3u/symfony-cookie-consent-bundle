@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 
-namespace kpeu3u\CookieConsentBundle\tests\Bundle;
+namespace CookieConsentBundle\tests\Bundle;
 
-use kpeu3u\CookieConsentBundle\CookieConsentBundle;
-use kpeu3u\CookieConsentBundle\tests\Fixtures\Configuration\ConsentBundleConfiguration;
+use CookieConsentBundle\CookieConsentBundle;
+use CookieConsentBundle\tests\Fixtures\Configuration\ConsentBundleConfiguration;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Configuration;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;

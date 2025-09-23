@@ -1,9 +1,9 @@
 <?php
 
-namespace kpeu3u\CookieConsentBundle\tests\Fixtures\Configuration;
+namespace CookieConsentBundle\tests\Fixtures\Configuration;
 
 
-use kpeu3u\CookieConsentBundle\Enum\CookieName;
+use CookieConsentBundle\Enum\CookieName;
 use Symfony\Component\HttpFoundation\Cookie;
 
 class ConsentBundleConfiguration

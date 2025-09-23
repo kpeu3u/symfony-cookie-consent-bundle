@@ -1,6 +1,6 @@
 <?php
 
-namespace kpeu3u\CookieConsentBundle\Form;
+namespace CookieConsentBundle\Form;
 
 class ConsentVendorTypeModel
 {

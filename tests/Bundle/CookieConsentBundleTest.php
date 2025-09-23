@@ -1,6 +1,6 @@
 <?php
 
-namespace kpeu3u\CookieConsentBundle\tests\Bundle;
+namespace CookieConsentBundle\tests\Bundle;
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

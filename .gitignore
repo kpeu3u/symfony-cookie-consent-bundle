@@ -13,6 +13,7 @@ gen
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
+/.phpunit.cache/
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###

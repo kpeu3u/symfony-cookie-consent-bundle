@@ -1,14 +1,14 @@
 <?php
 
-namespace kpeu3u\CookieConsentBundle\tests\Service;
+namespace CookieConsentBundle\tests\Service;
 
-use kpeu3u\CookieConsentBundle\Enum\ConsentType;
-use kpeu3u\CookieConsentBundle\Enum\CookieName;
-use kpeu3u\CookieConsentBundle\Form\ConsentCategoryTypeModel;
-use kpeu3u\CookieConsentBundle\Form\ConsentDetailedTypeModel;
-use kpeu3u\CookieConsentBundle\Form\ConsentVendorTypeModel;
-use kpeu3u\CookieConsentBundle\Service\CookieConsentService;
-use kpeu3u\CookieConsentBundle\tests\Fixtures\Configuration\ConsentBundleConfiguration;
+use CookieConsentBundle\Enum\ConsentType;
+use CookieConsentBundle\Enum\CookieName;
+use CookieConsentBundle\Form\ConsentCategoryTypeModel;
+use CookieConsentBundle\Form\ConsentDetailedTypeModel;
+use CookieConsentBundle\Form\ConsentVendorTypeModel;
+use CookieConsentBundle\Service\CookieConsentService;
+use CookieConsentBundle\tests\Fixtures\Configuration\ConsentBundleConfiguration;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;

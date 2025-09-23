@@ -29,7 +29,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new kpeu3u\CookieConsentBundle\CookieConsentBundle(),
+        new CookieConsentBundle\CookieConsentBundle(),
         // ...
     );
 }
@@ -42,7 +42,7 @@ or in config/bundles.php add the following line to the array:
 
 return [
     // ...
-    kpeu3u\CookieConsentBundle\CookieConsentBundle::class => ['all' => true],
+    CookieConsentBundle\CookieConsentBundle::class => ['all' => true],
     // ...
 ];
 ```

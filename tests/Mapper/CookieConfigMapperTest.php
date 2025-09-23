@@ -1,9 +1,9 @@
 <?php
 
-namespace kpeu3u\CookieConsentBundle\tests\Mapper;
+namespace CookieConsentBundle\tests\Mapper;
 
 use DateInterval;
-use kpeu3u\CookieConsentBundle\Mapper\CookieConfigMapper;
+use CookieConsentBundle\Mapper\CookieConfigMapper;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 

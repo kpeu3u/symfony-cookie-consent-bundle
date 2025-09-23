@@ -1,8 +1,8 @@
 <?php
 
-namespace kpeu3u\CookieConsentBundle\Form;
+namespace CookieConsentBundle\Form;
 
-use kpeu3u\CookieConsentBundle\Enum\FormSubmitName;
+use CookieConsentBundle\Enum\FormSubmitName;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

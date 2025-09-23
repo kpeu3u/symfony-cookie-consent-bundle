@@ -1,8 +1,8 @@
 <?php
 
-namespace kpeu3u\CookieConsentBundle\tests\Bundle;
+namespace CookieConsentBundle\tests\Bundle;
 
-use kpeu3u\CookieConsentBundle\tests\Fixtures\Configuration\ConsentBundleConfiguration;
+use CookieConsentBundle\tests\Fixtures\Configuration\ConsentBundleConfiguration;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
