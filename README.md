@@ -95,6 +95,14 @@ cookie_consent:
   csrf_protection: true # boolean; enable or disable csrf protection for the form
 ```
 
+### Step 4: Update database schema
+
+```bash
+bin/console doctrine:schema:update --force
+```
+    
+
+
 ## Usage
 
 ### Twig implementation
