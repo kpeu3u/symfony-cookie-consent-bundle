@@ -54,7 +54,7 @@ config/routing.yml:
 
 ```yaml
 cookie_consent:
-  resource: "@CookieConsentBundle/config/routing.yaml"
+  resource: "@CookieConsentBundle/config/routes.php"
 ```
 
 ### Step 4: Configure to your needs
@@ -102,15 +102,15 @@ cookie_consent:
 Load the cookie consent in Twig via render_esi ( to prevent caching ) at any place you like:
 
 ```twig
-{{ render_esi(path('cookie_consent.show')) }}
-{{ render_esi(path('cookie_consent.show_if_cookie_consent_not_set')) }}
+{{ render_esi(path('cookie_consent.view')) }}
+{{ render_esi(path('cookie_consent.view_if_no_consent')) }}
 ```
 
 If you want to load the cookie consent with a specific locale you can pass the locale as a parameter:
 
 ```twig
-{{ render_esi(path('cookie_consent.show', { 'locale' : 'en' })) }}
-{{ render_esi(path('cookie_consent.show_if_cookie_consent_not_set', { 'locale' : app.request.locale })) }}
+{{ render_esi(path('cookie_consent.view', { 'locale' : 'en' })) }}
+{{ render_esi(path('cookie_consent.view_if_no_consent', { 'locale' : app.request.locale })) }}
 ```
 
 You have to install assets like javascript for asynchronous form submission and default styles. To install these assets
