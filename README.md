@@ -104,8 +104,9 @@ cookie_consent:
   position: 'dialog' # available values: 'bottom', 'dialog'
   form_action: 'cookie_consent.update' # When set, xhr-Requests will only be sent to this route. Take care of having the route available.
   csrf_protection: true # boolean; enable or disable csrf protection for the form
+```
 
-
+```yaml
 cookie_consent:
   consent_configuration:
     consent_cookie:
@@ -120,7 +121,17 @@ cookie_consent:
         - shopping_cart
       social_media:
         - twitter
+        - facebook
+        - instagram
+        - linkedin
+        - pinterest
+        - youtube
+      analytics:
+        - google_analytics
+      tracking:
+        - facebook_pixel
       marketing:
+        - google_adsense
   persist_consent: true # boolean; logs user actions to database
   position: 'dialog' # available values: 'bottom', 'dialog'
   form_action: 'cookie_consent.update' # When set, xhr-Requests will only be sent to this route. Take care of having the route available.

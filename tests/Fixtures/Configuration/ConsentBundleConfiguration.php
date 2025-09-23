@@ -23,12 +23,26 @@ class ConsentBundleConfiguration
                 'consent_categories' => [
                     'functional' => [
                         'bookmark',
-                        'shopping_cart'
+                        'shopping_cart',
                     ],
                     'social_media' => [
-                        'twitter'
+                        'twitter',
+                        'facebook',
+                        'instagram',
+                        'linkedin',
+                        'pinterest',
+                        'youtube',
                     ],
-                    'marketing' => []
+                    'analytics' => [
+                        'google_analytics',
+                    ],
+                    'tracking' => [
+                        'facebook_pixel',
+                    ],
+                    'marketing' => [
+                        'google_adsense',
+
+                    ]
                 ]
             ],
             'position' => 'dialog'
@@ -45,9 +59,18 @@ class ConsentBundleConfiguration
                         'shopping_cart'
                     ],
                     'social_media' => [
-                        'twitter'
+                        'twitter',
+                        'facebook',
                     ],
-                    'marketing' => []
+                    'analytics' => [
+                        'google_analytics',
+                    ],
+                    'tracking' => [
+                        'facebook_pixel',
+                    ],
+                    'marketing' => [
+                        'google_adsense',
+                    ]
                 ]
             ],
             'position' => 'dialog'
