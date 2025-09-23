@@ -25,4 +25,4 @@ cookie_consent:
     show_details: 'Zobraziť podrobnosti'
     hide_details: 'Skryť podrobnosti'
     reject_all: 'Zamietnuť všetky cookies'
-    settings: 'Nastavenia'
+    cookie_settings: 'Nastavenia'

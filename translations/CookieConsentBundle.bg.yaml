@@ -25,4 +25,4 @@ cookie_consent:
     show_details: 'Покажи детайли'
     hide_details: 'Скрий детайли'
     reject_all: 'Отхвърли всички бисквитки'
-    settings: 'Настройки'
+    cookie_settings: 'Настройки'
