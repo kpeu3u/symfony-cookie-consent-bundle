@@ -46,9 +46,12 @@ class CookieConfigMapper
             return null;
         }
 
-        return new Cookie(name: $name, expire: self::convertExpireToDate($expires), domain: $domain, value: $value, secure: $secure, httpOnly: $http_only, raw: false, sameSite: $same_site, partitioned: false);
+        return new Cookie(name: $name, value: $value, expire: self::convertExpireToDate($expires), domain: $domain, secure: $secure, httpOnly: $http_only, raw: false, sameSite: $same_site, partitioned: false);
     }
 
+    /**
+     * @throws \Exception
+     */
     public static function convertExpireToDate(string $maxAge): \DateTimeInterface
     {
         $now = new \DateTimeImmutable();

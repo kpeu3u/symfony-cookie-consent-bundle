@@ -24,16 +24,16 @@ class BrowserCookie
     #[ORM\Column(type: Types::BOOLEAN)]
     private bool $secure;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
-    private string $sameSite;
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    private ?string $sameSite;
 
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
     private string $expires;
 
-    #[ORM\Column(type: Types::STRING)]
+    #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $domain;
 
-    public function __construct(string $name, string $expires, ?string $domain, bool $secure, bool $httpOnly, string $sameSite)
+    public function __construct(string $name, string $expires, ?string $domain, bool $secure, bool $httpOnly, ?string $sameSite)
     {
         $this->name = $name;
         $this->expires = $expires;
@@ -58,7 +58,7 @@ class BrowserCookie
         return $this->secure;
     }
 
-    public function getSameSite(): string
+    public function getSameSite(): ?string
     {
         return $this->sameSite;
     }
@@ -68,7 +68,7 @@ class BrowserCookie
         return $this->expires;
     }
 
-    public function getDomain()
+    public function getDomain(): ?string
     {
         return $this->domain;
     }

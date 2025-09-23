@@ -51,7 +51,7 @@ class ConsentDetailedType extends AbstractType
                 ]
             ])
             ->add(FormSubmitName::SAVE_CONSENT_SETTINGS, SubmitType::class, [
-                'label' => $this->translate('cookie_consent.save_settings'),
+                'label' => $this->translate('cookie_consent.save'),
                 'attr' => [
                     'class' => 'cookie-consent__btn js-save-settings'
                 ]
