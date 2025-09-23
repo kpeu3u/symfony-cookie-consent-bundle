@@ -1,0 +1,69 @@
+{# @formatter:off #}
+{% if position == 'dialog' %} {# Wrap in dialog tag if position is dialog #}
+<dialog class="cookie-consent-dialog">
+{% endif %}
+{# @formatter:on #}
+
+    <div class="cookie-consent cookie-consent--{{ position }}">
+        {% block pre_form %}
+        {% endblock pre_form %}
+
+        <section class="cookie-consent-simple">
+            {% block header %}
+                {% block title %}
+                    <h3>{{ 'cookie_consent.title'|trans({}, 'CookieConsentBundle') }}</h3>
+                {% endblock title %}
+
+                {% block intro %}
+                    <p>{{ 'cookie_consent.intro'|trans({}, 'CookieConsentBundle') }}</p>
+                {% endblock intro %}
+
+                {% block read_more %}
+                    {% if read_more_route %}
+                        <a href="{{ path(read_more_route) }}">{{ 'cookie_consent.read_more'|trans({}, 'CookieConsentBundle') }}</a>
+                    {% endif %}
+                {% endblock read_more %}
+            {% endblock header %}
+
+            {{ form_start(simple_form, {'attr': {'class': 'cookie-consent__form js-consent-simple-form'}}) }}
+
+            {% for child in simple_form %}
+                {{ form_widget(child) }}
+            {% endfor %}
+
+            {{ form_rest(simple_form) }}
+
+            <button type="button" class="btn btn-text js-show-settings">Settings</button>
+
+            {{ form_end(simple_form) }}
+        </section>
+
+        <section class="cookie-consent-detail" style="display: none;">
+            {{ form_start(detailed_form, {'attr': {'class': 'cookie-consent__form'}}) }}
+
+            <div>
+                {% for child in detailed_form %}
+                    {% if not child.rendered %}
+                        {{- form_widget(child) -}}
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            {{ form_rest(detailed_form) }}
+
+            {{ form_end(detailed_form) }}
+        </section>
+
+        {% block post_form %}
+        {% endblock post_form %}
+    </div>
+
+{# @formatter:off #}
+{% if position == 'dialog' %}
+</dialog>
+{% endif %}
+{# @formatter:on #}
+
+{% block scripts %}
+    <script type="text/javascript" src="{{ asset('bundles/cookieconsent/js/cookie-consent.min.js') }}"></script>
+{% endblock scripts %}

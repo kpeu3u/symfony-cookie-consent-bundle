@@ -1,0 +1,27 @@
+cookie_consent:
+    title: 'Galetes al nostre lloc web.'
+    intro: ''
+    read_more: 'llegir més sobre això'
+    required_cookies:
+        title: 'Galetes necessàries'
+        description: 'Aquestes galetes són necessàries per a la funcionalitat del lloc web i no es poden desactivar.'
+    analytics:
+        title: 'Vols galetes analítiques?'
+        description: ''
+    tracking:
+        title: 'Vols galetes de rastreig?'
+        description: ''
+    marketing:
+        title: 'Vols anuncis personalitzats?'
+        description: ''
+    social_media:
+        title: 'Vols galetes de xarxes socials?'
+        description: ''
+    no: 'No'
+    yes: 'Sí'
+    save: 'Guardar'
+    use_only_functional_cookies: 'Utilitzar només galetes funcionals'
+    accept_all: 'Permetre totes les galetes'
+    show_details: 'Mostra els detalls'
+    hide_details: 'Oculta els detalls'
+    reject_all: 'Rebutja totes les galetes'

@@ -1,0 +1,24 @@
+{% block choice_row %}
+    <div class="cookie-consent__category">
+        <div class="cookie-consent__category-toggle">
+            {% for child in form %}
+                {% if not child.rendered %}
+                    {{- form_widget(child) -}}
+                    {{- form_label(child, null, {translation_domain: choice_translation_domain}) -}}
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% block cookie_title_with_description %}
+            <div class="cookie-consent__category-information">
+                {{- form_help(form) -}}
+            </div>
+        {% endblock cookie_title_with_description %}
+    </div>
+{% endblock %}
+
+{#{% block submit_row %}#}
+{#    <div class="cookie-consent__btn-wrapper">#}
+{#        {{ block('submit_widget') }}#}
+{#    </div>#}
+{#{% endblock %}#}
+

@@ -1,0 +1,18 @@
+/**
+ * Retrieve a css variable value with prefix
+ *
+ * Usage
+ *
+ * .selector {
+ *   color: cssvar(primary-color);
+ * }
+ *
+ * Will result in
+ *
+ * .selector {
+ *    color: var(--prefix-primary-color);
+ * }
+ */
+@function cssvar($name, $prefix: $custom-properties-prefix) {
+  @return var(--#{$prefix}-#{$name});
+}

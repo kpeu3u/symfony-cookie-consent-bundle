@@ -1,0 +1,79 @@
+//@import "reset";
+@import "mixins/mixins";
+@import "functions";
+
+// fonts
+$cc-font: 'Helvetica', 'sans-serif';
+$cc-font-weight: normal;
+
+
+// Light theme (default)
+$cc-background-color: #fff !default;
+$cc-text-color: #000 !default;
+$cc-border: 1px solid #aaaaaa !default;
+$cc-dialog-backdrop-color: rgba(255, 255, 255, 0.7);
+$cc-box-shadow: 0 0 20px #dadada;
+$cc-background-color-dark: #000 !default;
+
+$cc-logo-width: 200px;
+$cc-logo-height: 150px;
+
+@include css-custom-properties((
+        font-family: $cc-font,
+        font-weight: $cc-font-weight,
+        background-color: $cc-background-color,
+        color: $cc-text-color,
+        border: $cc-border,
+        border-radius: 4px,
+        dialog-backdrop-color: $cc-dialog-backdrop-color,
+        box-shadow: $cc-box-shadow,
+        logo-width: $cc-logo-width,
+        logo-height: $cc-logo-height
+));
+
+.cookie-consent {
+
+  font-family: cssvar(font-family);
+  font-weight: cssvar(font-weight);
+
+  &--bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+
+  &--dialog {
+
+  }
+
+  &-dialog {
+    max-width: 80vw;
+    border: none;
+    border-radius: cssvar(border-radius);
+    box-shadow: cssvar(box-shadow);
+
+    &::backdrop {
+      background-color: cssvar(dialog-backdrop-color);
+    }
+  }
+
+  > .logo {
+    width: cssvar(logo-width);
+    //height: cssvar(logo-height);
+  }
+}
+
+
+$cc-checkbox-inactive-background-color: #fff !default;
+$cc-checkbox-inactive-text-color: #223462 !default;
+$cc-checkbox-inactive-border-color: #223462 !default;
+$cc-checkbox-active-background-color: #223462 !default;
+$cc-checkbox-active-text-color: #fff !default;
+$cc-checkbox-active-border-color: #fff !default;
+$cc-button-background: linear-gradient(349.19deg, #CF1E34 0%, #EE365F 100%) !default;
+$cc-button-text-color: #fff !default;
+$cc-secondary-button-background: transparent !default;
+$cc-secondary-button-text-color: #000 !default;
+$cc-secondary-button-border-color: #000 !default;

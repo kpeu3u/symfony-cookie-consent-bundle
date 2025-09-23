@@ -1,0 +1,27 @@
+cookie_consent:
+    title: 'Los cookies sul nòstre site.'
+    intro: ''
+    read_more: 'Ne saber mai'
+    required_cookies:
+        title: 'Cookies necessaris'
+        description: 'Aquestes cookies son necessàrias al foncionament del site e pòdon pas èsser desactivats.'
+    analytics:
+        title: 'Acceptatz los cookies analitics ?'
+        description: ''
+    tracking:
+        title: 'Acceptatz los cookies de seguiment ?'
+        description: ''
+    marketing:
+        title: 'Acceptatz las publicitats cibladas ?'
+        description: ''
+    social_media:
+        title: 'Acceptatz los cookies dels maluhms socials ?'
+        description: ''
+    no: 'Non'
+    yes: 'Òc'
+    save: 'Salvagardar'
+    use_only_functional_cookies: 'Utilizar sonque los cookies foncionals'
+    accept_all: 'Acceptar totes los cookies'
+    show_details: 'Afichar los detalhs'
+    hide_details: 'Amagar los detalhs'
+    reject_all: 'Refusar totes los cookies'

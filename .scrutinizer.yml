@@ -1,0 +1,31 @@
+checks:
+    php: true
+
+coding_style:
+    php: {  }
+
+build:
+    environment:
+        timezone: Europe/Amsterdam
+        postgresql: false
+        rabbitmq: false
+        mysql: false
+        redis: false
+        php:
+            version: 8.3
+            ini:
+                'date.timezone': 'Europe/Amsterdam'
+    project_setup:
+        override: true
+    tests:
+        override:
+            - php-scrutinizer-run
+            -
+                command: 'vendor/bin/phpunit --coverage-clover=code-coverage'
+                coverage:
+                    file: 'code-coverage'
+                    format: 'clover'
+
+filter:
+    excluded_paths:
+        - tests/*

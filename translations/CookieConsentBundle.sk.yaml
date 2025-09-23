@@ -1,0 +1,27 @@
+cookie_consent:
+    title: 'Používame súbory cookies'
+    intro: ''
+    read_more: 'Ďalšie informácie'
+    required_cookies:
+        title: 'Nevyhnutné cookies'
+        description: 'Tieto cookies sú nevyhnutné pre funkčnosť webu a nie je možné ich zakázať.'
+    analytics:
+        title: 'Povoliť štatistické cookies?'
+        description: ''
+    tracking:
+        title: 'Povoliť sledovacie cookies?'
+        description: ''
+    marketing:
+        title: 'Povoliť personalizované reklamy?'
+        description: ''
+    social_media:
+        title: 'Povoliť cookies sociálnych sietí?'
+        description: ''
+    no: 'Nie'
+    yes: 'Áno'
+    save: 'Uložiť'
+    use_only_functional_cookies: 'Povoliť len nevyhnutné cookies'
+    accept_all: 'Povoliť všetky cookies'
+    show_details: 'Zobraziť podrobnosti'
+    hide_details: 'Skryť podrobnosti'
+    reject_all: 'Zamietnuť všetky cookies'

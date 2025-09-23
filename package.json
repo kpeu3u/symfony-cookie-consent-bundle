@@ -1,0 +1,46 @@
+{
+  "name": "cookie-consent-bundle",
+  "version": "1.0.0",
+  "description": "Symfony bundle to ask the visitors for their consent to use cookies to comply to AVG/GDPR.",
+  "scripts": {
+    "build:prod": "node build.mjs && rollup --config rollup.config.mjs",
+    "build:dev": "node build.mjs && rollup --config rollup.dev.config.mjs",
+    "watch": "node build-server.mjs & nodemon --watch assets --watch templates -e scss,mjs,twig build.mjs",
+    "build-server": "node build-server.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Huppys/cookie-consent-bundle.git"
+  },
+  "module": "assets/js/cookie-consent.mjs",
+  "keywords": [
+    "gdpr",
+    "cookies",
+    "cookie",
+    "consent",
+    "banner"
+  ],
+  "author": {
+    "name": "Oliver Witzki",
+    "email": "projects@oliverwitzki.de"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Huppys/cookie-consent-bundle/issues"
+  },
+  "homepage": "https://github.com/Huppys/cookie-consent-bundle#readme",
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^9.0.0",
+    "glob": "^10.3.10",
+    "nodemon": "^3.1.0",
+    "postcss-cli": "^11.0.0",
+    "rollup": "^4.22.4",
+    "sass": "^1.69.5",
+    "ws": "^8.17.1"
+  },
+  "dependencies": {
+    "postcss": "^8.4.32"
+  }
+}

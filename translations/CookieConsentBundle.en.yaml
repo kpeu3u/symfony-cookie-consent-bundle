@@ -1,0 +1,27 @@
+cookie_consent:
+    title: 'Cookie consent headline'
+    intro: 'Cookie consent introduction text about specifics of your web applications needs regarding cookies and the users consent.<br/><br/>Next line?'
+    read_more: 'Link to privacy policy'
+    required_cookies:
+        title: 'Required cookies'
+        description: 'These cookies are necessary for the functionality of the website and cannot be deactivated.'
+    analytics:
+        title: 'Do you want analytical cookies?'
+        description: ''
+    tracking:
+        title: 'Do you want tracking cookies?'
+        description: ''
+    marketing:
+        title: 'Do you want personalised ads?'
+        description: ''
+    social_media:
+        title: 'Do you want social media cookies?'
+        description: ''
+    no: 'No'
+    yes: 'Yes'
+    save: 'Save'
+    use_only_functional_cookies: 'Only use functional cookies'
+    accept_all: 'Allow all cookies'
+    show_details: 'Show details'
+    hide_details: 'Hide details'
+    reject_all: 'Reject all cookies'
