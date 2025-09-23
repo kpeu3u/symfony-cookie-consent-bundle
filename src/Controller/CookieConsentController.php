@@ -46,7 +46,7 @@ class CookieConsentController
     {
     }
 
-    #[Route('/cookie-consent/update', name: 'cookie-consent.update')]
+    #[Route('/cookie-consent/update', name: 'cookie_consent.update')]
     public function update(): Response
     {
         $request = $this->getCurrentRequest();

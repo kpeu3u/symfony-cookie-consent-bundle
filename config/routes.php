@@ -9,10 +9,10 @@ return function (RoutingConfigurator $routes): void {
     $routes->add('cookie_consent.view', '/cookie-consent/view')
         // the controller value has the format [controller_class, method_name]
         ->controller([CookieConsentController::class, 'view']);
-    $routes->add('cookie-consent.update', '/cookie-consent/update')
+    $routes->add('cookie_consent.update', '/cookie-consent/update')
         // the controller value has the format [controller_class, method_name]
         ->controller([CookieConsentController::class, 'update']);
-    $routes->add('cookie-consent.view_if_no_consent', '/cookie-consent/view-if-no-consent')
+    $routes->add('cookie_consent.view_if_no_consent', '/cookie-consent/view-if-no-consent')
         // the controller value has the format [controller_class, method_name]
         ->controller([CookieConsentController::class, 'viewIfNoConsent']);
 
