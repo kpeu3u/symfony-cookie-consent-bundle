@@ -1,0 +1,32 @@
+cookie_consent:
+    consent_configuration:
+        consent_cookie:
+            name: cookie_consent
+            expires: 'P180D' # 180 days
+            path: /
+            domain: null
+            secure: true
+            http_only: true
+            same_site: lax
+        consent_categories:
+            functional:
+                - bookmark
+                - shopping_cart
+            social_media:
+                - twitter
+                - facebook
+                - instagram
+                - linkedin
+                - pinterest
+                - youtube
+            analytics:
+                - google_analytics
+            tracking:
+                - facebook_pixel
+            marketing:
+                - google_adsense
+    position: dialog # top, bottom, or dialog
+    persist_consent: true
+    form_action: 'cookie_consent.update'
+    read_more_route: null
+    csrf_protection: true

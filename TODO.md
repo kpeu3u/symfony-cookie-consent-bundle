@@ -37,7 +37,7 @@
 - Security
   - Which domain is set when setting cookies? With subdomain?
 - Project setup
-  - [ ] Create Symfony Flex recipe: https://github.com/symfony/recipes
+  - [x] Create Symfony Flex recipe: https://github.com/symfony/recipes
   - [ ] Setup watchers for JS and SCSS separately
     - Separate dev from prod builds 
     - JS is handled by Rollup watching assets and rebuilding if needed, notifying the websocket server when done

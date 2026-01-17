@@ -28,7 +28,7 @@ composer require kpeu3u/symfony-cookie-consent-bundle
 
 ### Step 2: Enable the bundle
 
-When not using Symfony Flex, enable the bundle manually:
+When using Symfony Flex, the bundle will be enabled automatically. When not using Symfony Flex, enable the bundle manually:
 
 In AppKernel.php add the following line to the registerBundles() method:
 
@@ -60,8 +60,8 @@ return [
 
 ### Step 3: Enable the routing
 
-When not using Symfony Flex, enable the bundles routing manually by adding the following lines to your
-config/routing.yml:
+When using Symfony Flex, the routing will be enabled automatically. When not using Symfony Flex, enable the bundles routing manually by adding the following lines to your
+config/routes.yaml:
 
 ```yaml
 cookie_consent:
@@ -70,7 +70,8 @@ cookie_consent:
 
 ### Step 4: Configure to your needs
 
-By default, the most secure options are enabled. You can change the config in `config/packages/cookie_consent.yaml`:
+When using Symfony Flex, a default configuration will be created in `config/packages/cookie_consent.yaml`.
+You can change the config in `config/packages/cookie_consent.yaml`:
 
 ```yaml
 cookie_consent:
@@ -138,7 +139,7 @@ cookie_consent:
   csrf_protection: true # boolean; enable or disable csrf protection for the form
 ```
 
-### Step 4: Update database schema
+### Step 5: Update database schema
 
 ```bash
 bin/console doctrine:schema:update --force
@@ -164,7 +165,9 @@ If you want to load the cookie consent with a specific locale you can pass the l
 {{ render_esi(path('cookie_consent.view_if_no_consent', { 'locale' : app.request.locale })) }}
 ```
 
-You have to install assets like javascript for asynchronous form submission and default styles. To install these assets
+### Step 6: Install assets
+
+When using Symfony Flex, assets will be installed automatically. When not using Symfony Flex, you have to install assets like javascript for asynchronous form submission and default styles. To install these assets
 run:
 
 ```bash
