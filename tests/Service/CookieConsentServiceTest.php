@@ -74,7 +74,7 @@ class CookieConsentServiceTest extends TestCase
 
         $this->assertInstanceOf(ConsentDetailedTypeModel::class, $formModel);
 
-        $configuredCategories = $this->getConsentCookieConfiguration()['consent_categories'];
+        $configuredCategories = $this->getConsentCookieConfiguration()['consent_configuration']['consent_categories'];
 
         /** @var ConsentCategoryTypeModel $category */
         foreach ($formModel->getCategories() as $category) {
@@ -87,8 +87,8 @@ class CookieConsentServiceTest extends TestCase
         }
     }
 
-    private function getConsentCookieConfiguration()
+    private function getConsentCookieConfiguration(): array
     {
-        return ConsentBundleConfiguration::testCaseConfiguration()['consent_configuration'];
+        return ConsentBundleConfiguration::testCaseConfiguration();
     }
 }

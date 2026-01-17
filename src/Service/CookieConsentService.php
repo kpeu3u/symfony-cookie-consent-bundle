@@ -102,7 +102,7 @@ class CookieConsentService
     public function saveConsentSettings(ConsentDetailedTypeModel $formData, Request $request): ResponseHeaderBag
     {
         // always set value to true as the user did give the consent to at least some of the cookies
-        $consentCookie = CookieConfigMapper::mapToCookie($this->consentConfiguration['consent_cookie'], ConsentType::CUSTOM_CONSENT);
+        $consentCookie = CookieConfigMapper::mapToCookie($this->consentConfiguration['consent_configuration']['consent_cookie'], ConsentType::CUSTOM_CONSENT);
 
         if ($consentCookie == null) {
             throw new InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
@@ -149,7 +149,7 @@ class CookieConsentService
     public function acceptAllCookies(Request $request): ResponseHeaderBag
     {
         // always set value to true as the user did give the consent to use all cookies
-        $consentCookie = CookieConfigMapper::mapToCookie($this->consentConfiguration['consent_cookie'], ConsentType::FULL_CONSENT);
+        $consentCookie = CookieConfigMapper::mapToCookie($this->consentConfiguration['consent_configuration']['consent_cookie'], ConsentType::FULL_CONSENT);
 
         if ($consentCookie == null) {
             throw new InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
@@ -169,7 +169,7 @@ class CookieConsentService
 
     public function createDetailedForm($consentGiven = false): ConsentDetailedTypeModel
     {
-        $consentConfig = $this->consentConfiguration;
+        $consentConfig = $this->consentConfiguration['consent_configuration'];
 
         $formModel = new ConsentDetailedTypeModel();
 
@@ -203,7 +203,7 @@ class CookieConsentService
     public function rejectAllCookies(Request $request): ResponseHeaderBag
     {
         // always set value to false as the user didn't give the consent to use more cookies than necessary but we use the 'consent' cookie to hide the UI
-        $consentCookie = CookieConfigMapper::mapToCookie($this->consentConfiguration['consent_cookie'], ConsentType::NO_CONSENT);
+        $consentCookie = CookieConfigMapper::mapToCookie($this->consentConfiguration['consent_configuration']['consent_cookie'], ConsentType::NO_CONSENT);
 
         if ($consentCookie == null) {
             throw new InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");

@@ -26,7 +26,7 @@ class ConsentDetailedTypeTest extends TypeTestCase
     {
         $formModel = new ConsentDetailedTypeModel();
 
-        foreach ($formData['categories'] as $category) {
+        foreach ($formData['categories'] ?? [] as $category) {
 
             $consentCategory = new ConsentCategoryTypeModel();
             $consentCategory->setName($category['name']);

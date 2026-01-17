@@ -9,40 +9,23 @@ use Symfony\Component\HttpFoundation\Cookie;
 
 class CookieConfigMapper
 {
+    /**
+     * @throws \Exception
+     */
     public static function mapToCookie(mixed $cookieConfiguration, string $value): ?Cookie
     {
         if (!isset($value)) {
             return null;
         }
 
-        $name = $cookieConfiguration['name'];
-        $http_only = $cookieConfiguration['http_only'];
-        $secure = $cookieConfiguration['secure'];
-        $same_site = $cookieConfiguration['same_site'];
-        $domain = $cookieConfiguration['domain'];
-        $expires = $cookieConfiguration['expires'];
+        $name = $cookieConfiguration['name'] ?? null;
+        $http_only = $cookieConfiguration['http_only'] ?? null;
+        $secure = $cookieConfiguration['secure'] ?? null;
+        $same_site = $cookieConfiguration['same_site'] ?? null;
+        $domain = $cookieConfiguration['domain'] ?? null;
+        $expires = $cookieConfiguration['expires'] ?? null;
 
-        if (!isset($name)) {
-            return null;
-        }
-
-        if (!isset($http_only)) {
-            return null;
-        }
-
-        if (!isset($secure)) {
-            return null;
-        }
-
-        if (!isset($same_site)) {
-            return null;
-        }
-
-        if (!isset($domain)) {
-            return null;
-        }
-
-        if (!isset($expires)) {
+        if ($name === null || $http_only === null || $secure === null || $same_site === null || $expires === null) {
             return null;
         }
 

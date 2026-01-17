@@ -134,9 +134,9 @@ class CookieConsentController
 
     private function getForm(Request $request): ?FormInterface
     {
-        if ($request->get("consent_simple") != null) {
+        if ($request->query->get("consent_simple") !== null) {
             return $this->createSimpleConsentForm();
-        } else if ($request->get("consent_detailed") != null) {
+        } else if ($request->query->get("consent_detailed") != null) {
             return $this->createDetailedConsentForm();
         }
 

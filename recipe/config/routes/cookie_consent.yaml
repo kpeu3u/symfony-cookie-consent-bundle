@@ -1,2 +1,3 @@
 cookie_consent:
     resource: "@CookieConsentBundle/config/routes.php"
+    prefix: /{_locale}

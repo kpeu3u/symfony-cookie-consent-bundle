@@ -45,7 +45,7 @@ class CookieConsentBundle extends AbstractBundle
         $services->set(CookieConsentController::class)->public()->autowire();
 
         // configure manually wired constructor arguments for private services
-        $services->set(CookieConsentService::class)->args([$config['consent_configuration'], $config['persist_consent']]);
+        $services->set(CookieConsentService::class)->args([$config, $config['persist_consent']]);
         $services->set(CookieConsentLogRepository::class)->args([service('doctrine')]);
         $services->set(ConsentSimpleType::class)->tag('form.type')->args([service('translator')]);
         $services->set(ConsentDetailedType::class)->tag('form.type')->args([service('translator')]);

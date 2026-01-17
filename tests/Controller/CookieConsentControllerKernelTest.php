@@ -60,7 +60,7 @@ class CookieConsentControllerKernelTest extends WebTestCase
     }
 
     /**
-     * @return void
+     * @return Crawler
      */
     private function givenSuccessfulRequest(): Crawler
     {

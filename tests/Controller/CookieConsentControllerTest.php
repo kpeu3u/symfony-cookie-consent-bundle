@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CookieConsentBundle\tests\Controller;
 
+use App\Utils\Validator;
 use CookieConsentBundle\Controller\CookieConsentController;
 use CookieConsentBundle\Form\ConsentDetailedType;
 use CookieConsentBundle\Form\ConsentSimpleType;
@@ -20,6 +21,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Log\Logger;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class CookieConsentControllerTest extends TestCase
@@ -42,7 +45,7 @@ class CookieConsentControllerTest extends TestCase
     {
         $this->templating = $this->createMock(Environment::class);
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
-        $this->translator = $this->createMock(Translator::class);
+        $this->translator = $this->createMock(LocaleAwareInterface::class);
         $router = $this->createMock(RouterInterface::class);
         $this->cookieConsentService = $this->createMock(CookieConsentService::class);
         $this->requestStack = $this->createMock(RequestStack::class);

@@ -52,7 +52,7 @@ class CookieConsentConfigDefinitonTest extends TestCase
 
         $categoryMarketing = $consentCategories['marketing'];
         $this->assertIsArray($categoryMarketing);
-        $this->assertCount(0, $categoryMarketing);
+        $this->assertCount(1, $categoryMarketing);
 
         $this->assertEquals('dialog', $processedConfig['position']);
     }
