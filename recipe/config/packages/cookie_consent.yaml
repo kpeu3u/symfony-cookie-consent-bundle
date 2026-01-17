@@ -1,5 +1,29 @@
 cookie_consent:
-    name: cookie_consent
-    use_raw_template: false
-    consent_banner_position: top
-    consent_type: simple
+  consent_configuration:
+    consent_cookie:
+      expires: 'P180D'
+      domain: null
+      secure: true
+      http_only: true
+      same_site: 'lax'
+    consent_categories:
+      functional:
+        - bookmark
+        - shopping_cart
+      social_media:
+        - twitter
+        - facebook
+        - instagram
+        - linkedin
+        - pinterest
+        - youtube
+      analytics:
+        - google_analytics
+      tracking:
+        - facebook_pixel
+      marketing:
+        - google_adsense
+  persist_consent: true
+  position: 'dialog'
+  form_action: 'cookie_consent.update'
+  csrf_protection: true

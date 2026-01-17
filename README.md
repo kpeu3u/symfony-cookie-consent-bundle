@@ -26,9 +26,11 @@ In a Symfony application run this command to install and integrate Cookie Consen
 composer require kpeu3u/symfony-cookie-consent-bundle
 ```
 
+> **Note**: For automatic configuration via Symfony Flex, the recipe needs to be accepted into the official [Symfony Recipes](https://github.com/symfony/recipes-contrib) repository. Until then, you may need to perform the following steps manually or copy the default configuration from the bundle's `recipe/` directory.
+
 ### Step 2: Enable the bundle
 
-When using Symfony Flex, the bundle will be enabled automatically. When not using Symfony Flex, enable the bundle manually:
+When using Symfony Flex, the bundle will be enabled automatically (after the recipe is accepted into the official repository). When not using Symfony Flex, enable the bundle manually:
 
 In AppKernel.php add the following line to the registerBundles() method:
 
@@ -60,7 +62,7 @@ return [
 
 ### Step 3: Enable the routing
 
-When using Symfony Flex, the routing will be enabled automatically. When not using Symfony Flex, enable the bundles routing manually by adding the following lines to your
+When using Symfony Flex, the routing will be enabled automatically (after the recipe is accepted into the official repository). When not using Symfony Flex, enable the bundles routing manually by adding the following lines to your
 config/routes.yaml:
 
 ```yaml
@@ -70,42 +72,7 @@ cookie_consent:
 
 ### Step 4: Configure to your needs
 
-When using Symfony Flex, a default configuration will be created in `config/packages/cookie_consent.yaml`.
-You can change the config in `config/packages/cookie_consent.yaml`:
-
-```yaml
-cookie_consent:
-  cookie_settings:
-    name_prefix: '' # string, any string you like to prefix the cookie names with
-    cookies:
-      consent_cookie:
-        expires: 'P180D' # available values: PHP formatted date string, 'P180D' (180 days), 'P1Y' (1 year) etc.
-        domain: null # optional: string or null, domain name, e.g. 'example.com'; null means 'use the current domain'
-        secure: true # boolean, true by deafult, enable or disable transport only over https
-        http_only: true # boolean, refer to mdn docs for more info
-        same_site: 'lax' # available values: 'strict', 'lax', 'none'; if value is 'none' the 'secure' flag will be set to true by default
-      consent_key_cookie:
-        expires: 'P180D'
-        domain: null
-        secure: true
-        http_only: true
-        same_site: 'lax'
-      consent_categories_cookie:
-        expires: 'P180D'
-        domain: null
-        secure: true
-        http_only: true
-        same_site: 'lax'
-  consent_categories: # Below are the default supported categories
-    - 'analytics'
-    - 'tracking'
-    - 'marketing'
-    - 'social_media'
-  persist_consent: true # boolean; logs user actions to database
-  position: 'dialog' # available values: 'bottom', 'dialog'
-  form_action: 'cookie_consent.update' # When set, xhr-Requests will only be sent to this route. Take care of having the route available.
-  csrf_protection: true # boolean; enable or disable csrf protection for the form
-```
+You can create the config file in `config/packages/cookie_consent.yaml`:
 
 ```yaml
 cookie_consent:
@@ -167,8 +134,7 @@ If you want to load the cookie consent with a specific locale you can pass the l
 
 ### Step 6: Install assets
 
-When using Symfony Flex, assets will be installed automatically. When not using Symfony Flex, you have to install assets like javascript for asynchronous form submission and default styles. To install these assets
-run:
+When using Symfony Flex, assets will be installed automatically (after the recipe is accepted into the official repository). When not using Symfony Flex, you have to install assets like javascript for asynchronous form submission and default styles. To install these assets run:
 
 ```bash
 bin/console assets:install
