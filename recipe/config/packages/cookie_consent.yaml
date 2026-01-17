@@ -1,0 +1,5 @@
+cookie_consent:
+    name: cookie_consent
+    use_raw_template: false
+    consent_banner_position: top
+    consent_type: simple
