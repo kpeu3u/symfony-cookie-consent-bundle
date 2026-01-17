@@ -52,7 +52,7 @@
     }
   },
   "extra": {
-    "Symfony": {
+    "symfony": {
       "allow-contrib": true
     }
   }
