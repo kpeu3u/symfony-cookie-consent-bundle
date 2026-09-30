@@ -31,6 +31,16 @@ class CookieConsentBundleWebTest extends WebTestCase
     }
 
     #[Test]
+    public function shouldRenderReadableLabelsForCategoryAndVendorSwitches(): void
+    {
+        $this->assertSelectorTextContains('label[for="consent_detailed_categories_2_consentGiven"]', 'Do you want analytical cookies?');
+        $this->assertSelectorTextContains('label[for="consent_detailed_categories_2_vendors_0_consentGiven"]', 'Google Analytics');
+        $this->assertSelectorTextContains('label[for="consent_detailed_categories_0_vendors_0_consentGiven"]', 'Bookmark');
+        self::assertStringNotContainsString('Consent given', $this->crawler->filter('.cookie-consent-detail')->text());
+        $this->assertSelectorExists('.js-hide-settings');
+    }
+
+    #[Test]
     public function shouldRenderDetailedConsentFormWithConsentCategories(): void
     {
         // expect the form to render a .consent-form-categories element

@@ -5,8 +5,7 @@ See the [README](README.md) for supported behavior.
 
 - Persist or restore preferences independently of the Symfony session.
 - Version saved choices when the configured vendor list changes.
-- Improve default category/vendor labels, descriptions and accessibility.
-- Add dedicated top-banner positioning and a visible submission-error state.
+- Add a visible submission-error state.
 - Make Doctrine optional when database logging is disabled.
 - Remove or migrate legacy cookie/settings entities.
 - Add configurable log retention and cleanup tooling.

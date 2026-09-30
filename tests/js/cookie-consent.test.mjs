@@ -57,3 +57,31 @@ test('pages without a banner initialize safely', () => {
     document.body.innerHTML = '';
     assert.doesNotThrow(() => initializeCookieConsent());
 });
+
+test('settings navigation and category switches preserve individual choices', () => {
+    document.body.innerHTML = `<div class="cookie-consent">
+        <section class="cookie-consent-simple"><button class="js-show-settings">Settings</button></section>
+        <section class="cookie-consent-detail" tabindex="-1" style="display:none">
+            <button class="js-hide-settings">Back</button>
+            <div class="consent-form-category">
+                <input type="checkbox" id="category">
+                <div class="consent-form-vendors"><input type="checkbox" id="a"><input type="checkbox" id="b"></div>
+            </div>
+        </section></div>`;
+    initializeCookieConsent();
+    document.querySelector('.js-show-settings').click();
+    assert.equal(document.querySelector('.cookie-consent-detail').style.display, 'block');
+    assert.equal(document.activeElement, document.querySelector('.cookie-consent-detail'));
+    const category = document.querySelector('#category');
+    category.click();
+    assert.ok(document.querySelector('#a').checked && document.querySelector('#b').checked);
+    document.querySelector('#a').click();
+    assert.ok(category.indeterminate);
+    assert.equal(category.checked, false);
+    document.querySelector('.js-hide-settings').click();
+    assert.equal(document.querySelector('.cookie-consent-detail').style.display, 'none');
+    assert.equal(document.activeElement, document.querySelector('.js-show-settings'));
+    document.querySelector('.js-show-settings').click();
+    assert.equal(document.querySelector('#a').checked, false);
+    assert.equal(document.querySelector('#b').checked, true);
+});

@@ -27,3 +27,8 @@ cookie_consent:
     hide_details: 'Hide details'
     reject_all: 'Reject all cookies'
     cookie_settings_button: 'Settings'
+    vendors:
+        google_analytics:
+            title: 'Google Analytics'
+        facebook_pixel:
+            title: 'Meta Pixel'

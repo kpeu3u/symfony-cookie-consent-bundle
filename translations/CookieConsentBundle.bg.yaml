@@ -27,3 +27,8 @@ cookie_consent:
     hide_details: 'Скрий детайли'
     reject_all: 'Отхвърли всички бисквитки'
     cookie_settings_button: 'Настройки'
+    vendors:
+        google_analytics:
+            title: 'Google Analytics'
+        facebook_pixel:
+            title: 'Meta Pixel'

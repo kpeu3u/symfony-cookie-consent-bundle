@@ -31,6 +31,10 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
 
 ### Changed
 
+- Responsive consent cards with light/dark styling, readable translated category
+  and vendor switches, a back button and scoped form themes. Both top and bottom
+  positions now include fixed positioning and scrolling for small screens.
+
 - Minimum requirements are now Symfony 7.4 and PHP 8.3; Symfony 8 requires PHP 8.4+.
 - PHP and frontend dependencies have been updated. Asset development requires
   Node.js 22.14+; consuming applications use the included built assets.
