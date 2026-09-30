@@ -293,6 +293,53 @@ heading, explanation and status label use `cookie_consent.required_cookies.title
 `cookie_consent.required_cookies.description` and
 `cookie_consent.required_cookies.always_active` translation keys.
 
+### Translating necessary cookies
+
+For a multilingual site, store translation **keys** in configuration instead of
+literal text. The configuration stays the same for every language:
+
+```yaml
+# config/packages/cookie_consent.yaml
+cookie_consent:
+    necessary_cookies:
+        session:
+            name: app.cookies.session.name
+            description: app.cookies.session.description
+```
+
+Define the keys in your application's translation directory using the exact
+`CookieConsentBundle` domain (including capitalization):
+
+```yaml
+# translations/CookieConsentBundle.en.yaml
+app.cookies.session.name: 'Session cookie'
+app.cookies.session.description: 'Keeps your session available while you use the site.'
+```
+
+```yaml
+# translations/CookieConsentBundle.bg.yaml
+app.cookies.session.name: 'Бисквитка за сесията'
+app.cookies.session.description: 'Поддържа сесията ви, докато използвате сайта.'
+```
+
+Pass the current page locale when rendering the fragment:
+
+```twig
+{{ render(path('cookie_consent.view_if_no_consent', {locale: app.request.locale})) }}
+```
+
+Use the same `locale` parameter with `cookie_consent.view` on a settings page.
+Without this parameter the controller uses the fragment request's locale; pass it
+explicitly so a localized page and its banner stay aligned. There is no separate
+language selector inside the banner.
+
+The section heading, explanation and “Always active” status already have bundled
+translations. Override their `cookie_consent.required_cookies.*` keys in the same
+application files if needed. Custom names and descriptions follow Symfony's
+translation fallback configuration; if a key is missing in every applicable
+catalogue, it is displayed as-is. Literal text remains supported for single-language
+sites. Clear the application cache after adding translation files if necessary.
+
 ## Categories and vendors
 
 Identifiers are application-defined strings, not a built-in vendor catalog. Keep
