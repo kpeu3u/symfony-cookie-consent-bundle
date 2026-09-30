@@ -59,6 +59,28 @@ uses your application's dependency constraints when installing the bundle; the
 library's lock file does not pin the Symfony version in consuming applications.
 
 
+## Database migration before enabling logging
+
+Version 2.0 performs real writes when `persist_consent` is `true` (the default).
+An older installation may not have the required table even if this option was
+already enabled. Complete the [Doctrine mapping setup](configuration.md#database-logging),
+then generate a migration in the application:
+
+```bash
+php bin/console doctrine:migrations:diff
+```
+
+Review the generated SQL against the existing database, then apply it before
+serving the upgraded application with logging enabled:
+
+```bash
+php bin/console doctrine:migrations:migrate
+```
+
+If the existing schema is already compatible, no new migration is needed. If you
+are not ready to migrate, explicitly set `cookie_consent.persist_consent: false`.
+Neither Composer updates nor asset installation create the consent tables.
+
 ## Old examples and current equivalents
 
 | Older example or assumption | Current equivalent / action |

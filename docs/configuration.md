@@ -2,6 +2,23 @@
 
 [Documentation index](index.md) · [Quick start](../README.md#quick-start)
 
+## Where to configure the bundle
+
+Put bundle settings under `cookie_consent` in
+`config/packages/cookie_consent.yaml` in the consuming application. Merge the
+examples below into that section rather than adding multiple `cookie_consent`
+keys in one YAML file. Omitted options use their defaults.
+
+- [Full example and option summary](#full-example)
+- [Position: dialog, bottom or top](#position)
+- [Privacy-policy link](#privacy-policy-link)
+- [Form submission route](#form-submission-route)
+- [CSRF protection](#csrf-protection)
+- [Cookie options](#cookie-options)
+- [Categories and vendors](#categories-and-vendors)
+- [Database logging](#database-logging)
+- [Inspecting the effective configuration](#inspecting-the-effective-configuration)
+
 ## Full example
 
 The following shows the defaults, except for the example categories (the default
@@ -39,7 +56,115 @@ cookie_consent:
 | `csrf_protection` | `true` | Enable CSRF validation on both forms. Requires Symfony's CSRF feature and a session. |
 | `consent_configuration.consent_categories` | Empty map | Category identifiers mapped to lists of vendor identifiers. |
 
-### Cookie options
+## Position
+
+`position` controls the banner's presentation. It does not change the available
+choices, cookie lifetime or logging. The default is `dialog`; allowed values are
+exactly `dialog`, `bottom` and `top`.
+
+| Value | Markup and behavior | Included positioning |
+| --- | --- | --- |
+| `dialog` | Wraps the banner in a native `<dialog class="cookie-consent-dialog">`. JavaScript opens it with `showModal()`, placing it above the page with a backdrop. | Browser modal positioning, with a bundled maximum width of `80vw`. |
+| `bottom` | Renders a regular `.cookie-consent.cookie-consent--bottom` element, without a modal or backdrop. | Fixed to the bottom of the viewport, full width. |
+| `top` | Renders a regular `.cookie-consent.cookie-consent--top` element, without a modal or backdrop. | No dedicated top-positioning CSS is included yet; add it in your application. |
+
+### Modal dialog
+
+```yaml
+cookie_consent:
+    position: dialog
+```
+
+Use this for a modal presentation. Interaction with the rest of the page is blocked
+while the native dialog is open. Browser dismissal (for example Escape) does not
+save a consent choice. The visitor remains undecided until a form is submitted.
+
+### Bottom banner
+
+```yaml
+cookie_consent:
+    position: bottom
+```
+
+Load the bundle stylesheet using
+`{% include '@CookieConsent/cookie_consent_styling.html.twig' %}`. The banner stays
+at the bottom while the visitor scrolls. The rest of the page remains interactive.
+The supplied CSS is minimal: adapt its background, padding and stacking order to
+your site's layout. A fixed banner can overlap page content.
+
+### Top banner
+
+```yaml
+cookie_consent:
+    position: top
+```
+
+Add application CSS **after** the bundle stylesheet to make it a fixed top banner:
+
+```css
+.cookie-consent--top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 1rem;
+    background: #fff;
+    color: #111;
+    box-shadow: 0 2px 12px rgb(0 0 0 / 15%);
+}
+```
+
+Adjust the example's stacking order and spacing around any fixed site header.
+Without your CSS, `top` only changes the class name; it does not move the banner
+to the top. In all modes, optional scripts still need consent checks.
+
+## Privacy-policy link
+
+`read_more_route` is a Symfony route name, not a URL or path. The default `null`
+hides the link. To show a link to an existing application route:
+
+```yaml
+cookie_consent:
+    read_more_route: app_privacy_policy
+```
+
+The route must exist and must not require parameters without defaults. The label
+comes from `cookie_consent.read_more` in the `CookieConsentBundle` translation
+domain. For an external URL or custom route parameters, override the template's
+`read_more` block instead. See [template customization](integration.md#template-overrides).
+
+## Form submission route
+
+Keep the default for the bundle's built-in handling:
+
+```yaml
+cookie_consent:
+    form_action: cookie_consent.update
+```
+
+The form action is generated from this route name. JavaScript uses that generated
+URL, so an application route prefix does not require changing the JavaScript.
+Setting another name does not create an endpoint: your route and controller must
+already exist and handle the form payload, CSRF validation, session preferences
+and response cookies. A missing route name causes rendering to fail.
+
+## CSRF protection
+
+Protection is enabled by default for both forms:
+
+```yaml
+cookie_consent:
+    csrf_protection: true
+```
+
+Also enable `framework.csrf_protection` and sessions in the application. Render
+and submit the generated token with the form; custom templates must preserve it.
+Invalid tokens return HTTP 400. Keep protection enabled for normal browser use.
+Setting the bundle option to `false` removes this validation but does not remove
+the session requirement for storing preferences.
+
+## Cookie options
 
 All options below are under `consent_configuration.consent_cookie`.
 
@@ -76,6 +201,15 @@ a newly introduced vendor. To require a new choice from everyone, change the
 consent cookie name as part of the rollout.
 
 ## Database logging
+
+**Database setup is required before using `persist_consent: true`.** The default
+is `true`; omitting this option does not disable logging. With an explicit
+`persist_consent: false`, no consent-log schema is needed.
+
+Installing or updating the Composer package does not run database migrations.
+Complete the mapping and migration steps below before enabling logging or serving
+requests with it enabled. For an existing installation, inspect the schema changes
+required by the new version and apply a migration if necessary.
 
 DoctrineBundle remains a runtime dependency when logging is disabled. The bundle
 accepts DoctrineBundle `^2.19 || ^3.3`. DoctrineBundle 3.3 requires PHP 8.4 and
@@ -137,3 +271,25 @@ unavailable address is recorded as `unknown`. The bundle does not set a separate
 
 There is no built-in retention policy, cleanup command or log viewer. Manage
 retention and access in the consuming application.
+
+
+## Inspecting the effective configuration
+
+Run these commands in the consuming application:
+
+```bash
+# Available options and defaults
+php bin/console config:dump-reference cookie_consent
+
+# Merged application configuration (including environment overrides)
+php bin/console debug:config cookie_consent --env=dev
+```
+
+Use the environment you are actually testing. For example,
+`config/packages/dev/cookie_consent.yaml` only overrides development settings.
+After deployment or if old settings persist, clear the matching environment's
+cache with `php bin/console cache:clear --env=dev` (or `--env=prod`).
+
+For a visual position check, open a session without saved consent or render
+`cookie_consent.view` on your settings page: `view_if_no_consent` deliberately
+renders nothing for a visitor whose choice is already saved.

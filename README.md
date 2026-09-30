@@ -121,7 +121,36 @@ cookie_consent:
             secure: false
 ```
 
-### 5. Install the included assets
+### 5. Prepare the database if logging is enabled
+
+**With `persist_consent: true`, the database schema must be ready before visitors
+submit the banner.** This is the bundle's default when the option is omitted.
+The quick-start example above explicitly uses `false`, so it needs no consent
+log tables and you can skip this step while logging remains disabled.
+
+To enable logging:
+
+1. Configure the [Doctrine entity mapping and MigrationsBundle](docs/configuration.md#database-logging).
+2. Generate a migration in your application:
+
+   ```bash
+   php bin/console doctrine:migrations:diff
+   ```
+
+3. Review the generated migration, then apply it to the target database:
+
+   ```bash
+   php bin/console doctrine:migrations:migrate
+   ```
+
+4. Set `persist_consent: true` only after the migration succeeds.
+
+Composer installation and `assets:install` do **not** create the tables. A missing
+`cookieconsent_log` table causes submissions to fail with HTTP 500 when logging is
+enabled. If the schema already exists, check whether an upgrade needs a migration;
+do not create an empty migration just to repeat installation steps.
+
+### 6. Install the included assets
 
 ```bash
 php bin/console assets:install public
@@ -130,7 +159,7 @@ php bin/console assets:install public
 Repeat this command after upgrading the bundle. No npm build is needed in the
 consuming application.
 
-### 6. Render the banner and guard optional scripts
+### 7. Render the banner and guard optional scripts
 
 Add the stylesheet in the head of your base layout and render the banner once in
 the body. Its template loads the JavaScript module automatically.
@@ -159,12 +188,38 @@ document.addEventListener('cookie-consent-form-submit-successful', () => {
 });
 ```
 
-### 7. Verify the integration
+### 8. Verify the integration
 
 Open a fresh browser session. Confirm that the banner appears, each submit action
 returns HTTP 201, and the banner stays hidden after reloading. Check that optional
 scripts are absent before consent and after rejection. Use your browser's Network
 and Cookies panels to verify the behavior of your own integrations.
+
+## Common settings
+
+Configure these in `config/packages/cookie_consent.yaml` under `cookie_consent`.
+
+| Setting | Default | What it controls |
+| --- | --- | --- |
+| [`position`](docs/configuration.md#position) | `dialog` | Modal dialog, fixed `bottom` banner, or `top` banner with application CSS. |
+| [`read_more_route`](docs/configuration.md#privacy-policy-link) | `null` | Optional route name for the privacy-policy link. |
+| [`persist_consent`](docs/configuration.md#database-logging) | `true` | Database logging; requires mapping and a migrated schema. |
+| [`form_action`](docs/configuration.md#form-submission-route) | `cookie_consent.update` | Route name used to submit the forms. |
+| [`csrf_protection`](docs/configuration.md#csrf-protection) | `true` | CSRF validation for consent submissions. |
+| [`consent_configuration.consent_cookie`](docs/configuration.md#cookie-options) | See reference | Cookie name, lifetime, domain and security flags. |
+| [`consent_configuration.consent_categories`](docs/configuration.md#categories-and-vendors) | Empty map | Optional vendors grouped by application-defined category. |
+
+For example, to display a bottom banner and link to your privacy-policy route:
+
+```yaml
+cookie_consent:
+    position: bottom
+    read_more_route: app_privacy_policy # Replace with your existing route name.
+```
+
+Merge this into your existing configuration so your category and logging settings
+remain in place. See the [position guide](docs/configuration.md#position) for all
+three modes and the CSS needed for `top`.
 
 ## Documentation
 
