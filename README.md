@@ -30,9 +30,9 @@ available through a plain `composer require`.
 | Component | Supported versions / requirements |
 | --- | --- |
 | Symfony | 7.4 or 8.x |
-| PHP | 8.2+ for Symfony 7.4; 8.4+ for Symfony 8.x |
+| PHP | 8.3+ for Symfony 7.4; 8.4+ for Symfony 8.x |
 | Application bundles | FrameworkBundle, TwigBundle and DoctrineBundle |
-| DoctrineBundle | 2.19.x on PHP 8.2+ or 3.3.x on PHP 8.4+; Composer allows `^2.19 \|\| ^3.3` |
+| DoctrineBundle | 2.19.x on PHP 8.3+ or 3.3.x on PHP 8.4+; Composer allows `^2.19 \|\| ^3.3` |
 | DoctrineMigrationsBundle | `^3.3` or `^4.0`; 4.x requires PHP 8.4+ |
 | Session | Enabled and available on the consent routes |
 | Browser | JavaScript modules, `fetch`, `FormData(form, submitter)`; native `dialog` for dialog mode |
@@ -121,7 +121,36 @@ cookie_consent:
             secure: false
 ```
 
-### 5. Install the included assets
+### 5. Prepare the database if logging is enabled
+
+**With `persist_consent: true`, the database schema must be ready before visitors
+submit the banner.** This is the bundle's default when the option is omitted.
+The quick-start example above explicitly uses `false`, so it needs no consent
+log tables and you can skip this step while logging remains disabled.
+
+To enable logging:
+
+1. Configure the [Doctrine entity mapping and MigrationsBundle](docs/configuration.md#database-logging).
+2. Generate a migration in your application:
+
+   ```bash
+   php bin/console doctrine:migrations:diff
+   ```
+
+3. Review the generated migration, then apply it to the target database:
+
+   ```bash
+   php bin/console doctrine:migrations:migrate
+   ```
+
+4. Set `persist_consent: true` only after the migration succeeds.
+
+Composer installation and `assets:install` do **not** create the tables. A missing
+`cookieconsent_log` table causes submissions to fail with HTTP 500 when logging is
+enabled. If the schema already exists, check whether an upgrade needs a migration;
+do not create an empty migration just to repeat installation steps.
+
+### 6. Install the included assets
 
 ```bash
 php bin/console assets:install public
@@ -130,7 +159,7 @@ php bin/console assets:install public
 Repeat this command after upgrading the bundle. No npm build is needed in the
 consuming application.
 
-### 6. Render the banner and guard optional scripts
+### 7. Render the banner and guard optional scripts
 
 Add the stylesheet in the head of your base layout and render the banner once in
 the body. Its template loads the JavaScript module automatically.
@@ -159,12 +188,54 @@ document.addEventListener('cookie-consent-form-submit-successful', () => {
 });
 ```
 
-### 7. Verify the integration
+### 8. Verify the integration
 
 Open a fresh browser session. Confirm that the banner appears, each submit action
 returns HTTP 201, and the banner stays hidden after reloading. Check that optional
 scripts are absent before consent and after rejection. Use your browser's Network
 and Cookies panels to verify the behavior of your own integrations.
+
+## Appearance examples
+
+These screenshots show light and dark styling from an earlier version. They are
+visual references, not screenshots of the current 2.0 forms. The current bundle
+includes minimal styling; matching these designs requires application CSS and
+potentially template overrides. Use `theme: light`, `dark` or `auto` for the current palettes; these do not
+reproduce the older form layout.
+
+| Light appearance | Dark appearance |
+| --- | --- |
+| ![Earlier cookie consent form with a white background and dark text](docs/light_theme.png) | ![Earlier cookie consent form with a black background and light text](docs/dark_theme.png) |
+
+See [styling and assets](docs/integration.md#styles-and-assets) for customization.
+
+## Common settings
+
+Configure these in `config/packages/cookie_consent.yaml` under `cookie_consent`.
+
+| Setting | Default | What it controls |
+| --- | --- | --- |
+| [`theme`](docs/configuration.md#theme) | `light` | Light, dark or automatic system-based colors. |
+| [`position`](docs/configuration.md#position) | `dialog` | Modal dialog, fixed `bottom` banner, or `top` banner with application CSS. |
+| [`read_more_route`](docs/configuration.md#privacy-policy-link) | `null` | Optional route name for the privacy-policy link. |
+| [`persist_consent`](docs/configuration.md#database-logging) | `true` | Database logging; requires mapping and a migrated schema. |
+| [`form_action`](docs/configuration.md#form-submission-route) | `cookie_consent.update` | Route name used to submit the forms. |
+| [`csrf_protection`](docs/configuration.md#csrf-protection) | `true` | CSRF validation for consent submissions. |
+| [`consent_configuration.consent_cookie`](docs/configuration.md#cookie-options) | See reference | Cookie name, lifetime, domain and security flags. |
+| [`consent_configuration.consent_categories`](docs/configuration.md#categories-and-vendors) | Empty map | Optional vendors grouped by application-defined category. |
+
+For example, to display a bottom banner and link to your privacy-policy route:
+
+```yaml
+cookie_consent:
+    position: bottom
+    theme: auto
+    read_more_route: app_privacy_policy # Replace with your existing route name.
+```
+
+Merge this into your existing configuration so your category and logging settings
+remain in place. See the [position guide](docs/configuration.md#position) for all
+three modes and the CSS needed for `top`.
 
 ## Documentation
 

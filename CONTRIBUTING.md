@@ -2,7 +2,7 @@
 
 ## Local setup
 
-Use PHP 8.2+ (8.4+ for Symfony 8), Composer, SQLite support (`pdo_sqlite`), and
+Use PHP 8.3+ (8.4+ for Symfony 8), Composer, SQLite support (`pdo_sqlite`), and
 Node.js 22.14+. From the repository root:
 
 ```bash
@@ -31,10 +31,10 @@ run `npm run build:prod` and include the resulting public assets in your patch.
 
 ## Compatibility testing
 
-CI resolves dependencies for Symfony 7.4 with PHP 8.2/8.4 and Symfony 8.0/8.1 with
-PHP 8.4. The PHP 8.2 job uses DoctrineBundle 2.19; the PHP 8.4 jobs
+CI resolves dependencies for Symfony 7.4 with PHP 8.3/8.4 and Symfony 8.0/8.1 with
+PHP 8.4. The PHP 8.3 job uses DoctrineBundle 2.19; the PHP 8.4 jobs
 explicitly test DoctrineBundle 3.3 with DoctrineMigrationsBundle 4. An additional
-Symfony 7.4 job retains coverage for DoctrineMigrationsBundle 3. The committed lock file targets Symfony 7.4 and PHP 8.2. Tests executed
+Symfony 7.4 job retains coverage for DoctrineMigrationsBundle 3. The committed lock file targets Symfony 7.4 and PHP 8.3. Tests executed
 locally use your actual PHP binary, not the Composer platform setting.
 
 In a **disposable checkout**, select a test combination:

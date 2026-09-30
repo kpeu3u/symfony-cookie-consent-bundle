@@ -25,7 +25,7 @@ supported by a published version.
 
 ## Migration checklist
 
-1. Check runtime compatibility: Symfony 7.4 requires PHP 8.2+; Symfony 8.x requires
+1. Check runtime compatibility: Symfony 7.4 requires PHP 8.3+; Symfony 8.x requires
    PHP 8.4+. The package allows both Symfony major versions.
 2. Compare application configuration with the [reference](configuration.md).
    Categories belong under `consent_configuration.consent_categories`. Old
@@ -54,10 +54,32 @@ Both success event names remain available, but subscribe to only one:
 `cookie-consent-form-submit-successful` is the documented name and
 `cookie-consent.form-submit-successful` is the compatibility alias.
 
-The repository lock file remains on Symfony 7.4 for PHP 8.2 compatibility. Composer
+The repository lock file remains on Symfony 7.4 for PHP 8.3 compatibility. Composer
 uses your application's dependency constraints when installing the bundle; the
 library's lock file does not pin the Symfony version in consuming applications.
 
+
+## Database migration before enabling logging
+
+Version 2.0 performs real writes when `persist_consent` is `true` (the default).
+An older installation may not have the required table even if this option was
+already enabled. Complete the [Doctrine mapping setup](configuration.md#database-logging),
+then generate a migration in the application:
+
+```bash
+php bin/console doctrine:migrations:diff
+```
+
+Review the generated SQL against the existing database, then apply it before
+serving the upgraded application with logging enabled:
+
+```bash
+php bin/console doctrine:migrations:migrate
+```
+
+If the existing schema is already compatible, no new migration is needed. If you
+are not ready to migrate, explicitly set `cookie_consent.persist_consent: false`.
+Neither Composer updates nor asset installation create the consent tables.
 
 ## Old examples and current equivalents
 

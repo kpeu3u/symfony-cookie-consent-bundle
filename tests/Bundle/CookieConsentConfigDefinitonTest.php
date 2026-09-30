@@ -57,6 +57,22 @@ class CookieConsentConfigDefinitonTest extends TestCase
         $this->assertEquals('dialog', $processedConfig['position']);
     }
 
+    public function testThemeConfiguration(): void
+    {
+        $defaults = $this->processor->processConfiguration($this->configuration, []);
+        self::assertSame('light', $defaults['theme']);
+        foreach (['light', 'dark', 'auto'] as $theme) {
+            $config = $this->processor->processConfiguration($this->configuration, [['theme' => $theme]]);
+            self::assertSame($theme, $config['theme']);
+        }
+    }
+
+    public function testUnknownThemeIsRejected(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->processor->processConfiguration($this->configuration, [['theme' => 'unknown']]);
+    }
+
     public function testInvalidConfiguration(): void
     {
         $this->expectException(InvalidConfigurationException::class);

@@ -6,9 +6,9 @@ namespace CookieConsentBundle\Enum;
 
 class ConsentBannerPosition
 {
-    const POSITION_TOP     = 'top';
-    const POSITION_BOTTOM  = 'bottom';
-    const POSITION_DIALOG  = 'dialog';
+    public const POSITION_TOP     = 'top';
+    public const POSITION_BOTTOM  = 'bottom';
+    public const POSITION_DIALOG  = 'dialog';
 
     /**
      * @var array

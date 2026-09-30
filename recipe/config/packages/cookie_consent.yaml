@@ -27,5 +27,6 @@ cookie_consent:
     # See docs/configuration.md in the bundle repository.
     persist_consent: false
     position: 'dialog'
+    theme: light # light, dark or auto (system preference)
     form_action: 'cookie_consent.update'
     csrf_protection: true

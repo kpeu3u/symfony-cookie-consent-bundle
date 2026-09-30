@@ -1,10 +1,10 @@
 {# @formatter:off #}
 {% if position == 'dialog' %} {# Wrap in dialog tag if position is dialog #}
-<dialog class="cookie-consent-dialog">
+<dialog class="cookie-consent-dialog" data-cookie-consent-theme="{{ theme|default('light') }}">
 {% endif %}
 {# @formatter:on #}
 
-    <div class="cookie-consent cookie-consent--{{ position }}">
+    <div class="cookie-consent cookie-consent--{{ position }}" data-cookie-consent-theme="{{ theme|default('light') }}">
         {% block pre_form %}
         {% endblock pre_form %}
 
