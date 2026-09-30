@@ -243,6 +243,11 @@ Merge this into your existing configuration so your category and logging setting
 remain in place. See the [position guide](docs/configuration.md#position) for all
 three modes and the CSS needed for `top`.
 
+For multilingual necessary-cookie descriptions, use translation keys for `name`
+and `description`, and define them in your application's
+`translations/CookieConsentBundle.<locale>.yaml` files. See the
+[English/Bulgarian example](docs/configuration.md#translating-necessary-cookies).
+
 ## Documentation
 
 - [Configuration reference and database logging](docs/configuration.md)

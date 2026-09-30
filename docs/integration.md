@@ -101,6 +101,9 @@ category-title translation keys do not automatically label every category/vendor
 in these forms. For a polished vendor list, supply a form theme using the model's
 `name` values, or override the full template.
 
+For custom necessary-cookie names and descriptions, see the
+[multilingual configuration example](configuration.md#translating-necessary-cookies).
+
 ## Template overrides
 
 Create `templates/bundles/CookieConsentBundle/cookie_consent.html.twig`:
