@@ -77,7 +77,14 @@ consent cookie name as part of the rollout.
 
 ## Database logging
 
-DoctrineBundle remains a runtime dependency when logging is disabled. With
+DoctrineBundle remains a runtime dependency when logging is disabled. The bundle
+accepts DoctrineBundle `^2.19 || ^3.3`. DoctrineBundle 3.3 requires PHP 8.4 and
+Doctrine DBAL 4; DoctrineBundle and DBAL have separate version numbers. This
+package does not require DoctrineBundle 4.
+
+DoctrineMigrationsBundle is a separate dependency and supports `^3.3 || ^4.0`.
+Its 4.x line requires PHP 8.4, DoctrineBundle 3.x and DBAL 4. You do not need to
+downgrade an application already using DoctrineMigrationsBundle 4. With
 `persist_consent: false`, submissions skip database writes. With it enabled, a
 missing table or database failure causes the submission to fail with HTTP 500.
 
