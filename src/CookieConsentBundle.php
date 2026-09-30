@@ -38,6 +38,7 @@ class CookieConsentBundle extends AbstractBundle
 
         $services->defaults()
             ->bind('$position', $config['position'])
+            ->bind('$theme', $config['theme'])
             ->bind('string $formAction', $config['form_action'])
             ->bind('string $readMoreRoute', $config['read_more_route']);
 

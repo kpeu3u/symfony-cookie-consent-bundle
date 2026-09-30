@@ -120,7 +120,7 @@ blocks in the current template. Replacing the form markup requires a full templa
 override or Symfony form theming.
 
 Template variables are `simple_form`, `detailed_form`, `position` and
-`read_more_route`. Keep the form widgets and CSRF fields when customizing markup.
+`read_more_route` and `theme`. Keep the form widgets and CSRF fields when customizing markup.
 The JavaScript relies on `.cookie-consent`, `.cookie-consent__form`,
 `.js-show-settings`, `.cookie-consent-simple` and `.cookie-consent-detail`.
 Category toggles use `.consent-form-category` and `.consent-form-vendors`.
@@ -139,6 +139,19 @@ apply it directly to `simple_form` and `detailed_form` in your full template
 override with Twig's `form_theme` tag.
 
 ## Styles and assets
+
+### Light and dark appearance references
+
+The repository includes the following screenshots from an earlier implementation.
+They illustrate possible styling, but their controls differ from the current 2.0
+forms. The current bundle supports [light, dark and automatic palettes](configuration.md#theme)
+through the `theme` setting. Reproducing the exact older appearances still requires
+application CSS and, where markup differs, template or form-theme overrides.
+
+| Light appearance | Dark appearance |
+| --- | --- |
+| ![Historical light cookie consent form](light_theme.png) | ![Historical dark cookie consent form](dark_theme.png) |
+
 
 The included styling is a starting point. Load application overrides after
 `cookie_consent_styling.html.twig`; you can customize the `--cc-*` properties, for

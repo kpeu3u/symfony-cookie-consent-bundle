@@ -1003,6 +1003,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         consent_categories?: list<list<scalar|Param|null>>,
  *     },
  *     position?: "top"|"bottom"|"dialog"|Param, // Default: "dialog"
+ *     theme?: "light"|"dark"|"auto"|Param, // Default: "light"
  *     persist_consent?: bool|Param, // Default: true
  *     form_action?: scalar|Param|null, // Default: "cookie_consent.update"
  *     read_more_route?: scalar|Param|null, // Default: null

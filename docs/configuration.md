@@ -11,6 +11,7 @@ keys in one YAML file. Omitted options use their defaults.
 
 - [Full example and option summary](#full-example)
 - [Position: dialog, bottom or top](#position)
+- [Theme: light, dark or auto](#theme)
 - [Privacy-policy link](#privacy-policy-link)
 - [Form submission route](#form-submission-route)
 - [CSRF protection](#csrf-protection)
@@ -41,6 +42,7 @@ cookie_consent:
             marketing:
                 - facebook_pixel
     position: dialog
+    theme: light
     persist_consent: true
     form_action: cookie_consent.update
     read_more_route: null
@@ -50,6 +52,7 @@ cookie_consent:
 | Option | Default | Meaning |
 | --- | --- | --- |
 | `position` | `dialog` | Accepts `dialog`, `bottom` and `top`. `top` needs application CSS for positioning. |
+| `theme` | `light` | `light`, `dark` or `auto` (follows the browser’s color-scheme preference). |
 | `persist_consent` | `true` | Write submitted vendor choices to the database. Requires the schema described below. |
 | `form_action` | `cookie_consent.update` | Symfony route **name**, not a URL. The route must accept the bundle's POST form payload. Keep the default unless replacing the endpoint. |
 | `read_more_route` | `null` | Optional privacy-policy route name. The template generates it without route parameters. |
@@ -118,6 +121,51 @@ Add application CSS **after** the bundle stylesheet to make it a fixed top banne
 Adjust the example's stacking order and spacing around any fixed site header.
 Without your CSS, `top` only changes the class name; it does not move the banner
 to the top. In all modes, optional scripts still need consent checks.
+
+## Theme
+
+Set `theme` independently of `position`. All three themes work with `dialog`,
+`bottom` and `top`; top positioning still needs the CSS described above.
+
+```yaml
+cookie_consent:
+    position: dialog
+    theme: auto
+```
+
+| Value | Appearance |
+| --- | --- |
+| `light` | Light background and dark text. This is the default. |
+| `dark` | Dark background and light text, regardless of system preferences. |
+| `auto` | Uses the CSS `prefers-color-scheme: dark` media query; otherwise uses light colors. Updates when the browser preference changes. |
+
+Load the bundled stylesheet and re-run `php bin/console assets:install public`
+after upgrading. No extra JavaScript or theme cookie is required. The setting
+changes backgrounds, text, links, buttons, checkbox accents and focus outlines
+inside the consent UI only; it does not recolor the host page or change consent.
+There is no visitor-facing theme toggle.
+
+To customize colors, load your application CSS after the bundle stylesheet:
+
+```css
+.cookie-consent[data-cookie-consent-theme="dark"],
+.cookie-consent-dialog[data-cookie-consent-theme="dark"] {
+    --cc-surface: #18212f;
+    --cc-text: #f5f7fa;
+    --cc-link: #b4d0ff;
+    --cc-control-background: #283548;
+    --cc-control-text: #f5f7fa;
+    --cc-control-border: #a5b4c8;
+    --cc-focus: #b4d0ff;
+}
+```
+
+Override both the dialog and its inner banner to keep their colors aligned.
+For `auto`, target `data-cookie-consent-theme="auto"` and put dark overrides inside
+`@media (prefers-color-scheme: dark)`. If you replace the full Twig template,
+preserve the `data-cookie-consent-theme` attributes on those elements and pass the
+`theme` template variable through. The older appearance screenshots are design
+references; the new palettes do not reproduce their earlier form layout.
 
 ## Privacy-policy link
 

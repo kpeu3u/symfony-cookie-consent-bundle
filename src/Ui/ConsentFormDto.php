@@ -10,7 +10,8 @@ class ConsentFormDto
         public readonly FormView    $simpleForm,
         public readonly FormView    $detailedForm,
         public readonly string      $position,
-        public readonly string|null $readMoreRoute
+        public readonly string|null $readMoreRoute,
+        public readonly string $theme = 'light'
     )
     {
     }
@@ -21,6 +22,7 @@ class ConsentFormDto
             'simple_form' => $this->simpleForm,
             'detailed_form' => $this->detailedForm,
             'position' => $this->position,
+            'theme' => $this->theme,
             'read_more_route' => $this->readMoreRoute,
         ];
     }

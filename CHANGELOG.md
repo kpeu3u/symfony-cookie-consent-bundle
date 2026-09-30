@@ -8,6 +8,9 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
 
 ### Added
 
+- Configurable `light`, `dark` and system-driven `auto` consent themes, with scoped
+  CSS palettes for all banner positions. The default is `light`.
+
 - Support for DoctrineMigrationsBundle `^4.0` alongside `^3.3`, with explicit CI coverage.
 
 - Explicit DoctrineBundle `^2.19 || ^3.3` dependency and CI coverage for 3.3

@@ -195,12 +195,27 @@ returns HTTP 201, and the banner stays hidden after reloading. Check that option
 scripts are absent before consent and after rejection. Use your browser's Network
 and Cookies panels to verify the behavior of your own integrations.
 
+## Appearance examples
+
+These screenshots show light and dark styling from an earlier version. They are
+visual references, not screenshots of the current 2.0 forms. The current bundle
+includes minimal styling; matching these designs requires application CSS and
+potentially template overrides. Use `theme: light`, `dark` or `auto` for the current palettes; these do not
+reproduce the older form layout.
+
+| Light appearance | Dark appearance |
+| --- | --- |
+| ![Earlier cookie consent form with a white background and dark text](docs/light_theme.png) | ![Earlier cookie consent form with a black background and light text](docs/dark_theme.png) |
+
+See [styling and assets](docs/integration.md#styles-and-assets) for customization.
+
 ## Common settings
 
 Configure these in `config/packages/cookie_consent.yaml` under `cookie_consent`.
 
 | Setting | Default | What it controls |
 | --- | --- | --- |
+| [`theme`](docs/configuration.md#theme) | `light` | Light, dark or automatic system-based colors. |
 | [`position`](docs/configuration.md#position) | `dialog` | Modal dialog, fixed `bottom` banner, or `top` banner with application CSS. |
 | [`read_more_route`](docs/configuration.md#privacy-policy-link) | `null` | Optional route name for the privacy-policy link. |
 | [`persist_consent`](docs/configuration.md#database-logging) | `true` | Database logging; requires mapping and a migrated schema. |
@@ -214,6 +229,7 @@ For example, to display a bottom banner and link to your privacy-policy route:
 ```yaml
 cookie_consent:
     position: bottom
+    theme: auto
     read_more_route: app_privacy_policy # Replace with your existing route name.
 ```
 

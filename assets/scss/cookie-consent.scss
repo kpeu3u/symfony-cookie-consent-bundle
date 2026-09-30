@@ -77,3 +77,65 @@ $cc-button-text-color: #fff !default;
 $cc-secondary-button-background: transparent !default;
 $cc-secondary-button-text-color: #000 !default;
 $cc-secondary-button-border-color: #000 !default;
+// Theme variables are scoped to the consent UI, never the host page.
+@mixin consent-light-theme {
+  color-scheme: light;
+  --cc-surface: #fff;
+  --cc-text: #202124;
+  --cc-link: #174ea6;
+  --cc-control-background: #f1f3f4;
+  --cc-control-text: #202124;
+  --cc-control-border: #747775;
+  --cc-focus: #174ea6;
+}
+
+@mixin consent-dark-theme {
+  color-scheme: dark;
+  --cc-surface: #202124;
+  --cc-text: #f1f3f4;
+  --cc-link: #a8c7fa;
+  --cc-control-background: #303134;
+  --cc-control-text: #f1f3f4;
+  --cc-control-border: #9aa0a6;
+  --cc-focus: #a8c7fa;
+}
+
+[data-cookie-consent-theme] {
+  @include consent-light-theme;
+  background-color: var(--cc-surface);
+  color: var(--cc-text);
+}
+
+[data-cookie-consent-theme="dark"] {
+  @include consent-dark-theme;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-cookie-consent-theme="auto"] {
+    @include consent-dark-theme;
+  }
+}
+
+.cookie-consent[data-cookie-consent-theme] {
+  box-sizing: border-box;
+  padding: 1rem;
+
+  a { color: var(--cc-link); }
+
+  button {
+    background-color: var(--cc-control-background);
+    color: var(--cc-control-text);
+    border: 1px solid var(--cc-control-border);
+    border-radius: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    margin: 0.25rem;
+    cursor: pointer;
+  }
+
+  input { accent-color: var(--cc-link); }
+
+  :is(a, button, input):focus-visible {
+    outline: 2px solid var(--cc-focus);
+    outline-offset: 3px;
+  }
+}
