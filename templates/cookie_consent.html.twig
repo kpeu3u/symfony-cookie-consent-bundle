@@ -1,3 +1,7 @@
+{% block form_themes %}
+{% form_theme simple_form with ['@CookieConsent/form/cookie_consent_form_theme.html.twig'] only %}
+{% form_theme detailed_form with ['@CookieConsent/form/cookie_consent_form_theme.html.twig'] only %}
+{% endblock form_themes %}
 {# @formatter:off #}
 {% if position == 'dialog' %} {# Wrap in dialog tag if position is dialog #}
 <dialog class="cookie-consent-dialog" data-cookie-consent-theme="{{ theme|default('light') }}">
@@ -8,7 +12,6 @@
         {% block pre_form %}
         {% endblock pre_form %}
 
-        <section class="cookie-consent-simple">
             {% block header %}
                 {% block title %}
                     <h3>{{ 'cookie_consent.title'|trans({}, 'CookieConsentBundle') }}</h3>
@@ -25,20 +28,24 @@
                 {% endblock read_more %}
             {% endblock header %}
 
+        <section class="cookie-consent-simple">
             {{ form_start(simple_form, {'attr': {'class': 'cookie-consent__form js-consent-simple-form'}}) }}
 
+            <div class="cookie-consent__actions">
             {% for child in simple_form %}
                 {{ form_widget(child) }}
             {% endfor %}
 
             {{ form_rest(simple_form) }}
 
-            <button type="button" class="btn btn-text js-show-settings">{{ 'cookie_consent.cookie_settings_button'|trans({}, 'CookieConsentBundle') }}</button>
+            <button type="button" class="cookie-consent__btn cookie-consent__settings js-show-settings" aria-expanded="false">{{ 'cookie_consent.cookie_settings_button'|trans({}, 'CookieConsentBundle') }}</button>
 
+            </div>
             {{ form_end(simple_form) }}
         </section>
 
-        <section class="cookie-consent-detail" style="display: none;">
+        <section class="cookie-consent-detail" style="display: none;" tabindex="-1">
+            <button type="button" class="cookie-consent__back js-hide-settings">{{ 'cookie_consent.hide_details'|trans({}, 'CookieConsentBundle') }}</button>
             {% block necessary_cookies %}
                 {% if necessary_cookies|default([]) is not empty %}
                     <section class="cookie-consent__necessary">
@@ -56,12 +63,11 @@
             {% endblock %}
             {{ form_start(detailed_form, {'attr': {'class': 'cookie-consent__form'}}) }}
 
-            <div>
-                {% for child in detailed_form %}
-                    {% if not child.rendered %}
-                        {{- form_widget(child) -}}
-                    {% endif %}
-                {% endfor %}
+            {{ form_widget(detailed_form.categories) }}
+            <div class="cookie-consent__actions">
+                {{ form_widget(detailed_form.save_consent_settings) }}
+                {{ form_widget(detailed_form.accept_all) }}
+                {% if detailed_form.reject_all is defined %}{{ form_widget(detailed_form.reject_all) }}{% endif %}
             </div>
 
             {{ form_rest(detailed_form) }}

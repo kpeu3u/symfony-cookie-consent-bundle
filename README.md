@@ -200,15 +200,14 @@ and Cookies panels to verify the behavior of your own integrations.
 
 ## Appearance examples
 
-These screenshots show light and dark styling from an earlier version. They are
-visual references, not screenshots of the current 2.0 forms. The current bundle
-includes minimal styling; matching these designs requires application CSS and
-potentially template overrides. Use `theme: light`, `dark` or `auto` for the current palettes; these do not
-reproduce the older form layout.
+These screenshots show the current detailed settings in a real application, with
+Bulgarian translations. Both palettes include category and vendor switches,
+responsive action buttons and keyboard focus styles. Select `theme: light`,
+`dark` or `auto`; no custom form theme is needed.
 
 | Light appearance | Dark appearance |
 | --- | --- |
-| ![Earlier cookie consent form with a white background and dark text](docs/light_theme.png) | ![Earlier cookie consent form with a black background and light text](docs/dark_theme.png) |
+| ![Cookie consent settings with a white background and dark text](docs/light_theme.jpg) | ![Cookie consent settings with a black background and light text](docs/dark_theme.jpg) |
 
 See [styling and assets](docs/integration.md#styles-and-assets) for customization.
 
@@ -221,7 +220,7 @@ Configure these in `config/packages/cookie_consent.yaml` under `cookie_consent`.
 | [`theme`](docs/configuration.md#theme) | `light` | Light, dark or automatic system-based colors. |
 | [`show_reject_all`](docs/configuration.md#reject-all-button) | `true` | Show or omit the reject-all button in both forms. |
 | [`necessary_cookies`](docs/configuration.md#necessary-cookies) | Empty map | Names and descriptions of necessary cookies, shown as always active. |
-| [`position`](docs/configuration.md#position) | `dialog` | Modal dialog, fixed `bottom` banner, or `top` banner with application CSS. |
+| [`position`](docs/configuration.md#position) | `dialog` | Modal dialog, fixed `bottom` banner, or fixed `top` banner. |
 | [`read_more_route`](docs/configuration.md#privacy-policy-link) | `null` | Optional route name for the privacy-policy link. |
 | [`persist_consent`](docs/configuration.md#database-logging) | `true` | Database logging; requires mapping and a migrated schema. |
 | [`form_action`](docs/configuration.md#form-submission-route) | `cookie_consent.update` | Route name used to submit the forms. |
@@ -241,7 +240,7 @@ cookie_consent:
 
 Merge this into your existing configuration so your category and logging settings
 remain in place. See the [position guide](docs/configuration.md#position) for all
-three modes and the CSS needed for `top`.
+three modes and their positioning.
 
 For multilingual necessary-cookie descriptions, use translation keys for `name`
 and `description`, and define them in your application's

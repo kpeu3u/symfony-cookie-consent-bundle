@@ -96,10 +96,26 @@ Replace the bundled placeholder introduction before publishing your site. The
 introduction is rendered as raw HTML; keep its translations trusted and do not
 insert unescaped user content into them.
 
-The current nested forms use Symfony's standard collection rendering. Existing
-category-title translation keys do not automatically label every category/vendor
-in these forms. For a polished vendor list, supply a form theme using the model's
-`name` values, or override the full template.
+Category and vendor labels use the `CookieConsentBundle` translation domain:
+
+```yaml
+# translations/CookieConsentBundle.en.yaml
+cookie_consent:
+    analytics:
+        title: 'Analytics'
+        description: 'Help us understand how visitors use the website.'
+    vendors:
+        my_analytics_service:
+            title: 'My analytics service'
+            description: 'Measures visits and page views.'
+```
+
+Replace `analytics` and `my_analytics_service` with your configured identifiers.
+Add equivalent files for each supported locale. Missing titles fall back to
+readable identifiers (for example, `my_service` becomes `My Service`); missing
+descriptions are omitted. Category switches select all vendors in that category;
+individual vendors can also be selected separately. “Back” preserves unsaved
+choices; only submitting a form saves them.
 
 For custom necessary-cookie names and descriptions, see the
 [multilingual configuration example](configuration.md#translating-necessary-cookies).
@@ -117,7 +133,7 @@ Create `templates/bundles/CookieConsentBundle/cookie_consent.html.twig`:
 ```
 
 The banner template exposes these blocks: `pre_form`, `header`, `title`, `intro`,
-`read_more`, `post_form`, `scripts` and `necessary_cookies`. The title, introduction and privacy link
+`read_more`, `post_form`, `scripts`, `form_themes` and `necessary_cookies`. The title, introduction and privacy link
 are nested in `header`. There are no `consent_form` or `required_cookies_category`
 blocks in the current template. Replacing the form markup requires a full template
 override or Symfony form theming.
@@ -128,39 +144,39 @@ The JavaScript relies on `.cookie-consent`, `.cookie-consent__form`,
 `.js-show-settings`, `.cookie-consent-simple` and `.cookie-consent-detail`.
 Category toggles use `.consent-form-category` and `.consent-form-vendors`.
 
-The optional form theme can be enabled in your application:
+The bundled form theme is applied locally to both forms, independently of your
+application's global form themes. To customize the controls, override the
+`form_themes` block in the template above:
 
-```yaml
-# config/packages/twig.yaml
-twig:
-    form_themes:
-        - '@CookieConsent/form/cookie_consent_form_theme.html.twig'
+```twig
+{% block form_themes %}
+    {% form_theme simple_form with ['consent/form_theme.html.twig'] only %}
+    {% form_theme detailed_form with ['consent/form_theme.html.twig'] only %}
+{% endblock %}
 ```
 
-This global theme affects matching blocks in other forms too. To scope a theme,
-apply it directly to `simple_form` and `detailed_form` in your full template
-override with Twig's `form_theme` tag.
+Start your custom theme with
+`{% use '@CookieConsent/form/cookie_consent_form_theme.html.twig' %}` and override
+the required blocks. Preserve checkbox labels, hidden fields, CSRF fields and
+the JavaScript hooks.
 
 ## Styles and assets
 
 ### Light and dark appearance references
 
-The repository includes the following screenshots from an earlier implementation.
-They illustrate possible styling, but their controls differ from the current 2.0
-forms. The current bundle supports [light, dark and automatic palettes](configuration.md#theme)
-through the `theme` setting. Reproducing the exact older appearances still requires
-application CSS and, where markup differs, template or form-theme overrides.
+These screenshots show the current detailed settings with Bulgarian translations.
+Select [light, dark or automatic colors](configuration.md#theme) with `theme`.
 
 | Light appearance | Dark appearance |
 | --- | --- |
-| ![Historical light cookie consent form](light_theme.png) | ![Historical dark cookie consent form](dark_theme.png) |
+| ![Light cookie consent settings](light_theme.jpg) | ![Dark cookie consent settings](dark_theme.jpg) |
 
 
 The included styling is a starting point. Load application overrides after
 `cookie_consent_styling.html.twig`; you can customize the `--cc-*` properties, for
 example `--cc-font-family`, `--cc-border-radius` and `--cc-dialog-backdrop-color`.
-`bottom` has fixed bottom positioning. `top` is an accepted configuration value
-but does not currently have dedicated positioning rules.
+Both `bottom` and `top` are fixed, centered cards with responsive widths and
+internal scrolling when the settings exceed the viewport height.
 
 The template loads `bundles/cookieconsent/js/cookie-consent.min.js` as a module.
 Do not include a second copy manually. Source files live under `assets/` and built

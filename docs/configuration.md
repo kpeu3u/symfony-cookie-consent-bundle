@@ -55,7 +55,7 @@ cookie_consent:
 
 | Option | Default | Meaning |
 | --- | --- | --- |
-| `position` | `dialog` | Accepts `dialog`, `bottom` and `top`. `top` needs application CSS for positioning. |
+| `position` | `dialog` | Accepts `dialog`, `bottom` and `top`. All positions include bundled styling. |
 | `theme` | `light` | `light`, `dark` or `auto` (follows the browser’s color-scheme preference). |
 | `show_reject_all` | `true` | Show the reject-all button in both the initial and detailed forms. |
 | `necessary_cookies` | Empty map | Informational list of necessary cookies, displayed as always active with no controls. |
@@ -73,9 +73,9 @@ exactly `dialog`, `bottom` and `top`.
 
 | Value | Markup and behavior | Included positioning |
 | --- | --- | --- |
-| `dialog` | Wraps the banner in a native `<dialog class="cookie-consent-dialog">`. JavaScript opens it with `showModal()`, placing it above the page with a backdrop. | Browser modal positioning, with a bundled maximum width of `80vw`. |
-| `bottom` | Renders a regular `.cookie-consent.cookie-consent--bottom` element, without a modal or backdrop. | Fixed to the bottom of the viewport, full width. |
-| `top` | Renders a regular `.cookie-consent.cookie-consent--top` element, without a modal or backdrop. | No dedicated top-positioning CSS is included yet; add it in your application. |
+| `dialog` | Wraps the banner in a native `<dialog class="cookie-consent-dialog">`. JavaScript opens it with `showModal()`, placing it above the page with a backdrop. | Browser modal positioning, with a bundled maximum width of `640px`, constrained to the viewport. |
+| `bottom` | Renders a regular `.cookie-consent.cookie-consent--bottom` element, without a modal or backdrop. | Fixed 16px from the bottom, centered, at most 720px wide. |
+| `top` | Renders a regular `.cookie-consent.cookie-consent--top` element, without a modal or backdrop. | Fixed 16px from the top, centered, at most 720px wide. |
 
 ### Modal dialog
 
@@ -98,8 +98,8 @@ cookie_consent:
 Load the bundle stylesheet using
 `{% include '@CookieConsent/cookie_consent_styling.html.twig' %}`. The banner stays
 at the bottom while the visitor scrolls. The rest of the page remains interactive.
-The supplied CSS is minimal: adapt its background, padding and stacking order to
-your site's layout. A fixed banner can overlap page content.
+The card adapts to narrow screens and scrolls internally when necessary. A fixed
+banner can overlap page content; adjust its stacking order for your site's layout.
 
 ### Top banner
 
@@ -108,30 +108,15 @@ cookie_consent:
     position: top
 ```
 
-Add application CSS **after** the bundle stylesheet to make it a fixed top banner:
-
-```css
-.cookie-consent--top {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    padding: 1rem;
-    background: #fff;
-    color: #111;
-    box-shadow: 0 2px 12px rgb(0 0 0 / 15%);
-}
-```
-
-Adjust the example's stacking order and spacing around any fixed site header.
-Without your CSS, `top` only changes the class name; it does not move the banner
-to the top. In all modes, optional scripts still need consent checks.
+Load the bundle stylesheet as for the bottom banner. No additional positioning
+CSS is required. Both fixed positions use `--cc-z-index: 10000000`; load application
+overrides after the bundle stylesheet if your fixed header needs different
+spacing or stacking. In all modes, optional scripts still need consent checks.
 
 ## Theme
 
 Set `theme` independently of `position`. All three themes work with `dialog`,
-`bottom` and `top`; top positioning still needs the CSS described above.
+`bottom` and `top`.
 
 ```yaml
 cookie_consent:
@@ -170,8 +155,8 @@ Override both the dialog and its inner banner to keep their colors aligned.
 For `auto`, target `data-cookie-consent-theme="auto"` and put dark overrides inside
 `@media (prefers-color-scheme: dark)`. If you replace the full Twig template,
 preserve the `data-cookie-consent-theme` attributes on those elements and pass the
-`theme` template variable through. The older appearance screenshots are design
-references; the new palettes do not reproduce their earlier form layout.
+`theme` template variable through. See the [current screenshots](integration.md#light-and-dark-appearance-references)
+for both palettes.
 
 ## Reject-all button
 

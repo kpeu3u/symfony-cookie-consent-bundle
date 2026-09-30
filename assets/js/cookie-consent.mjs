@@ -6,6 +6,16 @@ export function initializeCookieConsent(root = document) {
         banner.querySelector('.js-show-settings')?.addEventListener('click', () => {
             banner.querySelector('.cookie-consent-simple').style.display = 'none';
             banner.querySelector('.cookie-consent-detail').style.display = 'block';
+            banner.querySelector('.js-show-settings').setAttribute('aria-expanded', 'true');
+            banner.querySelector('.cookie-consent-detail').focus();
+        });
+
+        banner.querySelector('.js-hide-settings')?.addEventListener('click', () => {
+            banner.querySelector('.cookie-consent-detail').style.display = 'none';
+            banner.querySelector('.cookie-consent-simple').style.display = 'block';
+            const settings = banner.querySelector('.js-show-settings');
+            settings.setAttribute('aria-expanded', 'false');
+            settings.focus();
         });
 
         banner.querySelectorAll('.consent-form-category').forEach((category) => {
