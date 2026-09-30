@@ -8,6 +8,11 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
 
 ### Added
 
+- Support for DoctrineMigrationsBundle `^4.0` alongside `^3.3`, with explicit CI coverage.
+
+- Explicit DoctrineBundle `^2.19 || ^3.3` dependency and CI coverage for 3.3
+  with Symfony 7.4, 8.0 and 8.1 on PHP 8.4.
+
 - Support for Symfony 8.x on PHP 8.4+, alongside Symfony 7.4 on PHP 8.2+.
 - Database logging of submitted vendor choices, with a working Doctrine repository
   and IPv6 address anonymization.

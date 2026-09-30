@@ -32,14 +32,16 @@ run `npm run build:prod` and include the resulting public assets in your patch.
 ## Compatibility testing
 
 CI resolves dependencies for Symfony 7.4 with PHP 8.2/8.4 and Symfony 8.0/8.1 with
-PHP 8.4. The committed lock file targets Symfony 7.4 and PHP 8.2. Tests executed
+PHP 8.4. The PHP 8.2 job uses DoctrineBundle 2.19; the PHP 8.4 jobs
+explicitly test DoctrineBundle 3.3 with DoctrineMigrationsBundle 4. An additional
+Symfony 7.4 job retains coverage for DoctrineMigrationsBundle 3. The committed lock file targets Symfony 7.4 and PHP 8.2. Tests executed
 locally use your actual PHP binary, not the Composer platform setting.
 
 In a **disposable checkout**, select a test combination:
 
 ```bash
 # Run with PHP 8.4 for this example.
-php tests/compatibility/configure.php '8.1.*'
+php tests/compatibility/configure.php '8.1.*' '3.3.*' '^4.0'
 composer update --no-interaction
 composer test
 ```

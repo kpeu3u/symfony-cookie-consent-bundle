@@ -32,6 +32,8 @@ available through a plain `composer require`.
 | Symfony | 7.4 or 8.x |
 | PHP | 8.2+ for Symfony 7.4; 8.4+ for Symfony 8.x |
 | Application bundles | FrameworkBundle, TwigBundle and DoctrineBundle |
+| DoctrineBundle | 2.19.x on PHP 8.2+ or 3.3.x on PHP 8.4+; Composer allows `^2.19 \|\| ^3.3` |
+| DoctrineMigrationsBundle | `^3.3` or `^4.0`; 4.x requires PHP 8.4+ |
 | Session | Enabled and available on the consent routes |
 | Browser | JavaScript modules, `fetch`, `FormData(form, submitter)`; native `dialog` for dialog mode |
 | Node.js | 22.14+ for contributors rebuilding assets; not required to use the bundle |
