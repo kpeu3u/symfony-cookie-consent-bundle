@@ -239,20 +239,6 @@ cookie_consent:
     show_reject_all: true
 ```
 
-The necessary cookies are always active and do not require a category. Vendors are
-optional and are rejected by the “Reject all” button.
-
-Example configuration for necessary cookies:
-
-```yaml
-cookie_consent:
-    necessary_cookies:
-       necessary_cookie_1:
-          description: "Description for necessary cookie 1"
-       necessary_cookie_2:
-          description: "Description for necessary cookie 2"
-```
-
 Merge this into your existing configuration so your category and logging settings
 remain in place. See the [position guide](docs/configuration.md#position) for all
 three modes and the CSS needed for `top`.
