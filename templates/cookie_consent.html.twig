@@ -39,6 +39,21 @@
         </section>
 
         <section class="cookie-consent-detail" style="display: none;">
+            {% block necessary_cookies %}
+                {% if necessary_cookies|default([]) is not empty %}
+                    <section class="cookie-consent__necessary">
+                        <h3>{{ 'cookie_consent.required_cookies.title'|trans({}, 'CookieConsentBundle') }}</h3>
+                        <p>{{ 'cookie_consent.required_cookies.description'|trans({}, 'CookieConsentBundle') }}</p>
+                        <p class="cookie-consent__always-active">{{ 'cookie_consent.required_cookies.always_active'|trans({}, 'CookieConsentBundle') }}</p>
+                        <dl>
+                            {% for cookie in necessary_cookies %}
+                                <dt>{{ cookie.name|trans({}, 'CookieConsentBundle') }}</dt>
+                                <dd>{{ cookie.description|trans({}, 'CookieConsentBundle') }}</dd>
+                            {% endfor %}
+                        </dl>
+                    </section>
+                {% endif %}
+            {% endblock %}
             {{ form_start(detailed_form, {'attr': {'class': 'cookie-consent__form'}}) }}
 
             <div>

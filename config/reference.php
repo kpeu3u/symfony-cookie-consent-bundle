@@ -1002,6 +1002,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         },
  *         consent_categories?: list<list<scalar|Param|null>>,
  *     },
+ *     necessary_cookies?: array<string, array{ // Default: []
+ *         name?: scalar|Param|null,
+ *         description?: scalar|Param|null,
+ *     }>,
  *     position?: "top"|"bottom"|"dialog"|Param, // Default: "dialog"
  *     theme?: "light"|"dark"|"auto"|Param, // Default: "light"
  *     persist_consent?: bool|Param, // Default: true
@@ -1020,7 +1024,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     maker?: MakerConfig,
  *     doctrine_migrations?: DoctrineMigrationsConfig,
  *     cookie_consent?: CookieConsentConfig,
- *     "when@reject_hidden"?: array{
+ *     "when@test"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
  *         services?: ServicesConfig,
@@ -1108,7 +1112,7 @@ namespace Symfony\Component\Routing\Loader\Configurator;
  *     deprecated?: array{package:string, version:string, message?:string},
  * }
  * @psalm-type RoutesConfig = array{
- *     "when@reject_hidden"?: array<string, RouteConfig|ImportConfig|AliasConfig>,
+ *     "when@test"?: array<string, RouteConfig|ImportConfig|AliasConfig>,
  *     ...<string, RouteConfig|ImportConfig|AliasConfig>
  * }
  */

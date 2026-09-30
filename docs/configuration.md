@@ -17,6 +17,7 @@ keys in one YAML file. Omitted options use their defaults.
 - [Form submission route](#form-submission-route)
 - [CSRF protection](#csrf-protection)
 - [Cookie options](#cookie-options)
+- [Necessary cookies](#necessary-cookies)
 - [Categories and vendors](#categories-and-vendors)
 - [Database logging](#database-logging)
 - [Inspecting the effective configuration](#inspecting-the-effective-configuration)
@@ -42,6 +43,7 @@ cookie_consent:
                 - google_analytics
             marketing:
                 - facebook_pixel
+    necessary_cookies: {}
     position: dialog
     theme: light
     show_reject_all: true
@@ -56,6 +58,7 @@ cookie_consent:
 | `position` | `dialog` | Accepts `dialog`, `bottom` and `top`. `top` needs application CSS for positioning. |
 | `theme` | `light` | `light`, `dark` or `auto` (follows the browser’s color-scheme preference). |
 | `show_reject_all` | `true` | Show the reject-all button in both the initial and detailed forms. |
+| `necessary_cookies` | Empty map | Informational list of necessary cookies, displayed as always active with no controls. |
 | `persist_consent` | `true` | Write submitted vendor choices to the database. Requires the schema described below. |
 | `form_action` | `cookie_consent.update` | Symfony route **name**, not a URL. The route must accept the bundle's POST form payload. Keep the default unless replacing the endpoint. |
 | `read_more_route` | `null` | Optional privacy-policy route name. The template generates it without route parameters. |
@@ -249,6 +252,46 @@ The cookie path is `/` and is not configurable. The configuration tree exposes a
 `enabled` flag for this node, but runtime cookie creation does not honor it; do not
 use `consent_cookie: false` as a way to disable the banner. Omit the Twig fragment
 where the banner should not appear.
+
+## Necessary cookies
+
+Use `necessary_cookies` for cookies or services that your application needs
+independently of the optional consent choices. This is a separate top-level option,
+not a category inside `consent_configuration.consent_categories`.
+
+```yaml
+cookie_consent:
+    necessary_cookies:
+        session:
+            name: 'Session cookie'
+            description: 'Keeps your session available while you use the site.'
+        preferences:
+            name: 'Cookie preferences'
+            description: 'Remembers the cookie choices you have saved.'
+```
+
+Replace these examples with the cookies your application actually uses. Each entry
+requires non-empty `name` and `description` strings; its key is an identifier for
+configuration, not a command to create a cookie. An empty list (the default) hides
+the section. Names and descriptions can also be translation keys in the
+`CookieConsentBundle` domain. They are escaped when rendered, so HTML is displayed
+as text.
+
+The list appears in detailed settings under the translated “Required cookies”
+heading with an “Always active” label. There are no checkboxes. Accept, reject and
+save actions do not change this list. The list is not submitted as optional consent
+and is not added to the consent log records.
+
+This setting describes necessary cookies; it does not create them, inspect the
+browser, prevent their deletion or keep a session alive. Your application owns
+that behavior. Do not put necessary cookies behind the optional category/vendor
+Twig helpers: those helpers continue to report only the configured optional choices.
+Adding this list does not make `isCategoryAllowedByUser('necessary')` return true.
+
+The section can be customized through the `necessary_cookies` Twig block. Its
+heading, explanation and status label use `cookie_consent.required_cookies.title`,
+`cookie_consent.required_cookies.description` and
+`cookie_consent.required_cookies.always_active` translation keys.
 
 ## Categories and vendors
 

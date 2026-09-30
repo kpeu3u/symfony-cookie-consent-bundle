@@ -11,7 +11,8 @@ class ConsentFormDto
         public readonly FormView    $detailedForm,
         public readonly string      $position,
         public readonly string|null $readMoreRoute,
-        public readonly string $theme = 'light'
+        public readonly string $theme = 'light',
+        public readonly array $necessaryCookies = []
     )
     {
     }
@@ -23,6 +24,7 @@ class ConsentFormDto
             'detailed_form' => $this->detailedForm,
             'position' => $this->position,
             'theme' => $this->theme,
+            'necessary_cookies' => $this->necessaryCookies,
             'read_more_route' => $this->readMoreRoute,
         ];
     }

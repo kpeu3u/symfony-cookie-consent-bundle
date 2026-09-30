@@ -99,6 +99,7 @@ cookie_consent:
 cookie_consent:
     persist_consent: false
     position: dialog
+    theme: auto
     consent_configuration:
         consent_categories:
             analytics:
@@ -109,7 +110,9 @@ cookie_consent:
 
 These names are examples, not integrations installed by the bundle. Replace them
 with the services your application actually uses. Every configured vendor is
-optional and is rejected by “Reject all”; there is no reserved “necessary” category.
+optional and is rejected by “Reject all”. Describe necessary cookies separately
+with [`necessary_cookies`](docs/configuration.md#necessary-cookies); there is no
+reserved category name that automatically changes consent behavior.
 
 The consent cookie is HTTPS-only by default. For local HTTP development only:
 
@@ -217,6 +220,7 @@ Configure these in `config/packages/cookie_consent.yaml` under `cookie_consent`.
 | --- | --- | --- |
 | [`theme`](docs/configuration.md#theme) | `light` | Light, dark or automatic system-based colors. |
 | [`show_reject_all`](docs/configuration.md#reject-all-button) | `true` | Show or omit the reject-all button in both forms. |
+| [`necessary_cookies`](docs/configuration.md#necessary-cookies) | Empty map | Names and descriptions of necessary cookies, shown as always active. |
 | [`position`](docs/configuration.md#position) | `dialog` | Modal dialog, fixed `bottom` banner, or `top` banner with application CSS. |
 | [`read_more_route`](docs/configuration.md#privacy-policy-link) | `null` | Optional route name for the privacy-policy link. |
 | [`persist_consent`](docs/configuration.md#database-logging) | `true` | Database logging; requires mapping and a migrated schema. |
@@ -232,6 +236,21 @@ cookie_consent:
     position: bottom
     theme: auto
     read_more_route: app_privacy_policy # Replace with your existing route name.
+    show_reject_all: true
+```
+
+The necessary cookies are always active and do not require a category. Vendors are
+optional and are rejected by the “Reject all” button.
+
+Example configuration for necessary cookies:
+
+```yaml
+cookie_consent:
+    necessary_cookies:
+       necessary_cookie_1:
+          description: "Description for necessary cookie 1"
+       necessary_cookie_2:
+          description: "Description for necessary cookie 2"
 ```
 
 Merge this into your existing configuration so your category and logging settings

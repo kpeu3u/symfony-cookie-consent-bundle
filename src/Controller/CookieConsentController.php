@@ -42,7 +42,8 @@ class CookieConsentController
         private readonly string               $position,
         private readonly RequestStack         $requestStack,
         private readonly LoggerInterface      $logger,
-        private readonly string               $theme = 'light'
+        private readonly string               $theme = 'light',
+        private readonly array $necessaryCookies = []
     )
     {
     }
@@ -157,7 +158,8 @@ class CookieConsentController
             $this->createDetailedConsentForm()->createView(),
             $this->position,
             $this->readMoreRoute,
-            $this->theme
+            $this->theme,
+            $this->necessaryCookies
         );
 
         try {
