@@ -8,6 +8,9 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
 
 ### Added
 
+- A separate `necessary_cookies` list displayed as always active in detailed
+  settings, with translated labels and no optional-consent controls.
+
 - `show_reject_all` configuration (default `true`) to control the reject-all
   button in both consent forms.
 

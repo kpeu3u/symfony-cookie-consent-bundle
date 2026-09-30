@@ -3,6 +3,7 @@ cookie_consent:
     intro: ''
     read_more: 'En savoir plus'
     required_cookies:
+        always_active: 'Toujours actifs'
         title: 'Cookies nécessaires'
         description: 'Ces cookies sont nécessaires au fonctionnement du site et ne peuvent pas être désactivés.'
     analytics:

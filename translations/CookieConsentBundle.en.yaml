@@ -3,6 +3,7 @@ cookie_consent:
     intro: 'Cookie consent introduction text about specifics of your web applications needs regarding cookies and the users consent.<br/><br/>Next line?'
     read_more: 'Link to privacy policy'
     required_cookies:
+        always_active: 'Always active'
         title: 'Required cookies'
         description: 'These cookies are necessary for the functionality of the website and cannot be deactivated.'
     analytics:

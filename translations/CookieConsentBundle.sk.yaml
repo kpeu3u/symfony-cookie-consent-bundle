@@ -3,6 +3,7 @@ cookie_consent:
     intro: ''
     read_more: 'Ďalšie informácie'
     required_cookies:
+        always_active: 'Vždy aktívne'
         title: 'Nevyhnutné cookies'
         description: 'Tieto cookies sú nevyhnutné pre funkčnosť webu a nie je možné ich zakázať.'
     analytics:

@@ -114,13 +114,13 @@ Create `templates/bundles/CookieConsentBundle/cookie_consent.html.twig`:
 ```
 
 The banner template exposes these blocks: `pre_form`, `header`, `title`, `intro`,
-`read_more`, `post_form` and `scripts`. The title, introduction and privacy link
+`read_more`, `post_form`, `scripts` and `necessary_cookies`. The title, introduction and privacy link
 are nested in `header`. There are no `consent_form` or `required_cookies_category`
 blocks in the current template. Replacing the form markup requires a full template
 override or Symfony form theming.
 
 Template variables are `simple_form`, `detailed_form`, `position` and
-`read_more_route` and `theme`. Keep the form widgets and CSRF fields when customizing markup.
+`read_more_route`, `theme` and `necessary_cookies`. Keep the form widgets and CSRF fields when customizing markup.
 The JavaScript relies on `.cookie-consent`, `.cookie-consent__form`,
 `.js-show-settings`, `.cookie-consent-simple` and `.cookie-consent-detail`.
 Category toggles use `.consent-form-category` and `.consent-form-vendors`.

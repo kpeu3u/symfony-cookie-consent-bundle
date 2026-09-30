@@ -26,6 +26,7 @@ class CookieConsentBundleWebTest extends WebTestCase
     {
         // assert simple form and detailed form are rendered
         $this->assertSelectorExists('dialog .cookie-consent-simple');
+        $this->assertSelectorNotExists('.cookie-consent__necessary');
         $this->assertSelectorExists('dialog .cookie-consent-detail');
     }
 

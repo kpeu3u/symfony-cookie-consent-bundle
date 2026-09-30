@@ -73,6 +73,21 @@ class CookieConsentConfigDefinitonTest extends TestCase
         $this->processor->processConfiguration($this->configuration, [['theme' => 'unknown']]);
     }
 
+    public function testNecessaryCookiesConfiguration(): void
+    {
+        $defaults = $this->processor->processConfiguration($this->configuration, []);
+        self::assertSame([], $defaults['necessary_cookies']);
+        $cookies = ['session' => ['name' => 'Session', 'description' => 'Retains your session.']];
+        $config = $this->processor->processConfiguration($this->configuration, [['necessary_cookies' => $cookies]]);
+        self::assertSame($cookies, $config['necessary_cookies']);
+    }
+
+    public function testNecessaryCookieRequiresDescription(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->processor->processConfiguration($this->configuration, [['necessary_cookies' => ['session' => ['name' => 'Session']]]]);
+    }
+
     public function testInvalidConfiguration(): void
     {
         $this->expectException(InvalidConfigurationException::class);

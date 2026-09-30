@@ -3,6 +3,7 @@ cookie_consent:
     intro: ''
     read_more: 'llegir més sobre això'
     required_cookies:
+        always_active: 'Sempre actives'
         title: 'Galetes necessàries'
         description: 'Aquestes galetes són necessàries per a la funcionalitat del lloc web i no es poden desactivar.'
     analytics:
