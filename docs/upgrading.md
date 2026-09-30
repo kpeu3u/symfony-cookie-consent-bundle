@@ -25,7 +25,7 @@ supported by a published version.
 
 ## Migration checklist
 
-1. Check runtime compatibility: Symfony 7.4 requires PHP 8.2+; Symfony 8.x requires
+1. Check runtime compatibility: Symfony 7.4 requires PHP 8.3+; Symfony 8.x requires
    PHP 8.4+. The package allows both Symfony major versions.
 2. Compare application configuration with the [reference](configuration.md).
    Categories belong under `consent_configuration.consent_categories`. Old
@@ -54,7 +54,7 @@ Both success event names remain available, but subscribe to only one:
 `cookie-consent-form-submit-successful` is the documented name and
 `cookie-consent.form-submit-successful` is the compatibility alias.
 
-The repository lock file remains on Symfony 7.4 for PHP 8.2 compatibility. Composer
+The repository lock file remains on Symfony 7.4 for PHP 8.3 compatibility. Composer
 uses your application's dependency constraints when installing the bundle; the
 library's lock file does not pin the Symfony version in consuming applications.
 

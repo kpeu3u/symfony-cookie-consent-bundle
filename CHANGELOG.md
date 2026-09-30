@@ -16,7 +16,7 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
 - Explicit DoctrineBundle `^2.19 || ^3.3` dependency and CI coverage for 3.3
   with Symfony 7.4, 8.0 and 8.1 on PHP 8.4.
 
-- Support for Symfony 8.x on PHP 8.4+, alongside Symfony 7.4 on PHP 8.2+.
+- Support for Symfony 8.x on PHP 8.4+, alongside Symfony 7.4 on PHP 8.3+.
 - Database logging of submitted vendor choices, with a working Doctrine repository
   and IPv6 address anonymization.
 - Regression coverage for invalid submissions, saved choices, database persistence
@@ -25,7 +25,7 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
 
 ### Changed
 
-- Minimum Symfony requirement is now 7.4. PHP remains 8.2+; Symfony 8 requires 8.4+.
+- Minimum requirements are now Symfony 7.4 and PHP 8.3; Symfony 8 requires PHP 8.4+.
 - PHP and frontend dependencies have been updated. Asset development requires
   Node.js 22.14+; consuming applications use the included built assets.
 - The banner script loads as a JavaScript module and uses the configured form action.
@@ -34,6 +34,9 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
   The bundle's `persist_consent` default remains `true`.
 
 ### Fixed
+
+- Add explicit PHP 8.3 CI coverage and syntax checks; run all matrix jobs even
+  when another job fails.
 
 - HTTP 500 errors when detecting submitted forms; malformed requests now receive
   HTTP 400, and the update endpoint rejects non-POST requests with HTTP 405.

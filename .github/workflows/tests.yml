@@ -4,9 +4,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         include:
-          - php: '8.2'
+          - php: '8.3'
             symfony: '7.4.*'
             doctrine: '2.19.*'
             migrations: '^3.3'
@@ -39,6 +40,8 @@ jobs:
           cache: npm
       - run: php tests/compatibility/configure.php '${{ matrix.symfony }}' '${{ matrix.doctrine }}' '${{ matrix.migrations }}'
       - run: composer update --no-interaction --prefer-dist
+      - name: Check PHP syntax
+        run: git ls-files -z '*.php' | xargs -0 -n1 php -l
       - run: composer test
       - run: npm ci
       - run: npm test
