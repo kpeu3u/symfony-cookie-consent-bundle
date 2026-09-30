@@ -30,7 +30,7 @@ class ConsentVendorType extends AbstractType
             'required' => false,
         ]);
 
-        $builder->add('name', HiddenType::class);
+        $builder->add('name', HiddenType::class, ['disabled' => true]);
     }
 
     /**

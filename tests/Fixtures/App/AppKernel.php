@@ -52,8 +52,8 @@ class AppKernel extends Kernel
         $container->loadFromExtension('doctrine', [
             'dbal' => [
                 'driver' => 'pdo_sqlite',
-                'url' => 'sqlite:///%kernel.project_dir%/data/test.db',
-                'path' => '%kernel.project_dir%/data/test.db',
+                'url' => 'sqlite:///:memory:',
+//                'path' => '%kernel.project_dir%/data/test.db',
             ],
             'orm' => [
                 // ASK: Why is 'auto_mapping' => true required to successfully run CookieConsentBundleServicesTest#shouldProvideController() ?

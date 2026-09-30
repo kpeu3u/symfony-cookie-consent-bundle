@@ -1,6 +1,8 @@
 # Release notes
 
-## Version 0.0.2
+The canonical release history is maintained in [CHANGELOG.md](CHANGELOG.md).
 
-### Breaking changes
-- route name changes from `cookie_consent.show` to `cookie_consent.view`
+- [Upgrade guide](docs/upgrading.md)
+- [Deprecation policy and current status](DEPRECATIONS.md)
+
+Entries labeled **Unreleased** have not been published as a release.

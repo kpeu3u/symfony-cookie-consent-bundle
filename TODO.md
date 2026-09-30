@@ -1,76 +1,14 @@
-# Next!
-- Cookie settings
-  - [ ] Allow only necessary cookies
-  - [x] Add domain as configurable option
-  - form action:
-    - **why is cookie consent modal shown again after redirect to route?**
-    - [x] prevent default form submit
-- Logic
-  - [x] Set Cookie after rejecting all cookies to not display the dialog again
-  - [ ] ID for cookie consent log as UUID instead of integer
-- JavaScript
-  - [x] update JS to .mjs and add bundler like rollup
-  - [x] emit successful submit form event
-  - [x] submit form asynchronously
-- SCSS
-  - [x] no need for seperate styling scss
-  - [ ] Style dialog
-- Markup
-  - [x] make form available in dialog (Fuck off, IE11!!!)
-- Forms
-  - [x] Style form --> form styles can be applied by using and configuring the symfony twig bundle
-      - https://symfony.com/doc/current/form/form_themes.html
-      - https://symfony.com/doc/current/forms.html#rendering-forms
-  - [ ] What parts are themeable and changeable?
-    - [ ] Header 
-      - has to be generic to place logo, title or whatever
-    - [ ] Main section
-      - [ ] pre-form section
-      - [ ] Form
-        - [ ] form widgets
-          - overwritable [CookieConsentType.php](Form%2FCookieConsentType.php)???
-        - [ ] form submit buttons
-      - [ ] post-form section
-    - [ ] Footer
-      - has to be generic to whatever content to user needs
-  - [ ] Map request data to typed objects ==> https://symfony.com/blog/new-in-symfony-6-3-mapping-request-data-to-typed-objects
-- Security
-  - Which domain is set when setting cookies? With subdomain?
-- Project setup
-  - [x] Create Symfony Flex recipe: https://github.com/symfony/recipes
-  - [ ] Setup watchers for JS and SCSS separately
-    - Separate dev from prod builds 
-    - JS is handled by Rollup watching assets and rebuilding if needed, notifying the websocket server when done
-    - SCSS is handled like before but with a watcher, maybe use https://github.com/egoist/rollup-plugin-postcss - so we can build in rollup only
+# Development backlog
 
-# Expectations
+These are future improvements, not features available in the current bundle.
+See the [README](README.md) for supported behavior.
 
-## Visibile
-- consent dialog
-  - positionable
-  - themeable
-    - Guide: https://blog.logrocket.com/a-guide-to-theming-in-css/ and https://blog.logrocket.com/create-better-themes-with-css-variables/
-    - Dark mode: https://web.dev/learn/design/theming/#provide_a_dark_mode
-  - editable description
-  - fillable slots
-- compliant ([overview](https://gdpr.eu/cookies/))
-  - equally displayed buttons to allow or reject all cookies
-  - privacy by default
-  - revokation of consent has to be persistent, too
-  - session or persistent cookie?
-  - legitimate interest?
-  - nice to have:
-    - Close button in top right corner
-- content
-  - configurable categories
-    - explicit cookies under each category
-    - Categories are:
-      - Strictly necessary cookies
-      - Preferences cookies
-      - Statistics cookies
-      - Marketing cookies
-  - submit types
-    - save
-    - reject all
-- persistence
-  - logging
+- Persist or restore preferences independently of the Symfony session.
+- Version saved choices when the configured vendor list changes.
+- Improve default category/vendor labels, descriptions and accessibility.
+- Add dedicated top-banner positioning and a visible submission-error state.
+- Make Doctrine optional when database logging is disabled.
+- Remove or migrate legacy cookie/settings entities.
+- Add configurable log retention and cleanup tooling.
+- Define runtime behavior for the consent-cookie `enabled` configuration flag.
+- Add browser-level UI tests alongside the simulated DOM tests.

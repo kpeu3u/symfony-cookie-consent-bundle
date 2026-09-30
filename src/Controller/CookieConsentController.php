@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Twig\Environment;
@@ -52,76 +52,33 @@ class CookieConsentController
         $request = $this->getCurrentRequest();
 
         if ($request->getMethod() != Request::METHOD_POST) {
-            throw new MethodNotAllowedException([Request::METHOD_POST]);
+            throw new MethodNotAllowedHttpException([Request::METHOD_POST]);
         }
 
-        // TODO: Add validation via doctrine validators: https://symfony.com/doc/current/doctrine.html#validating-objects
         $form = $this->getForm($request);
+        if ($form === null) {
+            return new JsonResponse('error', Response::HTTP_BAD_REQUEST);
+        }
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-            /** @var SubmitButton $rejectAllButton */
-            if ($rejectAllButton = $form->get(FormSubmitName::REJECT_ALL)) {
-                $rejectAll = $rejectAllButton->isClicked();
-
-                if ($rejectAll) {
-                    try {
-                        // tell consent manager service to reject all cookies, sets consent cookie to false
-                        $responseHeaders = $this->cookieConsentService->rejectAllCookies($request);
-
-                        return new JsonResponse('ok', Response::HTTP_CREATED, headers: ['set-cookie' => $responseHeaders->getCookies()]);
-                    } catch (Exception $exception) {
-                        // TODO: handle exception
-                    }
-
-                }
-            }
-
-            /** @var SubmitButton $acceptAllButton */
-            if ($acceptAllButton = $form->get(FormSubmitName::ACCEPT_ALL)) {
-                $acceptAll = $acceptAllButton->isClicked();
-
-                if ($acceptAll) {
-                    try {
-                        // tell consent manager service to set cookie values accordingly
-                        $responseHeaders = $this->cookieConsentService->acceptAllCookies($request);
-
-                        return new JsonResponse('ok', Response::HTTP_CREATED, headers: ['set-cookie' => $responseHeaders->getCookies()]);
-                    } catch (Exception $exception) {
-                        // TODO: handle exception
-                    }
-                }
-            }
-
-            /** @var SubmitButton $saveConsentSettingsButton */
-            if ($saveConsentSettingsButton = $form->get(FormSubmitName::SAVE_CONSENT_SETTINGS)) {
-                $saveSettings = $saveConsentSettingsButton->isClicked();
-
-                if($saveSettings) {
-                    try {
-
-                        $responseHeaders = $this->cookieConsentService->saveConsentSettings($form->getData(), $request);
-
-                        return new JsonResponse('ok', Response::HTTP_CREATED, headers: ['set-cookie' => $responseHeaders->getCookies()]);
-                    } catch (Exception $exception) {
-                        // TODO: handle exception
-                    }
-                }
-
-            }
-
-
-            return new JsonResponse('ok', Response::HTTP_CREATED, headers: ['set-cookie' => $responseHeaders->getCookies()]);
-
-
-        } else if ($form->isSubmitted() && $form->getClickedButton() == null) {
-            $this->logger->error('Invalid form passed to consent manager update');
-            return new JsonResponse('error', status: Response::HTTP_BAD_REQUEST);
+        if (!$form->isSubmitted() || !$form->isValid() || $form->getClickedButton() === null) {
+            return new JsonResponse('error', Response::HTTP_BAD_REQUEST);
         }
 
-        $this->logger->error('Error while updating cookies via consent manager');
-        return new JsonResponse('error', status: Response::HTTP_BAD_REQUEST);
+        try {
+            $headers = match ($form->getClickedButton()->getName()) {
+                FormSubmitName::REJECT_ALL => $this->cookieConsentService->rejectAllCookies($request),
+                FormSubmitName::ACCEPT_ALL => $this->cookieConsentService->acceptAllCookies($request),
+                FormSubmitName::SAVE_CONSENT_SETTINGS => $this->cookieConsentService->saveConsentSettings($form->getData(), $request),
+            };
+            $response = new JsonResponse('ok', Response::HTTP_CREATED);
+            foreach ($headers->getCookies() as $cookie) {
+                $response->headers->setCookie($cookie);
+            }
+            return $response;
+        } catch (Exception $exception) {
+            $this->logger->error('Unable to save cookie consent.', ['exception' => $exception]);
+            return new JsonResponse('error', Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -134,9 +91,9 @@ class CookieConsentController
 
     private function getForm(Request $request): ?FormInterface
     {
-        if ($request->query->get("consent_simple") !== null) {
+        if ($request->request->has('consent_simple') && !$request->request->has('consent_detailed')) {
             return $this->createSimpleConsentForm();
-        } else if ($request->query->get("consent_detailed") != null) {
+        } else if ($request->request->has('consent_detailed') && !$request->request->has('consent_simple')) {
             return $this->createDetailedConsentForm();
         }
 
@@ -159,7 +116,7 @@ class CookieConsentController
 
     private function createDetailedConsentForm(): FormInterface
     {
-        $formModel = $this->cookieConsentService->createDetailedForm();
+        $formModel = $this->cookieConsentService->createDetailedFormForRequest($this->getCurrentRequest());
 
         $formBuilder = $this->formFactory->createBuilder(ConsentDetailedType::class, $formModel);
 
@@ -180,7 +137,10 @@ class CookieConsentController
             return $this->view();
         }
 
-        return new Response();
+        $response = new Response();
+        $response->setPrivate();
+        $response->headers->addCacheControlDirective('no-store');
+        return $response;
     }
 
     /**
@@ -204,6 +164,7 @@ class CookieConsentController
             // Cache in ESI should not be shared
             $response->setPrivate();
             $response->setMaxAge(0);
+            $response->headers->addCacheControlDirective('no-store');
 
             return $response;
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
@@ -216,7 +177,7 @@ class CookieConsentController
      */
     private function setLocale(Request $request): void
     {
-        $locale = $request->getLocale();
+        $locale = $request->query->get('locale', $request->getLocale());
         if (empty($locale) === false) {
             $this->translator->setLocale($locale);
             $request->setLocale($locale);

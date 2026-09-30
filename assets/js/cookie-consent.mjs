@@ -1,106 +1,64 @@
-async function submitSimpleCookieSelection(form, submitter) {
-    try {
-        const url = new URL('/cookie-consent/update', window.location.origin);
-
-        const requestOptions = {
-            method: 'POST',
-            body: new FormData(form, submitter)
-        }
-
-        /**
-         * Request object
-         * @type {Request}
-         */
-        const request = new Request(url, requestOptions);
-
-        /**
-         * Response object
-         * @type {Response}
-         */
-        const response = await fetch(request);
-
-        if (response.ok) {
-            await fetch(window.location.href);
-
-            return Promise.resolve();
-        } else {
-            new Error(JSON.stringify(response));
-            return Promise.reject();
-        }
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    const cookieConsent = document.querySelector('.cookie-consent');
-    const consentForms = document.querySelectorAll('.cookie-consent__form');
-
-
-    cookieConsent.querySelector('.js-show-settings').addEventListener('click', function (event) {
-        cookieConsent.querySelector('.cookie-consent-simple').style.display = 'none';
-        cookieConsent.querySelector('.cookie-consent-detail').style.display = 'block';
-    });
-
-    // cookieConsent.querySelectorAll('.js-reject-all-cookies').forEach(item => {
-    //     item.addEventListener('click', async (event) => {
-    //         const form = item.closest('form');
-    //         await submitSimpleCookieSelection(form, event.submitter);
-    //     });
-    // });
-    //
-    // cookieConsent.querySelectorAll('.js-accept-all-cookies').forEach(item => {
-    //     item.addEventListener('click', async (event) => {
-    //         const form = item.closest('form');
-    //         await submitSimpleCookieSelection(form, event.submitter);
-    //     });
-    // });
-
-    cookieConsent.querySelector('.js-consent-simple-form').addEventListener('submit', async function (event) {
-        event.preventDefault();
-        await submitSimpleCookieSelection(event.target, event.submitter);
-    });
-
-    consentForms.forEach((form) => {
-
-        // we got a form
-        const submitButtons = form.querySelectorAll('.js-submit-cookie-consent-form');
-        const formAction = form.action || location.href;
-
-        form.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            fetch(formAction, {
-                method: 'POST',
-                body: new FormData(form, event.submitter)
-            }).then(function (res) {
-                if (res.status >= 200 && res.status < 300) {
-                    hideCookieConsentForm(cookieConsent, cookieConsentDialog);
-                    dispatchSuccessEvent(event.submitter);
-                }
-            }).catch(function (error) {
-                console.error('Error:', error);
-            });
+export function initializeCookieConsent(root = document) {
+    root.querySelectorAll('.cookie-consent').forEach((banner) => {
+        if (banner.dataset.initialized) return;
+        banner.dataset.initialized = 'true';
+        const dialog = banner.closest('dialog');
+        banner.querySelector('.js-show-settings')?.addEventListener('click', () => {
+            banner.querySelector('.cookie-consent-simple').style.display = 'none';
+            banner.querySelector('.cookie-consent-detail').style.display = 'block';
         });
 
-        const cookieConsentDialog = document.querySelector('.cookie-consent-dialog');
-        if (cookieConsentDialog) {
-            // we got a dialog, show it
-            cookieConsentDialog.showModal();
-        }
-    });
-});
+        banner.querySelectorAll('.consent-form-category').forEach((category) => {
+            const toggle = category.querySelector('input[type="checkbox"]');
+            const vendors = [...category.querySelectorAll('.consent-form-vendors input[type="checkbox"]')];
+            if (!toggle || !vendors.length) return;
+            const sync = () => {
+                toggle.checked = vendors.every((vendor) => vendor.checked);
+                toggle.indeterminate = !toggle.checked && vendors.some((vendor) => vendor.checked);
+            };
+            toggle.addEventListener('change', () => {
+                vendors.forEach((vendor) => { vendor.checked = toggle.checked; });
+                sync();
+            });
+            vendors.forEach((vendor) => vendor.addEventListener('change', sync));
+            sync();
+        });
 
-function dispatchSuccessEvent(submitter) {
-    const formSubmittedEvent = new CustomEvent('cookie-consent.form-submit-successful', {
-        detail: submitter
+        banner.querySelectorAll('.cookie-consent__form').forEach((form) => {
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                if (form.dataset.submitting) return;
+                form.dataset.submitting = 'true';
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form, event.submitter),
+                        credentials: 'same-origin'
+                    });
+                    if (!response.ok) throw new Error(`Consent request failed: ${response.status}`);
+                    if (dialog) {
+                        dialog.close();
+                        dialog.remove();
+                    } else {
+                        banner.remove();
+                    }
+                    for (const name of ['cookie-consent-form-submit-successful', 'cookie-consent.form-submit-successful']) {
+                        document.dispatchEvent(new CustomEvent(name, {detail: event.submitter}));
+                    }
+                } catch (error) {
+                    console.error(error);
+                    document.dispatchEvent(new CustomEvent('cookie-consent-form-submit-failed', {detail: error}));
+                } finally {
+                    delete form.dataset.submitting;
+                }
+            });
+        });
+        if (dialog && !dialog.open) dialog.showModal();
     });
-    document.dispatchEvent(formSubmittedEvent);
 }
 
-function hideCookieConsentForm(cookieConsent, cookieConsentDialog) {
-    if (cookieConsentDialog) {
-        cookieConsentDialog.close();
-    }
-    cookieConsent.remove();
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => initializeCookieConsent());
+} else {
+    initializeCookieConsent();
 }
