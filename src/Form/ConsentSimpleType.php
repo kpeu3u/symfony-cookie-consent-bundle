@@ -16,7 +16,8 @@ class ConsentSimpleType extends AbstractType
 
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly bool                $csrfProtection = true
+        private readonly bool                $csrfProtection = true,
+        private readonly bool                $showRejectAll = true
     )
     {
     }
@@ -39,6 +40,10 @@ class ConsentSimpleType extends AbstractType
                     'class' => 'cookie-consent__btn js-reject-all-cookies'
                 ]
             ]);
+
+        if (!$this->showRejectAll) {
+            $builder->remove(FormSubmitName::REJECT_ALL);
+        }
     }
 
     /**

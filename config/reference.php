@@ -1007,6 +1007,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     persist_consent?: bool|Param, // Default: true
  *     form_action?: scalar|Param|null, // Default: "cookie_consent.update"
  *     read_more_route?: scalar|Param|null, // Default: null
+ *     show_reject_all?: bool|Param, // Default: true
  *     csrf_protection?: bool|Param, // Default: true
  * }
  * @psalm-type ConfigType = array{
@@ -1019,7 +1020,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     maker?: MakerConfig,
  *     doctrine_migrations?: DoctrineMigrationsConfig,
  *     cookie_consent?: CookieConsentConfig,
- *     "when@test"?: array{
+ *     "when@reject_hidden"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
  *         services?: ServicesConfig,
@@ -1107,7 +1108,7 @@ namespace Symfony\Component\Routing\Loader\Configurator;
  *     deprecated?: array{package:string, version:string, message?:string},
  * }
  * @psalm-type RoutesConfig = array{
- *     "when@test"?: array<string, RouteConfig|ImportConfig|AliasConfig>,
+ *     "when@reject_hidden"?: array<string, RouteConfig|ImportConfig|AliasConfig>,
  *     ...<string, RouteConfig|ImportConfig|AliasConfig>
  * }
  */

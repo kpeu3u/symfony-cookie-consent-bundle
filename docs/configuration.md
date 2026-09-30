@@ -12,6 +12,7 @@ keys in one YAML file. Omitted options use their defaults.
 - [Full example and option summary](#full-example)
 - [Position: dialog, bottom or top](#position)
 - [Theme: light, dark or auto](#theme)
+- [Reject-all button](#reject-all-button)
 - [Privacy-policy link](#privacy-policy-link)
 - [Form submission route](#form-submission-route)
 - [CSRF protection](#csrf-protection)
@@ -43,6 +44,7 @@ cookie_consent:
                 - facebook_pixel
     position: dialog
     theme: light
+    show_reject_all: true
     persist_consent: true
     form_action: cookie_consent.update
     read_more_route: null
@@ -53,6 +55,7 @@ cookie_consent:
 | --- | --- | --- |
 | `position` | `dialog` | Accepts `dialog`, `bottom` and `top`. `top` needs application CSS for positioning. |
 | `theme` | `light` | `light`, `dark` or `auto` (follows the browser’s color-scheme preference). |
+| `show_reject_all` | `true` | Show the reject-all button in both the initial and detailed forms. |
 | `persist_consent` | `true` | Write submitted vendor choices to the database. Requires the schema described below. |
 | `form_action` | `cookie_consent.update` | Symfony route **name**, not a URL. The route must accept the bundle's POST form payload. Keep the default unless replacing the endpoint. |
 | `read_more_route` | `null` | Optional privacy-policy route name. The template generates it without route parameters. |
@@ -166,6 +169,23 @@ For `auto`, target `data-cookie-consent-theme="auto"` and put dark overrides ins
 preserve the `data-cookie-consent-theme` attributes on those elements and pass the
 `theme` template variable through. The older appearance screenshots are design
 references; the new palettes do not reproduce their earlier form layout.
+
+## Reject-all button
+
+By default, both forms include a “Reject all” button. To remove it from both the
+initial banner and the detailed settings form:
+
+```yaml
+cookie_consent:
+    show_reject_all: false
+```
+
+The button is omitted from the Symfony forms, not hidden with CSS. “Accept all”,
+the settings toggle and “Save choices” remain available. Visitors can still save
+all vendors unchecked in the detailed form. This setting does not grant consent
+or change existing preferences. Restore `true` to display both reject buttons.
+Custom templates that access the `reject_all` form field directly should check
+whether it exists before rendering it.
 
 ## Privacy-policy link
 

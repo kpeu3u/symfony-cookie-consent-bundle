@@ -48,8 +48,8 @@ class CookieConsentBundle extends AbstractBundle
         // configure manually wired constructor arguments for private services
         $services->set(CookieConsentService::class)->args([$config, $config['persist_consent'], service('doctrine')]);
         $services->set(CookieConsentLogRepository::class)->args([service('doctrine')])->tag('doctrine.repository_service');
-        $services->set(ConsentSimpleType::class)->tag('form.type')->args([service('translator'), $config['csrf_protection']]);
-        $services->set(ConsentDetailedType::class)->tag('form.type')->args([service('translator'), $config['csrf_protection']]);
+        $services->set(ConsentSimpleType::class)->tag('form.type')->args([service('translator'), $config['csrf_protection'], $config['show_reject_all']]);
+        $services->set(ConsentDetailedType::class)->tag('form.type')->args([service('translator'), $config['csrf_protection'], $config['show_reject_all']]);
 
 
         //        Register pre-compile classes here?
