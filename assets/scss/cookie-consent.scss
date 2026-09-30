@@ -1,6 +1,6 @@
 //@import "reset";
-@import "mixins/mixins";
-@import "functions";
+@use "mixins/mixins" as *;
+@use "functions" as *;
 
 // fonts
 $cc-font: 'Helvetica', 'sans-serif';

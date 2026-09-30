@@ -45,6 +45,7 @@ class ConsentBundleConfiguration
                     ]
                 ]
             ],
+            'persist_consent' => false,
             'position' => 'dialog'
         ];
     }
@@ -73,6 +74,7 @@ class ConsentBundleConfiguration
                     ]
                 ]
             ],
+            'persist_consent' => false,
             'position' => 'dialog'
         ];
     }

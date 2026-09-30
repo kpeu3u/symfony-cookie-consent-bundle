@@ -9,6 +9,8 @@ use CookieConsentBundle\Form\ConsentDetailedTypeModel;
 use CookieConsentBundle\Form\ConsentVendorTypeModel;
 use CookieConsentBundle\Mapper\CookieConfigMapper;
 use InvalidArgumentException;
+use CookieConsentBundle\Cookie\CookieLogger;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
@@ -16,7 +18,8 @@ class CookieConsentService
 {
     public function __construct(
         private readonly array $consentConfiguration,
-        private readonly bool  $persistConsent)
+        private readonly bool $persistConsent,
+        private readonly ?ManagerRegistry $registry = null)
     {
     }
 
@@ -30,7 +33,7 @@ class CookieConsentService
     {
         $categorySettings = $this->getCategorySettingsFromSession($request, $categoryName);
 
-        if ($categorySettings === null) {
+        if ($categorySettings === null || $categorySettings->getVendors()->isEmpty()) {
             return false;
         }
 
@@ -62,7 +65,12 @@ class CookieConsentService
      */
     public function getConsentSettingsFromSession(Request $request): mixed
     {
-        return $request->getSession()->get('consent-settings');
+        $cookieName = $this->consentConfiguration['consent_configuration']['consent_cookie']['name'];
+        if (!$request->hasSession() || !$request->cookies->has($cookieName)) {
+            return null;
+        }
+        $settings = $request->getSession()->get('consent-settings');
+        return $settings instanceof ConsentDetailedTypeModel ? $settings : null;
     }
 
     /**
@@ -76,7 +84,7 @@ class CookieConsentService
     {
         $categorySettings = $this->getCategorySettingsFromSession($request, $categoryName);
 
-        if ($categorySettings === null) {
+        if ($categorySettings === null || $categorySettings->getVendors()->isEmpty()) {
             return false;
         }
 
@@ -85,7 +93,7 @@ class CookieConsentService
             return $value->getName() === $vendorName;
         });
 
-        return $vendorSettings->getConsentGiven();
+        return $vendorSettings?->getConsentGiven() ?? false;
     }
 
     /**
@@ -96,7 +104,7 @@ class CookieConsentService
     {
         $consentSettings = $this->getConsentSettingsFromSession($request);
 
-        return $request->cookies->has(CookieName::COOKIE_CONSENT_NAME) && $consentSettings != null;
+        return $consentSettings !== null;
     }
 
     public function saveConsentSettings(ConsentDetailedTypeModel $formData, Request $request): ResponseHeaderBag
@@ -109,10 +117,9 @@ class CookieConsentService
         }
 
         // save "no-consent" to session
+        $this->persistConsentSettings($request, $formData);
         $this->saveConsentSettingsToSession($request, $formData);
 
-        // save "no-consent" to db
-        $this->persistConsentSettings(false);
 
         $headerBag = new ResponseHeaderBag();
         $headerBag->setCookie($consentCookie);
@@ -129,16 +136,28 @@ class CookieConsentService
         $session->set('consent-settings', $value);
     }
 
-    private function persistConsentSettings(mixed $data): void
+    private function persistConsentSettings(Request $request, ConsentDetailedTypeModel $settings): void
     {
-        if ($this->persistConsent) {
-            // TODO: implement method
-//        $this->entityManager->persist($cookieLog);
-
-//        $this->entityManager->flush();
-
-            // persist consent log object
+        if (!$this->persistConsent) {
+            return;
         }
+        if ($this->registry === null) {
+            throw new \LogicException('Doctrine is required when persist_consent is enabled.');
+        }
+        $categories = [];
+        foreach ($settings->getCategories() as $category) {
+            $vendors = [];
+            foreach ($category->getVendors() as $vendor) {
+                $vendors[$vendor->getName()] = $vendor->getConsentGiven();
+            }
+            $categories[$category->getName()] = json_encode($vendors, JSON_THROW_ON_ERROR);
+        }
+        $key = $request->getSession()->get('consent-key');
+        if (!is_string($key)) {
+            $key = bin2hex(random_bytes(16));
+            $request->getSession()->set('consent-key', $key);
+        }
+        (new CookieLogger($this->registry, $request))->log($categories, $key);
     }
 
     /**
@@ -156,15 +175,28 @@ class CookieConsentService
         }
 
         // save "no-consent" to session
-        $this->saveConsentSettingsToSession($request, $this->createDetailedForm(consentGiven: true));
+        $settings = $this->createDetailedForm(consentGiven: true);
+        $this->persistConsentSettings($request, $settings);
+        $this->saveConsentSettingsToSession($request, $settings);
 
-        // save "no-consent" to db
-        $this->persistConsentSettings(false);
 
         $headerBag = new ResponseHeaderBag();
         $headerBag->setCookie($consentCookie);
 
         return $headerBag;
+    }
+
+    public function createDetailedFormForRequest(Request $request): ConsentDetailedTypeModel
+    {
+        // Use fresh configured models: binding an invalid form must never mutate
+        // the objects already stored in the session.
+        $model = $this->createDetailedForm();
+        foreach ($model->getCategories() as $category) {
+            foreach ($category->getVendors() as $vendor) {
+                $vendor->setConsentGiven($this->isVendorAllowedByUser($vendor->getName(), $category->getName(), $request));
+            }
+        }
+        return $model;
     }
 
     public function createDetailedForm($consentGiven = false): ConsentDetailedTypeModel
@@ -210,10 +242,10 @@ class CookieConsentService
         }
 
         // save "no-consent" to session
-        $this->saveConsentSettingsToSession($request, $this->createDetailedForm(consentGiven: false));
+        $settings = $this->createDetailedForm(consentGiven: false);
+        $this->persistConsentSettings($request, $settings);
+        $this->saveConsentSettingsToSession($request, $settings);
 
-        // save "no-consent" to db
-        $this->persistConsentSettings(false);
 
         $headerBag = new ResponseHeaderBag();
         $headerBag->setCookie($consentCookie);

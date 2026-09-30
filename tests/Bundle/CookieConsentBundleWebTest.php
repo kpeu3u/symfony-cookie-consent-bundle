@@ -39,7 +39,7 @@ class CookieConsentBundleWebTest extends WebTestCase
         $this->assertSelectorCount(sizeof(ConsentBundleConfiguration::kernelTestCaseConfiguration()['consent_configuration']['consent_categories']), '.consent-form-categories .consent-form-category');
 
         // expect form to contain the same amount of .consent-form-vendors as defined in the bundle config
-        $this->assertSelectorCount(3, '.consent-form-category .consent-form-vendors');
+        $this->assertSelectorCount(count(ConsentBundleConfiguration::kernelTestCaseConfiguration()['consent_configuration']['consent_categories']), '.consent-form-category .consent-form-vendors');
 
         // assert detailed form contains all categories set in bundle config
         // TODO: Find a nice way to check if the consent categories from the bundle settings are parts of the consent form

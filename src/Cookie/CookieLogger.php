@@ -63,6 +63,11 @@ class CookieLogger
             return 'unknown';
         }
 
+        if (str_contains($ip, ':')) {
+            $packed = inet_pton($ip);
+            return $packed === false ? 'unknown' : inet_ntop(substr($packed, 0, 6).str_repeat("\0", 10));
+        }
+
         $lastDot = strrpos($ip, '.') + 1;
 
         return substr($ip, 0, $lastDot).str_repeat('x', strlen($ip) - $lastDot);

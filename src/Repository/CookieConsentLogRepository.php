@@ -4,35 +4,15 @@ declare(strict_types=1);
 
 namespace CookieConsentBundle\Repository;
 
-use Doctrine\ORM\EntityManagerInterface;
 use CookieConsentBundle\Entity\CookieConsentLog;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-class CookieConsentLogRepository
+/** @extends ServiceEntityRepository<CookieConsentLog> */
+class CookieConsentLogRepository extends ServiceEntityRepository
 {
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(private ManagerRegistry $entityManagerRegistry)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->entityManager = $this->entityManagerRegistry->getManagerForClass(CookieConsentLog::class);
-    }
-
-    public function rejectAllCookies(Request $request, Response $response)
-    {
-//        $cookieLog = new CookieConsentLog();
-//
-//        $cookieLog->setCookieName();
-//        $cookieLog->setCookieValue();
-//        $cookieLog->setConsentKey();
-//        $cookieLog->setIpAddress();
-//        $cookieLog->setTimestamp();
-//
-//        $this->entityManager->persist($cookieLog);
-//
-//        $this->entityManager->flush();
-//
-//        $response->headers->setCookie();
+        parent::__construct($registry, CookieConsentLog::class);
     }
 }

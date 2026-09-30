@@ -23,7 +23,9 @@ cookie_consent:
                 - facebook_pixel
             marketing:
                 - google_adsense
-    persist_consent: true
+    # Enable only after configuring Doctrine mapping and applying a migration.
+    # See docs/configuration.md in the bundle repository.
+    persist_consent: false
     position: 'dialog'
     form_action: 'cookie_consent.update'
     csrf_protection: true
