@@ -216,6 +216,7 @@ Configure these in `config/packages/cookie_consent.yaml` under `cookie_consent`.
 | Setting | Default | What it controls |
 | --- | --- | --- |
 | [`theme`](docs/configuration.md#theme) | `light` | Light, dark or automatic system-based colors. |
+| [`show_reject_all`](docs/configuration.md#reject-all-button) | `true` | Show or omit the reject-all button in both forms. |
 | [`position`](docs/configuration.md#position) | `dialog` | Modal dialog, fixed `bottom` banner, or `top` banner with application CSS. |
 | [`read_more_route`](docs/configuration.md#privacy-policy-link) | `null` | Optional route name for the privacy-policy link. |
 | [`persist_consent`](docs/configuration.md#database-logging) | `true` | Database logging; requires mapping and a migrated schema. |

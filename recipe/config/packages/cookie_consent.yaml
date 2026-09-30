@@ -29,4 +29,5 @@ cookie_consent:
     position: 'dialog'
     theme: light # light, dark or auto (system preference)
     form_action: 'cookie_consent.update'
+    show_reject_all: true
     csrf_protection: true

@@ -8,6 +8,9 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
 
 ### Added
 
+- `show_reject_all` configuration (default `true`) to control the reject-all
+  button in both consent forms.
+
 - Configurable `light`, `dark` and system-driven `auto` consent themes, with scoped
   CSS palettes for all banner positions. The default is `light`.
 
