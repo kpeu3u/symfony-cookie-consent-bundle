@@ -40,7 +40,11 @@ class CookieConsentRejectButtonTest extends WebTestCase
     {
         $client = self::createClient(['environment' => 'reject_hidden'], ['HTTPS' => 'on']);
         $crawler = $client->request('GET', '/cookie-consent/view');
-        $client->submit($crawler->selectButton('consent_detailed[save_consent_settings]')->form());
+        $form = $crawler->selectButton('consent_detailed[save_consent_settings]')->form();
+        foreach ($crawler->filter('.consent-form-vendors input[type="checkbox"]') as $input) {
+            $form[$input->getAttribute('name')]->untick();
+        }
+        $client->submit($form);
         self::assertResponseStatusCodeSame(201);
         $crawler = $client->request('GET', '/cookie-consent/view');
         self::assertSame(0, $crawler->filter('.consent-form-vendors input:checked')->count());

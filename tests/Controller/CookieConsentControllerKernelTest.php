@@ -79,6 +79,7 @@ class CookieConsentControllerKernelTest extends WebTestCase
         $crawler = $client->request('GET', '/cookie-consent/view');
         $form = $crawler->selectButton('consent_detailed[save_consent_settings]')->form();
         $form['consent_detailed[categories][0][vendors][0][consentGiven]']->tick();
+        $form['consent_detailed[categories][0][vendors][1][consentGiven]']->untick();
         $client->submit($form);
         self::assertResponseStatusCodeSame(201);
         self::assertResponseCookieValueSame(CookieName::COOKIE_CONSENT_NAME, ConsentType::CUSTOM_CONSENT);

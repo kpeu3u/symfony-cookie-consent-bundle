@@ -190,6 +190,10 @@ class CookieConsentService
     {
         // Use fresh configured models: binding an invalid form must never mutate
         // the objects already stored in the session.
+        if (!$this->isCookieConsentFormSubmittedByUser($request)) {
+            // Preselect the form only; actual permission still requires a saved choice.
+            return $this->createDetailedForm(consentGiven: true);
+        }
         $model = $this->createDetailedForm();
         foreach ($model->getCategories() as $category) {
             foreach ($category->getVendors() as $vendor) {

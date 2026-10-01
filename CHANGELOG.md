@@ -31,6 +31,9 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
 
 ### Changed
 
+- Preselect optional vendors in the settings form when no saved choice exists;
+  actual permissions remain denied until submission, and saved choices are preserved.
+
 - Categories with one vendor show only the category switch, retaining the vendor
   name and description. Categories with multiple vendors retain individual switches.
 

@@ -5,6 +5,7 @@
 | Symptom | Check |
 | --- | --- |
 | Bundle extension or services cannot be found | Register the bundle, FrameworkBundle, TwigBundle and DoctrineBundle; clear the application cache after configuration changes. |
+| Configuration files are missing after `composer require` | The bundled `recipe/` directory is an example, not an automatically applied Flex recipe. Create `config/routes/cookie_consent.yaml` and `config/packages/cookie_consent.yaml` using README steps 3 and 4, and verify bundle registration. This also applies to `dev-develop`. |
 | Routes return 404 | Import `@CookieConsentBundle/config/routes.php`. Run `php bin/console debug:router` and look for the three `cookie_consent.*` routes. |
 | Banner is unstyled or buttons do nothing | Run `php bin/console assets:install public`. Check CSS/JS requests for 404s, browser errors and CSP blocks. The script must load as a module. |
 | A POST returns 400 | Use the rendered form, including its CSRF token and clicked submit button. Check that the session survives between rendering and submission. Do not cache another visitor's form. |

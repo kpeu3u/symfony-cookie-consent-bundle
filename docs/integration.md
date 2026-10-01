@@ -32,6 +32,12 @@ All three Twig functions return booleans:
 {% endif %}
 ```
 
+Place the per-vendor check around the complete integration code, wherever that
+integration belongs in your layout: `<head>` or `<body>`. For example, an Analytics
+loader placed in `<head>` must be inside the check there. Render the consent banner
+itself once inside `<body>`. See [README step 7](../README.md#7-render-the-banner-and-guard-optional-scripts)
+for separate placement examples and the optional reload listener.
+
 Use these helpers during an HTTP request. For configuration changes that add
 vendors, prefer the per-vendor helper; see [categories and vendors](configuration.md#categories-and-vendors).
 
@@ -69,7 +75,10 @@ Events are dispatched on `document`:
 
 Listen to only one success event to avoid handling a submission twice. The detail
 contains the button, not the saved vendor preferences. To load scripts guarded by
-Twig after a choice, reload the page as shown in the README.
+Twig immediately after a choice, reload the page as shown in the README. This
+listener is optional: without it, consent is still saved and Twig checks use the
+new choice on the next page load. Register it once in your main JavaScript file,
+or in a permitted inline `<script>` before `</body>`.
 
 The default client logs failed submissions to the console; add your own visible
 error message if needed. JavaScript is required for the intended experience.
@@ -113,7 +122,12 @@ cookie_consent:
 Replace `analytics` and `my_analytics_service` with your configured identifiers.
 Add equivalent files for each supported locale. Missing titles fall back to
 readable identifiers (for example, `my_service` becomes `My Service`); missing
-descriptions are omitted. Category switches select all vendors in that category;
+descriptions are omitted. For visitors without a saved choice, all optional vendors are preselected in the
+settings form. This does not grant consent or enable Twig-guarded scripts until
+the visitor submits their choice. Existing saved preferences, including rejection,
+are preserved when reopening settings.
+
+Category switches select all vendors in that category;
 individual vendors can also be selected separately when there are several. With
 only one vendor, its name and description remain visible, while the category
 switch controls its consent without a duplicate switch. “Back” preserves unsaved
