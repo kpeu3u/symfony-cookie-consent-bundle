@@ -25,6 +25,32 @@ class CookieConsentServiceTest extends TestCase
     }
 
     #[Test]
+    public function shouldPreselectNewChoicesWithoutGrantingConsentAndPreserveRejection(): void
+    {
+        $request = new Request();
+        $request->setSession(new \Symfony\Component\HttpFoundation\Session\Session(
+            new \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage()
+        ));
+        $model = $this->consentService->createDetailedFormForRequest($request);
+        foreach ($model->getCategories() as $category) {
+            foreach ($category->getVendors() as $vendor) {
+                self::assertTrue($vendor->getConsentGiven());
+                self::assertFalse($this->consentService->isVendorAllowedByUser($vendor->getName(), $category->getName(), $request));
+            }
+        }
+        self::assertFalse($this->consentService->isCookieConsentFormSubmittedByUser($request));
+        $headers = $this->consentService->rejectAllCookies($request);
+        foreach ($headers->getCookies() as $cookie) {
+            $request->cookies->set($cookie->getName(), $cookie->getValue());
+        }
+        foreach ($this->consentService->createDetailedFormForRequest($request)->getCategories() as $category) {
+            foreach ($category->getVendors() as $vendor) {
+                self::assertFalse($vendor->getConsentGiven());
+            }
+        }
+    }
+
+    #[Test]
     public function shouldReturnCookieWithNoConsentAfterRejectingConsent(): void
     {
         $request = $this->createMock(Request::class);

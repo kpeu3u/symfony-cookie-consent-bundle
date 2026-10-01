@@ -64,8 +64,16 @@ return [
 ];
 ```
 
-The repository contains a [recipe example](recipe/), but its presence does not mean
-Symfony Flex has applied it. Verify the following configuration explicitly.
+**Create the configuration files in steps 3 and 4 manually if they are missing.**
+This also applies when installing `dev-develop`: Composer installs the package,
+but does not copy its configuration examples into your application.
+
+The repository's [recipe example](recipe/) is not an automatically discovered
+Flex recipe. Flex obtains recipes from configured recipe repositories, not from
+a `recipe/` directory inside an installed package. Automatic configuration
+requires a published recipe in `symfony/recipes-contrib` or a custom Flex endpoint
+configured in the consuming application. Setting `allow-contrib: true` alone does
+not publish or register this local example.
 
 ### 2. Enable the framework features
 
@@ -86,6 +94,8 @@ configuration. Avoid stateless routes or firewalls for pages using the banner.
 
 ### 3. Import the routes
 
+Create `config/routes/cookie_consent.yaml` (and its parent directory if needed):
+
 ```yaml
 # config/routes/cookie_consent.yaml
 cookie_consent:
@@ -93,6 +103,8 @@ cookie_consent:
 ```
 
 ### 4. Choose your categories and vendors
+
+Create `config/packages/cookie_consent.yaml`:
 
 ```yaml
 # config/packages/cookie_consent.yaml
@@ -164,32 +176,56 @@ consuming application.
 
 ### 7. Render the banner and guard optional scripts
 
-Add the stylesheet in the head of your base layout and render the banner once in
-the body. Its template loads the JavaScript module automatically.
+Merge these examples into your existing base layout (usually
+`templates/base.html.twig`); do not add a second `<head>` or `<body>`.
+
+**Inside `<head>`:** include the bundle stylesheet in your existing `stylesheets`
+block. Optional scripts belong where their integration requires them. For example,
+if you place Google Analytics in `<head>`, wrap its entire loading and
+initialization code in the consent check there:
 
 ```twig
-{# Inside your base layout's stylesheets block #}
+{# Inside <head>, in your existing stylesheets block #}
 {% include '@CookieConsent/cookie_consent_styling.html.twig' %}
 
-{# Inside the body, for example before </body> #}
-{{ render(path('cookie_consent.view_if_no_consent', {locale: app.request.locale})) }}
-
+{# Also inside <head>, where your analytics integration belongs #}
 {% if cookieconsent_isVendorAllowedByUser('google_analytics', 'analytics') %}
-    {# Put your actual analytics script here. #}
+    {# Put your complete Google Analytics loading and initialization code here. #}
 {% endif %}
 ```
 
-Place optional scripts and embeds behind these checks, including integrations
-loaded through tag managers. The bundle only records choices.
+**Inside `<body>`:** render the banner once, for example immediately before
+`</body>`. Its template loads the bundle's JavaScript module automatically:
 
-For server-rendered integrations, reload after saving consent. Add this listener
-once in your application's JavaScript:
+```twig
+{{ render(path('cookie_consent.view_if_no_consent', {locale: app.request.locale})) }}
+```
+
+The consent check does not require a specific location: it surrounds the relevant
+script or embed in `<head>` or `<body>`. Guard optional integrations loaded through
+tag managers too. The bundle records choices; it does not block scripts you load
+outside these checks.
+
+**Optional reload after saving:** Twig checks run on the server when the page is
+rendered. Reloading after a successful submission lets those checks use the new
+choice immediately. Add this listener once to your application's main JavaScript
+file:
 
 ```javascript
 document.addEventListener('cookie-consent-form-submit-successful', () => {
     window.location.reload();
 });
 ```
+
+Alternatively, put the listener in a `<script>` element before `</body>` in your
+base layout, if your Content Security Policy permits inline scripts. Use one
+location, not both, and register the listener before visitors can submit the form.
+
+You can omit this listener: choices are still saved and the banner closes. Your
+Twig-guarded integrations will use the new choice on the next page load. Starting
+or stopping integrations immediately without reloading requires application-specific
+JavaScript; rejecting cookies does not automatically stop scripts already loaded
+or delete their cookies.
 
 ### 8. Verify the integration
 
