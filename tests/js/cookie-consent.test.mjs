@@ -85,3 +85,24 @@ test('settings navigation and category switches preserve individual choices', ()
     assert.equal(document.querySelector('#a').checked, false);
     assert.equal(document.querySelector('#b').checked, true);
 });
+
+test('single-vendor category restores and submits the hidden vendor choice', () => {
+    document.body.innerHTML = `<div class="cookie-consent">
+        <form class="cookie-consent__form" action="/consent">
+            <div class="consent-form-category">
+                <input type="checkbox" id="category">
+                <div class="consent-form-vendors"><span hidden>
+                    <input type="checkbox" name="vendor[consentGiven]" value="1" checked>
+                </span></div>
+            </div>
+        </form></div>`;
+    initializeCookieConsent();
+    const category = document.querySelector('#category');
+    const form = document.querySelector('form');
+    assert.equal(category.checked, true);
+    assert.equal(new FormData(form).get('vendor[consentGiven]'), '1');
+    category.click();
+    assert.equal(new FormData(form).has('vendor[consentGiven]'), false);
+    category.click();
+    assert.equal(new FormData(form).get('vendor[consentGiven]'), '1');
+});

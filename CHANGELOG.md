@@ -31,6 +31,9 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
 
 ### Changed
 
+- Categories with one vendor show only the category switch, retaining the vendor
+  name and description. Categories with multiple vendors retain individual switches.
+
 - Responsive consent cards with light/dark styling, readable translated category
   and vendor switches, a back button and scoped form themes. Both top and bottom
   positions now include fixed positioning and scrolling for small screens.

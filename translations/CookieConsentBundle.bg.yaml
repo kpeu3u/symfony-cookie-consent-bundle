@@ -22,10 +22,10 @@ cookie_consent:
     yes: 'Да'
     save: 'Запази'
     use_only_functional_cookies: 'Използвай само функционални бисквитки'
-    accept_all: 'Разреши всички бисквитки'
+    accept_all: 'Приеми всички'
     show_details: 'Покажи детайли'
     hide_details: 'Скрий детайли'
-    reject_all: 'Отхвърли всички бисквитки'
+    reject_all: 'Отхвърли всички'
     cookie_settings_button: 'Настройки'
     vendors:
         google_analytics:
