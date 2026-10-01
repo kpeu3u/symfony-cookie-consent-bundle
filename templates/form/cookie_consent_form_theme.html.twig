@@ -27,21 +27,29 @@
 
 {% block consent_vendor_widget %}
     {% set vendor = form.vars.data.name %}
+    {% set single_vendor = form.parent|length == 1 %}
     {% set title_key = 'cookie_consent.vendors.' ~ vendor ~ '.title' %}
     {% set description_key = 'cookie_consent.vendors.' ~ vendor ~ '.description' %}
     {% set title = title_key|trans({}, 'CookieConsentBundle') %}
     {% set description = description_key|trans({}, 'CookieConsentBundle') %}
     <div {{ block('widget_container_attributes') }}>
         <div class="cookie-consent__vendor-copy">
-            <label for="{{ form.consentGiven.vars.id }}">{{ title == title_key ? vendor|replace({'_': ' ', '-': ' '})|title : title }}</label>
+            <label for="{{ single_vendor ? form.parent.parent.consentGiven.vars.id : form.consentGiven.vars.id }}">{{ title == title_key ? vendor|replace({'_': ' ', '-': ' '})|title : title }}</label>
             {% if description != description_key and description is not empty %}
                 <p class="cookie-consent__description">{{ description }}</p>
             {% endif %}
         </div>
+        {% if single_vendor %}
+            {# Keep the vendor field for submission and category synchronization, without a second control. #}
+            <span hidden>
+                {{ form_widget(form.consentGiven) }}
+            </span>
+        {% else %}
         <span class="cookie-consent__switch">
             {{ form_widget(form.consentGiven, {attr: {class: 'cookie-consent__checkbox'}}) }}
             <span class="cookie-consent__switch-track" aria-hidden="true"></span>
         </span>
+        {% endif %}
         {{ form_rest(form) }}
     </div>
 {% endblock %}

@@ -114,7 +114,9 @@ Replace `analytics` and `my_analytics_service` with your configured identifiers.
 Add equivalent files for each supported locale. Missing titles fall back to
 readable identifiers (for example, `my_service` becomes `My Service`); missing
 descriptions are omitted. Category switches select all vendors in that category;
-individual vendors can also be selected separately. “Back” preserves unsaved
+individual vendors can also be selected separately when there are several. With
+only one vendor, its name and description remain visible, while the category
+switch controls its consent without a duplicate switch. “Back” preserves unsaved
 choices; only submitting a form saves them.
 
 For custom necessary-cookie names and descriptions, see the
