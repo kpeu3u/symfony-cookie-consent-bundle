@@ -72,7 +72,7 @@ an explicit `version` field to `composer.json`. The README and changelog identif
 the planned release while it is unreleased. Keep the frontend package version in
 `package.json` and the root entries of `package-lock.json` aligned with that target.
 
-The current target is **2.0.0**. Before publishing, review compatibility changes,
+The latest release is **2.0.0**. Before publishing a new release, review compatibility changes,
 finish the release checks and replace the changelog's unreleased heading with the
 actual version and release date. Publishing a matching Git tag/release is a separate
 step; editing these files does not publish the package.

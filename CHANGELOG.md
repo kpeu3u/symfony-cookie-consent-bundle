@@ -4,7 +4,7 @@ Notable user-facing changes are recorded here. Changes under **Unreleased** are
 not a published release. See the [upgrade guide](docs/upgrading.md) for required
 application changes and the [deprecation policy](DEPRECATIONS.md) for API status.
 
-## Unreleased — planned 2.0.0
+## 2.0.0 — 2026-10-01
 
 ### Added
 
