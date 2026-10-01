@@ -16,9 +16,9 @@ optionally record submissions in a database.
 make an application legally compliant.** Load optional integrations only after
 checking consent, and provide your own privacy information.
 
-**Development version: 2.0.0 (unreleased).** See the [changelog](CHANGELOG.md)
-for the changes being prepared. The stable-version badge above reports the
-published Packagist release and may show an earlier version.
+**Version: 2.0.0.** See the [changelog](CHANGELOG.md) and the
+[upgrade guide](docs/upgrading.md) before upgrading from 1.x. The stable-version
+badge above reports the latest version indexed by Packagist.
 
 This documentation describes the current source branch. For an installed release,
 use the documentation at the matching Git tag; unreleased changes may not yet be
