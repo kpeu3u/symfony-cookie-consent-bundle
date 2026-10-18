@@ -4,6 +4,18 @@ Notable user-facing changes are recorded here. Changes under **Unreleased** are
 not a published release. See the [upgrade guide](docs/upgrading.md) for required
 application changes and the [deprecation policy](DEPRECATIONS.md) for API status.
 
+## Unreleased
+
+### Added
+
+- Optional `preference_storage: signed_cookie` retains accept, reject and custom
+  vendor choices independently of the session, signed with the application secret.
+  The default remains `session` for compatibility.
+- `consent_version` and an automatic category/vendor fingerprint invalidate old
+  signed choices. Invalid or expired cookies deny optional consent.
+- Preference storage interface with session and signed cookie implementations,
+  plus storage-neutral read and clear methods on the consent service.
+
 ## 2.0.0 — 2026-10-01
 
 ### Added
