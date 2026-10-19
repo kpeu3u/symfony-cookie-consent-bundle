@@ -2,8 +2,8 @@
 
 // Configure a disposable CI checkout before resolving a Symfony version matrix.
 $version = $argv[1] ?? '';
-if (!in_array($version, ['7.4.*', '8.0.*', '8.1.*'], true)) {
-    throw new InvalidArgumentException('Expected a supported Symfony test version.');
+if (!in_array($version, ['7.4.*', '8.1.*'], true)) {
+    throw new InvalidArgumentException('Expected a maintained Symfony test version (7.4.* or 8.1.*).');
 }
 $doctrineVersion = $argv[2] ?? null;
 if ($doctrineVersion !== null && !in_array($doctrineVersion, ['2.19.*', '3.3.*'], true)) {
@@ -17,7 +17,7 @@ $path = dirname(__DIR__, 2).'/composer.json';
 $config = json_decode(file_get_contents($path), true, flags: JSON_THROW_ON_ERROR);
 foreach (['require', 'require-dev'] as $section) {
     foreach ($config[$section] as $package => $constraint) {
-        if (str_starts_with($package, 'symfony/') && (str_contains($constraint, '^7.4') || in_array($constraint, ['7.4.*', '8.0.*', '8.1.*'], true))) {
+        if (str_starts_with($package, 'symfony/') && (str_contains($constraint, '^7.4') || in_array($constraint, ['7.4.*', '8.1.*'], true))) {
             $config[$section][$package] = $version;
         }
     }

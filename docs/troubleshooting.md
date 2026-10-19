@@ -11,7 +11,7 @@
 | A POST returns 400 | Use the rendered form, including its CSRF token and clicked submit button. Check that the session survives between rendering and submission. Do not cache another visitor's form. |
 | Update returns 405 | The update action requires POST; a browser address-bar visit uses GET. |
 | A POST returns 500 | Inspect the application log. If logging is enabled, verify the entity mapping, migration and database connection. `persist_consent: false` skips logging. |
-| Banner reappears after reload | Check the consent cookie and session cookie. On local HTTP, set the consent cookie's `secure` option to `false` in development configuration. Check session expiry and storage. |
+| Banner reappears after reload | Check the consent cookie and session cookie. On local HTTP, set the consent cookie's `secure` option to `false` in development configuration. Check session expiry and storage. To retain preferences after logout, use `preference_storage: signed_cookie`; check `consent_version` and secret stability in that mode. |
 | Analytics does not start after acceptance | Twig ran before the visitor submitted. Reload on the success event, or initialize the permitted integration explicitly in application code. |
 | Cookies are still present after rejection | The bundle does not delete other cookies or stop scripts already loaded. Implement vendor-specific cleanup and guard future loading. |
 | Category/vendor names look generic | Update any template overrides and clear the application cache. Add category/vendor translation keys as shown in the integration guide; unknown identifiers use readable fallback labels. |

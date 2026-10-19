@@ -6,8 +6,8 @@
 
 | Route | Use |
 | --- | --- |
-| `cookie_consent.view_if_no_consent` | Render the banner only when the consent cookie or session choices are missing. |
-| `cookie_consent.view` | Always render the forms, prefilled with available session choices. |
+| `cookie_consent.view_if_no_consent` | Render the banner only when saved preferences are missing or invalid. |
+| `cookie_consent.view` | Always render the forms, prefilled with available saved choices. |
 | `cookie_consent.update` | Submit either form with POST. Success returns HTTP 201 with JSON `"ok"` and the consent cookie. |
 
 The two view routes accept a `locale` query parameter. Importing the routes with a
@@ -200,9 +200,10 @@ files under `public/` in the bundle. Re-run `assets:install public` after upgrad
 
 ## Sessions and caching
 
-The consent cookie and the application's session cookie serve different purposes.
+With the default `preference_storage: session`, the consent cookie and the application's session cookie serve different purposes.
 Do not increase the consent cookie lifetime expecting the session choices to last
-as long. Logging does not replace session storage.
+as long. Logging does not replace session storage. Use `preference_storage: signed_cookie`
+to retain choices independently of the session (see [configuration](configuration.md#preference-storage)).
 
 Both view responses are private and marked `no-store`. The page that contains the
 fragment can still leak personalized content if an application cache stores and

@@ -3,7 +3,8 @@
 namespace CookieConsentBundle\Service;
 
 use CookieConsentBundle\Enum\ConsentType;
-use CookieConsentBundle\Enum\CookieName;
+use CookieConsentBundle\Storage\PreferenceStorageInterface;
+use CookieConsentBundle\Storage\SessionPreferenceStorage;
 use CookieConsentBundle\Form\ConsentCategoryTypeModel;
 use CookieConsentBundle\Form\ConsentDetailedTypeModel;
 use CookieConsentBundle\Form\ConsentVendorTypeModel;
@@ -16,11 +17,17 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class CookieConsentService
 {
+    private readonly PreferenceStorageInterface $preferenceStorage;
+
     public function __construct(
         private readonly array $consentConfiguration,
         private readonly bool $persistConsent,
-        private readonly ?ManagerRegistry $registry = null)
+        private readonly ?ManagerRegistry $registry = null,
+        ?PreferenceStorageInterface $preferenceStorage = null)
     {
+        $this->preferenceStorage = $preferenceStorage ?? new SessionPreferenceStorage(
+            $consentConfiguration['consent_configuration']['consent_cookie']['name']
+        );
     }
 
     /**
@@ -60,17 +67,28 @@ class CookieConsentService
     }
 
     /**
-     * @param Request $request
-     * @return mixed
+     * Compatibility alias: reads preferences from the selected storage.
      */
     public function getConsentSettingsFromSession(Request $request): mixed
     {
-        $cookieName = $this->consentConfiguration['consent_configuration']['consent_cookie']['name'];
-        if (!$request->hasSession() || !$request->cookies->has($cookieName)) {
-            return null;
+        return $this->getConsentSettings($request);
+    }
+
+    public function getConsentSettings(Request $request): ?ConsentDetailedTypeModel
+    {
+        return $this->preferenceStorage->read($request);
+    }
+
+    public function clearConsentSettings(Request $request): ResponseHeaderBag
+    {
+        $cookie = CookieConfigMapper::mapToCookie($this->consentConfiguration['consent_configuration']['consent_cookie'], '');
+        if ($cookie === null) {
+            throw new InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
         }
-        $settings = $request->getSession()->get('consent-settings');
-        return $settings instanceof ConsentDetailedTypeModel ? $settings : null;
+        $headers = new ResponseHeaderBag();
+        $headers->setCookie($this->preferenceStorage->clear($request, $cookie));
+
+        return $headers;
     }
 
     /**
@@ -116,24 +134,14 @@ class CookieConsentService
             throw new InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
         }
 
-        // save "no-consent" to session
         $this->persistConsentSettings($request, $formData);
-        $this->saveConsentSettingsToSession($request, $formData);
+        $consentCookie = $this->preferenceStorage->write($request, $formData, $consentCookie);
 
 
         $headerBag = new ResponseHeaderBag();
         $headerBag->setCookie($consentCookie);
 
         return $headerBag;
-    }
-
-    private
-    function saveConsentSettingsToSession(Request $request, mixed $value): void
-    {
-        $session = $request->getSession();
-
-        // save consent settings in session
-        $session->set('consent-settings', $value);
     }
 
     private function persistConsentSettings(Request $request, ConsentDetailedTypeModel $settings): void
@@ -152,10 +160,12 @@ class CookieConsentService
             }
             $categories[$category->getName()] = json_encode($vendors, JSON_THROW_ON_ERROR);
         }
-        $key = $request->getSession()->get('consent-key');
+        $key = $request->hasSession() ? $request->getSession()->get('consent-key') : null;
         if (!is_string($key)) {
             $key = bin2hex(random_bytes(16));
-            $request->getSession()->set('consent-key', $key);
+            if ($request->hasSession()) {
+                $request->getSession()->set('consent-key', $key);
+            }
         }
         (new CookieLogger($this->registry, $request))->log($categories, $key);
     }
@@ -174,10 +184,9 @@ class CookieConsentService
             throw new InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
         }
 
-        // save "no-consent" to session
         $settings = $this->createDetailedForm(consentGiven: true);
         $this->persistConsentSettings($request, $settings);
-        $this->saveConsentSettingsToSession($request, $settings);
+        $consentCookie = $this->preferenceStorage->write($request, $settings, $consentCookie);
 
 
         $headerBag = new ResponseHeaderBag();
@@ -189,7 +198,7 @@ class CookieConsentService
     public function createDetailedFormForRequest(Request $request): ConsentDetailedTypeModel
     {
         // Use fresh configured models: binding an invalid form must never mutate
-        // the objects already stored in the session.
+        // the objects already stored as preferences.
         if (!$this->isCookieConsentFormSubmittedByUser($request)) {
             // Preselect the form only; actual permission still requires a saved choice.
             return $this->createDetailedForm(consentGiven: true);
@@ -245,10 +254,9 @@ class CookieConsentService
             throw new InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
         }
 
-        // save "no-consent" to session
         $settings = $this->createDetailedForm(consentGiven: false);
         $this->persistConsentSettings($request, $settings);
-        $this->saveConsentSettingsToSession($request, $settings);
+        $consentCookie = $this->preferenceStorage->write($request, $settings, $consentCookie);
 
 
         $headerBag = new ResponseHeaderBag();
