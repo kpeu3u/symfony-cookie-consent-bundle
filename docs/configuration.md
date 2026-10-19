@@ -218,7 +218,46 @@ Also enable `framework.csrf_protection` and sessions in the application. Render
 and submit the generated token with the form; custom templates must preserve it.
 Invalid tokens return HTTP 400. Keep protection enabled for normal browser use.
 Setting the bundle option to `false` removes this validation but does not remove
-the session requirement for storing preferences.
+the session requirement of the default `session` preference storage.
+
+## Preference storage
+
+```yaml
+cookie_consent:
+    preference_storage: signed_cookie # session (default) | signed_cookie
+    consent_version: '1'
+    consent_configuration:
+        consent_cookie:
+            expires: P180D
+```
+
+`session` preserves the existing behavior: vendor choices live in the session and
+require the consent cookie. `signed_cookie` stores all choices in that cookie,
+independently of authentication and session lifetime. It uses HMAC-SHA256 with
+`kernel.secret` and always sets HttpOnly. The payload is signed, not encrypted.
+Keep the application secret stable across deployments and application instances.
+
+Missing, invalid, expired or outdated signed cookies grant no optional consent
+and cause the banner to appear again. The signature covers the expiration,
+configuration fingerprint and every vendor choice, including refusals. Category
+or vendor configuration changes (including ordering), an increased
+`consent_version`, or secret rotation invalidate existing signed preferences.
+Switching between storage modes requires visitors to choose again; existing
+session data is not silently migrated. A replayed valid cookie remains usable
+until its signed expiration or a configuration/version/secret change.
+
+The configured cookie name, domain, Secure, SameSite and lifetime still apply.
+Preference values exceeding the supported cookie size fail explicitly instead
+of silently losing choices. `persist_consent` only controls database logging;
+logs are never used to restore browser preferences. CSRF remains configured
+separately and can still require a session for rendering and submitting forms.
+
+`CookieConsentService::getConsentSettings()` reads either storage. The existing
+`getConsentSettingsFromSession()` method remains available and delegates to the
+selected storage. Twig functions and existing save methods keep their signatures.
+`clearConsentSettings($request)` clears the selected storage and returns a
+`ResponseHeaderBag`; copy its cookies to your response, as with save methods.
+Clearing browser preferences does not delete database audit records.
 
 ## Cookie options
 
@@ -337,7 +376,7 @@ There is no special treatment for a category called `functional` or `necessary`.
 Keep essential application behavior separate from the optional integrations you
 guard with consent checks.
 
-Existing session choices are not versioned against configuration changes. When
+In the default `session` mode, existing choices are not versioned against configuration changes. When
 adding vendors, use per-vendor checks so a newly added vendor remains disallowed
 until selected. A category-wide check on an old session is not a reliable gate for
 a newly introduced vendor. To require a new choice from everyone, change the
@@ -407,7 +446,7 @@ historical SQLite-specific migration to another database.
 Then set `cookie_consent.persist_consent: true`.
 
 Each submission writes one log record per category, containing vendor choices,
-a timestamp, a random identifier retained in the session, and an anonymized IP.
+a timestamp, a random identifier retained in the session when available, and an anonymized IP.
 IPv4 logging masks the last octet; IPv6 logging retains the first 48 bits. An
 unavailable address is recorded as `unknown`. The bundle does not set a separate
 `consent-key` cookie or restore preferences from these records.

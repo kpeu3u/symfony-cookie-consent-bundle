@@ -57,6 +57,24 @@ class CookieConsentConfigDefinitonTest extends TestCase
         $this->assertEquals('dialog', $processedConfig['position']);
     }
 
+    public function testPreferenceStorageConfiguration(): void
+    {
+        $defaults = $this->processor->processConfiguration($this->configuration, []);
+        self::assertSame('session', $defaults['preference_storage']);
+        self::assertSame('1', $defaults['consent_version']);
+        $config = $this->processor->processConfiguration($this->configuration, [[
+            'preference_storage' => 'signed_cookie', 'consent_version' => 'policy-2',
+        ]]);
+        self::assertSame('signed_cookie', $config['preference_storage']);
+        self::assertSame('policy-2', $config['consent_version']);
+    }
+
+    public function testUnknownPreferenceStorageIsRejected(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->processor->processConfiguration($this->configuration, [['preference_storage' => 'unknown']]);
+    }
+
     public function testThemeConfiguration(): void
     {
         $defaults = $this->processor->processConfiguration($this->configuration, []);

@@ -31,7 +31,10 @@ run `npm run build:prod` and include the resulting public assets in your patch.
 
 ## Compatibility testing
 
-CI resolves dependencies for Symfony 7.4 with PHP 8.3/8.4 and Symfony 8.0/8.1 with
+CI targets maintained Symfony branches. Symfony 8.0 is no longer in the matrix:
+Composer blocks its vulnerable dependencies. Keep advisory blocking enabled.
+
+CI resolves dependencies for Symfony 7.4 with PHP 8.3/8.4 and Symfony 8.1 with
 PHP 8.4. The PHP 8.3 job uses DoctrineBundle 2.19; the PHP 8.4 jobs
 explicitly test DoctrineBundle 3.3 with DoctrineMigrationsBundle 4. An additional
 Symfony 7.4 job retains coverage for DoctrineMigrationsBundle 3. The committed lock file targets Symfony 7.4 and PHP 8.3. Tests executed
@@ -72,7 +75,7 @@ an explicit `version` field to `composer.json`. The README and changelog identif
 the planned release while it is unreleased. Keep the frontend package version in
 `package.json` and the root entries of `package-lock.json` aligned with that target.
 
-The latest release is **2.0.0**. Before publishing a new release, review compatibility changes,
+The release target is **2.1.0**. Before publishing a new release, review compatibility changes,
 finish the release checks and replace the changelog's unreleased heading with the
 actual version and release date. Publishing a matching Git tag/release is a separate
 step; editing these files does not publish the package.

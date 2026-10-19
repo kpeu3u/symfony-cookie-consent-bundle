@@ -9,6 +9,9 @@ use CookieConsentBundle\Form\ConsentDetailedType;
 use CookieConsentBundle\Form\ConsentSimpleType;
 use CookieConsentBundle\Repository\CookieConsentLogRepository;
 use CookieConsentBundle\Service\CookieConsentService;
+use CookieConsentBundle\Storage\PreferenceStorageInterface;
+use CookieConsentBundle\Storage\SessionPreferenceStorage;
+use CookieConsentBundle\Storage\SignedCookiePreferenceStorage;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -47,7 +50,14 @@ class CookieConsentBundle extends AbstractBundle
         $services->set(CookieConsentController::class)->public()->autowire();
 
         // configure manually wired constructor arguments for private services
-        $services->set(CookieConsentService::class)->args([$config, $config['persist_consent'], service('doctrine')]);
+        $cookieName = $config['consent_configuration']['consent_cookie']['name'];
+        $services->set(SessionPreferenceStorage::class)->args([$cookieName]);
+        $services->set(SignedCookiePreferenceStorage::class)->args([
+            $cookieName, '%kernel.secret%', $config['consent_configuration']['consent_categories'], (string) $config['consent_version'],
+        ]);
+        $services->alias(PreferenceStorageInterface::class, $config['preference_storage'] === 'signed_cookie'
+            ? SignedCookiePreferenceStorage::class : SessionPreferenceStorage::class);
+        $services->set(CookieConsentService::class)->args([$config, $config['persist_consent'], service('doctrine'), service(PreferenceStorageInterface::class)]);
         $services->set(CookieConsentLogRepository::class)->args([service('doctrine')])->tag('doctrine.repository_service');
         $services->set(ConsentSimpleType::class)->tag('form.type')->args([service('translator'), $config['csrf_protection'], $config['show_reject_all']]);
         $services->set(ConsentDetailedType::class)->tag('form.type')->args([service('translator'), $config['csrf_protection'], $config['show_reject_all']]);

@@ -16,8 +16,8 @@ optionally record submissions in a database.
 make an application legally compliant.** Load optional integrations only after
 checking consent, and provide your own privacy information.
 
-**Version: 2.0.0.** See the [changelog](CHANGELOG.md) and the
-[upgrade guide](docs/upgrading.md) before upgrading from 1.x. The stable-version
+**Version: 2.1.0.** See the [changelog](CHANGELOG.md) and the
+[upgrade guide](docs/upgrading.md) before upgrading from 2.0.0 or 1.x. The stable-version
 badge above reports the latest version indexed by Packagist.
 
 This documentation describes the current source branch. For an installed release,
@@ -34,7 +34,7 @@ available through a plain `composer require`.
 | Application bundles | FrameworkBundle, TwigBundle and DoctrineBundle |
 | DoctrineBundle | 2.19.x on PHP 8.3+ or 3.3.x on PHP 8.4+; Composer allows `^2.19 \|\| ^3.3` |
 | DoctrineMigrationsBundle | `^3.3` or `^4.0`; 4.x requires PHP 8.4+ |
-| Session | Enabled and available on the consent routes |
+| Session | Required for the default preference storage and session-based CSRF protection |
 | Browser | JavaScript modules, `fetch`, `FormData(form, submitter)`; native `dialog` for dialog mode |
 | Node.js | 22.14+ for contributors rebuilding assets; not required to use the bundle |
 
@@ -253,6 +253,8 @@ Configure these in `config/packages/cookie_consent.yaml` under `cookie_consent`.
 
 | Setting | Default | What it controls |
 | --- | --- | --- |
+| [`preference_storage`](docs/configuration.md#preference-storage) | `session` | Store choices in the session or a signed cookie. |
+| [`consent_version`](docs/configuration.md#preference-storage) | `'1'` | Version used to invalidate signed preferences when policy changes. |
 | [`theme`](docs/configuration.md#theme) | `light` | Light, dark or automatic system-based colors. |
 | [`show_reject_all`](docs/configuration.md#reject-all-button) | `true` | Show or omit the reject-all button in both forms. |
 | [`necessary_cookies`](docs/configuration.md#necessary-cookies) | Empty map | Names and descriptions of necessary cookies, shown as always active. |
@@ -295,7 +297,7 @@ and `description`, and define them in your application's
 
 ## How preferences are stored
 
-A cookie named `consent` by default records `full-consent`, `no-consent` or
+With the default `preference_storage: session`, a cookie named `consent` records `full-consent`, `no-consent` or
 `custom-consent`. Detailed vendor choices are stored in the Symfony session.
 Both the cookie and session choices must be available for the bundle to recognize
 an existing choice. Expiring either causes the banner to appear again.
@@ -304,6 +306,26 @@ The default cookie lifetime is 180 days; it does **not** extend the session life
 Database logs are an audit trail and are not used to restore expired sessions.
 Logging defaults to `true`, while the quick start explicitly disables it until the
 schema is ready. See [database logging](docs/configuration.md#database-logging).
+
+To retain preferences after logout or session expiry, enable signed cookie storage:
+
+```yaml
+cookie_consent:
+    preference_storage: signed_cookie
+    consent_version: '1'
+```
+
+This stores all vendor choices in the consent cookie, signed with `kernel.secret`,
+with the configured lifetime (180 days by default). Accept, reject and custom
+choices all survive session expiry. Missing, altered or expired cookies deny
+optional vendors and show the banner again. Changes to categories/vendors or
+`consent_version` invalidate existing signed preferences. Increase the version
+when policy changes require a new choice. Rotating the application secret also
+invalidates existing cookies. Switching storage modes requires a new choice.
+
+`persist_consent` remains independent database logging. CSRF protection still
+requires the application's configured session support. See
+[preference storage](docs/configuration.md#preference-storage) for details.
 
 ## License
 
