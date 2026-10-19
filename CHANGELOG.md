@@ -6,6 +6,10 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
 
 ## Unreleased
 
+No changes recorded yet.
+
+## 2.1.0 — 2026-10-19
+
 ### Fixed
 
 - Remove the unmaintained Symfony 8.0 CI job whose dependencies are blocked by
@@ -20,6 +24,16 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
   signed choices. Invalid or expired cookies deny optional consent.
 - Preference storage interface with session and signed cookie implementations,
   plus storage-neutral read and clear methods on the consent service.
+
+### Upgrade considerations
+
+- Existing 2.0.0 installations keep session storage by default; no configuration
+  or database schema change is required for this release.
+- Opting into signed cookie storage requires visitors to choose again. Keep
+  `kernel.secret` stable across deployments and instances, and retain session
+  support when using session-based CSRF protection.
+- See the [2.1.0 upgrade instructions](docs/upgrading.md#upgrading-from-200-to-210)
+  for configuration and deployment checks. No APIs are newly deprecated.
 
 ## 2.0.0 — 2026-10-01
 
@@ -87,7 +101,7 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
   apply a reviewed migration, or explicitly set `persist_consent: false`.
 - Reinstall public assets and review custom templates before deployment.
 - Choices still depend on the Symfony session. Database logs do not restore them.
-- No API is newly marked deprecated in this unreleased update. The dotted success
+- No API is newly marked deprecated in 2.0.0. The dotted success
   event remains a supported compatibility alias; no removal release is scheduled.
 
 ## Earlier versions

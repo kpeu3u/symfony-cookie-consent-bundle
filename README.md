@@ -16,8 +16,8 @@ optionally record submissions in a database.
 make an application legally compliant.** Load optional integrations only after
 checking consent, and provide your own privacy information.
 
-**Version: 2.0.0.** See the [changelog](CHANGELOG.md) and the
-[upgrade guide](docs/upgrading.md) before upgrading from 1.x. The stable-version
+**Version: 2.1.0.** See the [changelog](CHANGELOG.md) and the
+[upgrade guide](docs/upgrading.md) before upgrading from 2.0.0 or 1.x. The stable-version
 badge above reports the latest version indexed by Packagist.
 
 This documentation describes the current source branch. For an installed release,
@@ -253,6 +253,8 @@ Configure these in `config/packages/cookie_consent.yaml` under `cookie_consent`.
 
 | Setting | Default | What it controls |
 | --- | --- | --- |
+| [`preference_storage`](docs/configuration.md#preference-storage) | `session` | Store choices in the session or a signed cookie. |
+| [`consent_version`](docs/configuration.md#preference-storage) | `'1'` | Version used to invalidate signed preferences when policy changes. |
 | [`theme`](docs/configuration.md#theme) | `light` | Light, dark or automatic system-based colors. |
 | [`show_reject_all`](docs/configuration.md#reject-all-button) | `true` | Show or omit the reject-all button in both forms. |
 | [`necessary_cookies`](docs/configuration.md#necessary-cookies) | Empty map | Names and descriptions of necessary cookies, shown as always active. |

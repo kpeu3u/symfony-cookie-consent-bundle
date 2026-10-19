@@ -1,10 +1,67 @@
-# Upgrading to 2.0.0
+# Upgrading
 
 [Documentation index](index.md) · [Changelog](../CHANGELOG.md) · [Deprecations](../DEPRECATIONS.md)
 
-Version 2.0.0 is being prepared and is not yet published. This guide is intended
-for existing installations, including 1.0.3. Choose an available
-release that contains these changes before updating a production application.
+## Upgrading from 2.0.0 to 2.1.0
+
+Version 2.1.0 adds optional signed cookie preference storage. The default remains
+`preference_storage: session`, so existing 2.0.0 configuration, Twig checks and
+save methods continue to work. Runtime requirements are unchanged, and this
+release requires no new database migration or template changes.
+
+To keep preferences after logout or session expiry, merge this into your existing
+configuration:
+
+```yaml
+# config/packages/cookie_consent.yaml
+cookie_consent:
+    preference_storage: signed_cookie
+    consent_version: '1'
+```
+
+Existing session choices are not migrated: switching storage modes requires
+visitors to choose again. Accept, reject and custom vendor choices then persist
+for the configured consent-cookie lifetime (180 days by default). Signed cookies
+are HttpOnly and signed with `kernel.secret`; their contents are not encrypted.
+Keep a non-empty secret stable across deployments and application instances.
+
+Missing, altered, expired or outdated cookies deny optional consent and show the
+banner again. Changes to categories or vendors (including ordering), changes to
+`consent_version`, and secret rotation invalidate signed preferences. Increase
+`consent_version` when a policy update requires a new choice. Database logging
+remains independent and does not restore preferences. Keep session support for
+session-based CSRF protection even when using signed cookie storage.
+
+Custom PHP integrations can use `CookieConsentService::getConsentSettings()` to
+read either storage. `getConsentSettingsFromSession()` remains supported and
+also delegates to the selected storage. `clearConsentSettings($request)` returns
+response headers whose cookies must be copied to your response; it does not
+remove database audit records. See the [storage reference](configuration.md#preference-storage).
+
+After the 2.1.0 tag is published, update the application constraint and deploy:
+
+```bash
+composer require kpeu3u/symfony-cookie-consent-bundle:'^2.1' --with-all-dependencies
+php bin/console assets:install public
+php bin/console cache:clear
+```
+
+Review the lock-file changes and test in staging before production. Verify accept,
+reject and custom choices, reopening settings, and optional-script gating after
+reload. In signed cookie mode, confirm choices survive logout/session expiry and
+that deleting or altering the consent cookie prompts a new choice. Check that a
+`consent_version` change invalidates an existing signed choice. With default
+session storage, confirm the existing behavior is preserved.
+
+Rolling back to 2.0.0 requires removing `preference_storage` and `consent_version`
+from application configuration and restoring the previous artifact, lock file
+and assets. Signed preferences are not migrated back to session storage;
+visitors must choose again.
+
+## Upgrading from 1.x to 2.0.0
+
+The following instructions cover the 2.0.0 changes for older installations,
+including 1.0.3. Apply them as well when upgrading directly from 1.x to 2.1.0.
 
 ## Before updating
 
