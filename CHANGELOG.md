@@ -6,6 +6,11 @@ application changes and the [deprecation policy](DEPRECATIONS.md) for API status
 
 ## Unreleased
 
+### Fixed
+
+- Remove the unmaintained Symfony 8.0 CI job whose dependencies are blocked by
+  Composer security advisories. Retain Symfony 7.4 and 8.1 coverage and advisory blocking.
+
 ### Added
 
 - Optional `preference_storage: signed_cookie` retains accept, reject and custom

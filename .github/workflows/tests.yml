@@ -6,6 +6,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # Test maintained Symfony branches without bypassing Composer advisory blocking.
         include:
           - php: '8.3'
             symfony: '7.4.*'
@@ -13,10 +14,6 @@ jobs:
             migrations: '^3.3'
           - php: '8.4'
             symfony: '7.4.*'
-            doctrine: '3.3.*'
-            migrations: '^4.0'
-          - php: '8.4'
-            symfony: '8.0.*'
             doctrine: '3.3.*'
             migrations: '^4.0'
           - php: '8.4'
