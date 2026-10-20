@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
 
 namespace CookieConsentBundle\tests\Cookie;
 
-use Doctrine\ORM\EntityManagerInterface;
 use CookieConsentBundle\Cookie\CookieLogger;
 use CookieConsentBundle\Entity\CookieConsentLog;
+use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,8 +27,8 @@ class CookieLoggerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->registry = $this->createMock(ManagerRegistry::class);
-        $this->request = $this->createMock(Request::class);
+        $this->registry      = $this->createMock(ManagerRegistry::class);
+        $this->request       = $this->createMock(Request::class);
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
 
         $this->registry
@@ -36,7 +39,6 @@ class CookieLoggerTest extends TestCase
 
         $this->cookieLogger = new CookieLogger($this->registry, $this->request);
     }
-
 
     #[Test]
     public function shouldLog(): void
@@ -56,12 +58,11 @@ class CookieLoggerTest extends TestCase
             ->with();
 
         $this->cookieLogger->log([
-                                     'analytics' => 'true',
-                                     'social_media' => 'true',
-                                     'tracking' => 'false',
-                                 ], 'key-test');
+            'analytics'    => 'true',
+            'social_media' => 'true',
+            'tracking'     => 'false',
+        ], 'key-test');
     }
-
 
     #[Test]
     public function shouldLogWithNullIp(): void
@@ -81,17 +82,16 @@ class CookieLoggerTest extends TestCase
             ->with();
 
         $this->cookieLogger->log([
-                                     'analytics' => 'true',
-                                     'social_media' => 'true',
-                                     'tracking' => 'false',
-                                 ], 'key-test');
+            'analytics'    => 'true',
+            'social_media' => 'true',
+            'tracking'     => 'false',
+        ], 'key-test');
     }
-
 
     #[Test]
     public function shouldNotLogWithoutRequest(): void
     {
-        $this->expectException(RuntimeException::class);
+        $this->expectException(\RuntimeException::class);
         $this->cookieLogger = new CookieLogger($this->registry, null);
         $this->cookieLogger->log([], 'key-test');
     }

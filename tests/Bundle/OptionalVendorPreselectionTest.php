@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Bundle;
 
 use CookieConsentBundle\Service\CookieConsentService;
@@ -27,7 +32,7 @@ final class OptionalVendorPreselectionTest extends WebTestCase
     #[DataProvider('storageModes')]
     public function testConfiguredPreselectionDoesNotGrantConsentOrOverrideSavedChoices(string $environment): void
     {
-        $client = self::createClient(['environment' => $environment]);
+        $client  = self::createClient(['environment' => $environment]);
         $crawler = $client->request('GET', 'https://localhost/cookie-consent/view');
         self::assertGreaterThan(0, $crawler->filter('.consent-form-vendors input[checked]')->count());
         $service = self::getContainer()->get(CookieConsentService::class);
@@ -53,7 +58,7 @@ final class OptionalVendorPreselectionKernel extends AppKernel
         parent::configureContainer($container, $loader);
         $container->loadFromExtension('cookie_consent', [
             'preselect_optional_vendors' => true,
-            'preference_storage' => 'preselect_signed' === $this->environment ? 'signed_cookie' : 'session',
+            'preference_storage'         => 'preselect_signed' === $this->environment ? 'signed_cookie' : 'session',
         ]);
     }
 }

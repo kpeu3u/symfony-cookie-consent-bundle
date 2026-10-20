@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
 
 namespace CookieConsentBundle\Twig;
 
@@ -14,7 +18,7 @@ class CookieConsentTwigExtension extends AbstractExtension
 {
     public function __construct(
         private readonly CookieConsentService $cookieConsentService,
-        private readonly RequestStack         $requestStack)
+        private readonly RequestStack $requestStack)
     {
     }
 

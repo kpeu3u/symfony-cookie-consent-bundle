@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Service;
 
 use CookieConsentBundle\Enum\ConsentType;
@@ -17,7 +24,6 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class CookieConsentServiceTest extends TestCase
 {
     private CookieConsentService $consentService;
-
 
     public function setUp(): void
     {
@@ -53,10 +59,10 @@ class CookieConsentServiceTest extends TestCase
     #[Test]
     public function shouldPreselectOnlyNewChoicesWhenConfiguredWithoutGrantingPermission(): void
     {
-        $configuration = $this->getConsentCookieConfiguration();
+        $configuration                               = $this->getConsentCookieConfiguration();
         $configuration['preselect_optional_vendors'] = true;
-        $service = new CookieConsentService($configuration, false);
-        $request = new Request();
+        $service                                     = new CookieConsentService($configuration, false);
+        $request                                     = new Request();
         $request->setSession(new \Symfony\Component\HttpFoundation\Session\Session(
             new \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage()
         ));
@@ -81,7 +87,7 @@ class CookieConsentServiceTest extends TestCase
     #[Test]
     public function shouldReturnCookieWithNoConsentAfterRejectingConsent(): void
     {
-        $request = $this->createMock(Request::class);
+        $request   = $this->createMock(Request::class);
         $headerBag = $this->consentService->rejectAllCookies($request);
 
         $this->assertInstanceOf(ResponseHeaderBag::class, $headerBag);
@@ -92,7 +98,7 @@ class CookieConsentServiceTest extends TestCase
     #[Test]
     public function shouldReturnCookieWithFullConsentAfterGivingConsent(): void
     {
-        $request = $this->createMock(Request::class);
+        $request   = $this->createMock(Request::class);
         $headerBag = $this->consentService->acceptAllCookies($request);
 
         $this->assertInstanceOf(ResponseHeaderBag::class, $headerBag);
@@ -103,7 +109,7 @@ class CookieConsentServiceTest extends TestCase
     #[Test]
     public function shouldReturnCookieWithCustomConsentAfterSubmittingCustomConsent(): void
     {
-        $request = $this->createMock(Request::class);
+        $request         = $this->createMock(Request::class);
         $consentSettings = $this->consentService->createDetailedForm();
 
         /** @var ConsentCategoryTypeModel $consentCategory */

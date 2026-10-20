@@ -1,11 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "cookieconsent_settings")]
+#[ORM\Table(name: 'cookieconsent_settings')]
 class CookieSettings
 {
     #[ORM\Id]

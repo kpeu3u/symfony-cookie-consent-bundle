@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\Entity;
 
-use DateTime;
-use DateTimeImmutable;
+use CookieConsentBundle\Repository\CookieConsentLogRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use CookieConsentBundle\Repository\CookieConsentLogRepository;
 
 #[ORM\Entity(repositoryClass: CookieConsentLogRepository::class)]
-#[ORM\Table(name: "cookieconsent_log")]
+#[ORM\Table(name: 'cookieconsent_log')]
 class CookieConsentLog
 {
     #[ORM\Id]
@@ -32,21 +35,15 @@ class CookieConsentLog
     protected string $cookieValue;
 
     #[ORM\Column(type: Types::DATETIMETZ_IMMUTABLE)]
-    protected DateTimeImmutable $timestamp;
+    protected \DateTimeImmutable $timestamp;
 
-    /**
-     * @param string $ipAddress
-     * @param string $consentKey
-     * @param string $cookieName
-     * @param string $cookieValue
-     */
     public function __construct(string $ipAddress, string $consentKey, string $cookieName, string $cookieValue)
     {
-        $this->ipAddress = $ipAddress;
-        $this->consentKey = $consentKey;
-        $this->cookieName = $cookieName;
+        $this->ipAddress   = $ipAddress;
+        $this->consentKey  = $consentKey;
+        $this->cookieName  = $cookieName;
         $this->cookieValue = $cookieValue;
-        $this->timestamp = new \DateTimeImmutable();
+        $this->timestamp   = new \DateTimeImmutable();
     }
 
     public function getId(): int
@@ -102,14 +99,14 @@ class CookieConsentLog
         return $this->cookieValue;
     }
 
-    public function setTimestamp(DateTimeImmutable $timestamp): self
+    public function setTimestamp(\DateTimeImmutable $timestamp): self
     {
         $this->timestamp = $timestamp;
 
         return $this;
     }
 
-    public function getTimestamp(): DateTimeImmutable
+    public function getTimestamp(): \DateTimeImmutable
     {
         return $this->timestamp;
     }

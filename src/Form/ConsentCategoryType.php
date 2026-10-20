@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -15,29 +22,28 @@ class ConsentCategoryType extends AbstractType
 
     public function __construct(
         TranslatorInterface $translator,
-    )
-    {
+    ) {
         $this->translator = $translator;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-//        $categoryTitle = $this->translate('cookie_consent.' . $category . '.title');
-//        $categoryDescription = $this->translate('cookie_consent.' . $category . '.description');
+        //        $categoryTitle = $this->translate('cookie_consent.' . $category . '.title');
+        //        $categoryDescription = $this->translate('cookie_consent.' . $category . '.description');
 
         $builder->add('consentGiven', CheckboxType::class, [
             'required' => false,
-            'mapped' => false // we won't map this field to the ConsentCategoryTypeModel, we only need it for client-side interaction
+            'mapped'   => false, // we won't map this field to the ConsentCategoryTypeModel, we only need it for client-side interaction
         ]);
 
         $builder->add('vendors', CollectionType::class, [
-            'entry_type' => ConsentVendorType::class,
+            'entry_type'    => ConsentVendorType::class,
             'entry_options' => [
                 'attr' => ['class' => 'consent-form-category-vendor'],
             ],
             'attr' => [
-                'class' => 'consent-form-vendors'
-            ]
+                'class' => 'consent-form-vendors',
+            ],
         ]);
     }
 
@@ -47,7 +53,7 @@ class ConsentCategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ConsentCategoryTypeModel::class,
+            'data_class'         => ConsentCategoryTypeModel::class,
             'translation_domain' => 'CookieConsentBundle',
         ]);
     }
