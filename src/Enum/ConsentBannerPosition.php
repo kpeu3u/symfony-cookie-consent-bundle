@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\Enum;
 
 class ConsentBannerPosition
@@ -10,9 +15,6 @@ class ConsentBannerPosition
     public const POSITION_BOTTOM  = 'bottom';
     public const POSITION_DIALOG  = 'dialog';
 
-    /**
-     * @var array
-     */
     private static array $positions = [
         self::POSITION_TOP,
         self::POSITION_BOTTOM,

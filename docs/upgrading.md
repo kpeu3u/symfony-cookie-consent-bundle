@@ -2,6 +2,38 @@
 
 [Documentation index](index.md) · [Changelog](../CHANGELOG.md) · [Deprecations](../DEPRECATIONS.md)
 
+## Upgrading from 2.1.0 to 2.1.1
+
+Version 2.1.1 fixes the initial detailed form: optional vendors now start unchecked
+when no valid saved preferences exist. Submitting that initial form therefore
+keeps optional consent denied. Existing accepted, rejected and custom choices
+remain selected when reopening settings; explicit "Accept all" is unchanged.
+
+No database migration or configuration change is required. Remove application
+form extensions that only disabled the previous initial preselection. Applications
+that intentionally want optional vendors initially checked can configure:
+
+```yaml
+cookie_consent:
+    preselect_optional_vendors: true
+```
+
+This option only preselects the form. It grants no permission before submission
+and does not override saved preferences. The default is `false`.
+
+Update to 2.1.1 and deploy:
+
+```bash
+composer require kpeu3u/symfony-cookie-consent-bundle:'^2.1.1' --with-all-dependencies
+php bin/console assets:install public
+php bin/console cache:clear
+```
+
+Verify the initial form without saved preferences, saving unchanged settings,
+accepting all, rejecting all and reopening custom choices with your configured
+preference storage. Custom forms must preserve the new default when initializing
+vendor choices. Runtime requirements are unchanged; no APIs are newly deprecated.
+
 ## Upgrading from 2.0.0 to 2.1.0
 
 Version 2.1.0 adds optional signed cookie preference storage. The default remains
@@ -38,7 +70,7 @@ also delegates to the selected storage. `clearConsentSettings($request)` returns
 response headers whose cookies must be copied to your response; it does not
 remove database audit records. See the [storage reference](configuration.md#preference-storage).
 
-After the 2.1.0 tag is published, update the application constraint and deploy:
+Update the application constraint and deploy:
 
 ```bash
 composer require kpeu3u/symfony-cookie-consent-bundle:'^2.1' --with-all-dependencies
@@ -61,7 +93,7 @@ visitors must choose again.
 ## Upgrading from 1.x to 2.0.0
 
 The following instructions cover the 2.0.0 changes for older installations,
-including 1.0.3. Apply them as well when upgrading directly from 1.x to 2.1.0.
+including 1.0.3. Apply them as well when upgrading directly from 1.x to 2.1.1.
 
 ## Before updating
 

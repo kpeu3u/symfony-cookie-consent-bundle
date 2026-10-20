@@ -57,6 +57,26 @@ Twig template like this:
 
 Link to that application page from your footer. Make sure the base layout omits
 its normal `view_if_no_consent` fragment on this page, so it renders only one banner.
+One way is to provide a dedicated block in the base layout:
+
+```twig
+{% block cookie_consent %}
+    {{ render(path('cookie_consent.view_if_no_consent', {locale: app.request.locale})) }}
+{% endblock %}
+```
+
+Then move the settings fragment out of the settings page's `body` block and override
+that dedicated block instead:
+
+```twig
+{% block cookie_consent %}
+    {{ render(path('cookie_consent.view', {locale: app.request.locale})) }}
+{% endblock %}
+```
+
+Keep the settings link available after either acceptance or rejection. Reopening
+settings preserves saved per-vendor choices; rejection replaces those choices with
+all optional services disabled.
 The `view` endpoint itself is a fragment, not a full page with your layout and CSS.
 
 A later rejection replaces the saved choices but cannot undo scripts already run
@@ -122,9 +142,12 @@ cookie_consent:
 Replace `analytics` and `my_analytics_service` with your configured identifiers.
 Add equivalent files for each supported locale. Missing titles fall back to
 readable identifiers (for example, `my_service` becomes `My Service`); missing
-descriptions are omitted. For visitors without a saved choice, all optional vendors are preselected in the
-settings form. This does not grant consent or enable Twig-guarded scripts until
-the visitor submits their choice. Existing saved preferences, including rejection,
+descriptions are omitted. For visitors without a valid saved choice, all optional vendors start unchecked in
+the settings form. Saving the initial settings leaves optional services disabled.
+Visitors can explicitly select individual vendors or use "Accept all".
+The initial form state can be changed with
+[`preselect_optional_vendors`](configuration.md#initial-optional-vendor-selection);
+this does not grant permission before submission or override saved choices. Existing saved preferences, including rejection,
 are preserved when reopening settings.
 
 Category switches select all vendors in that category;

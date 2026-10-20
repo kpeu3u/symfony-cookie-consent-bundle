@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Service;
 
 use CookieConsentBundle\Enum\ConsentType;
@@ -18,14 +25,13 @@ class CookieConsentServiceTest extends TestCase
 {
     private CookieConsentService $consentService;
 
-
     public function setUp(): void
     {
         $this->consentService = new CookieConsentService($this->getConsentCookieConfiguration(), false);
     }
 
     #[Test]
-    public function shouldPreselectNewChoicesWithoutGrantingConsentAndPreserveRejection(): void
+    public function shouldLeaveNewChoicesUncheckedWithoutGrantingConsentAndPreserveRejection(): void
     {
         $request = new Request();
         $request->setSession(new \Symfony\Component\HttpFoundation\Session\Session(
@@ -34,7 +40,7 @@ class CookieConsentServiceTest extends TestCase
         $model = $this->consentService->createDetailedFormForRequest($request);
         foreach ($model->getCategories() as $category) {
             foreach ($category->getVendors() as $vendor) {
-                self::assertTrue($vendor->getConsentGiven());
+                self::assertFalse($vendor->getConsentGiven());
                 self::assertFalse($this->consentService->isVendorAllowedByUser($vendor->getName(), $category->getName(), $request));
             }
         }
@@ -51,9 +57,37 @@ class CookieConsentServiceTest extends TestCase
     }
 
     #[Test]
+    public function shouldPreselectOnlyNewChoicesWhenConfiguredWithoutGrantingPermission(): void
+    {
+        $configuration                               = $this->getConsentCookieConfiguration();
+        $configuration['preselect_optional_vendors'] = true;
+        $service                                     = new CookieConsentService($configuration, false);
+        $request                                     = new Request();
+        $request->setSession(new \Symfony\Component\HttpFoundation\Session\Session(
+            new \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage()
+        ));
+        foreach ($service->createDetailedFormForRequest($request)->getCategories() as $category) {
+            foreach ($category->getVendors() as $vendor) {
+                self::assertTrue($vendor->getConsentGiven());
+                self::assertFalse($service->isVendorAllowedByUser($vendor->getName(), $category->getName(), $request));
+            }
+        }
+        self::assertFalse($service->isCookieConsentFormSubmittedByUser($request));
+        $headers = $service->rejectAllCookies($request);
+        foreach ($headers->getCookies() as $cookie) {
+            $request->cookies->set($cookie->getName(), $cookie->getValue());
+        }
+        foreach ($service->createDetailedFormForRequest($request)->getCategories() as $category) {
+            foreach ($category->getVendors() as $vendor) {
+                self::assertFalse($vendor->getConsentGiven());
+            }
+        }
+    }
+
+    #[Test]
     public function shouldReturnCookieWithNoConsentAfterRejectingConsent(): void
     {
-        $request = $this->createMock(Request::class);
+        $request   = $this->createMock(Request::class);
         $headerBag = $this->consentService->rejectAllCookies($request);
 
         $this->assertInstanceOf(ResponseHeaderBag::class, $headerBag);
@@ -64,7 +98,7 @@ class CookieConsentServiceTest extends TestCase
     #[Test]
     public function shouldReturnCookieWithFullConsentAfterGivingConsent(): void
     {
-        $request = $this->createMock(Request::class);
+        $request   = $this->createMock(Request::class);
         $headerBag = $this->consentService->acceptAllCookies($request);
 
         $this->assertInstanceOf(ResponseHeaderBag::class, $headerBag);
@@ -75,7 +109,7 @@ class CookieConsentServiceTest extends TestCase
     #[Test]
     public function shouldReturnCookieWithCustomConsentAfterSubmittingCustomConsent(): void
     {
-        $request = $this->createMock(Request::class);
+        $request         = $this->createMock(Request::class);
         $consentSettings = $this->consentService->createDetailedForm();
 
         /** @var ConsentCategoryTypeModel $consentCategory */

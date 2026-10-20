@@ -1,16 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\Service;
 
+use CookieConsentBundle\Cookie\CookieLogger;
 use CookieConsentBundle\Enum\ConsentType;
-use CookieConsentBundle\Storage\PreferenceStorageInterface;
-use CookieConsentBundle\Storage\SessionPreferenceStorage;
 use CookieConsentBundle\Form\ConsentCategoryTypeModel;
 use CookieConsentBundle\Form\ConsentDetailedTypeModel;
 use CookieConsentBundle\Form\ConsentVendorTypeModel;
 use CookieConsentBundle\Mapper\CookieConfigMapper;
-use InvalidArgumentException;
-use CookieConsentBundle\Cookie\CookieLogger;
+use CookieConsentBundle\Storage\PreferenceStorageInterface;
+use CookieConsentBundle\Storage\SessionPreferenceStorage;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -32,9 +38,6 @@ class CookieConsentService
 
     /**
      * Check if user permits a given cookie category.
-     * @param string $categoryName
-     * @param Request $request
-     * @return bool
      */
     public function isCategoryAllowedByUser(string $categoryName, Request $request): bool
     {
@@ -60,7 +63,7 @@ class CookieConsentService
             return null;
         }
 
-        /** @var ConsentCategoryTypeModel $categorySettings */
+        /* @var ConsentCategoryTypeModel $categorySettings */
         return $consentSettings->getCategories()->findFirst(function (int $key, ConsentCategoryTypeModel $value) use ($categoryName) {
             return $value->getName() === $categoryName;
         });
@@ -83,7 +86,7 @@ class CookieConsentService
     {
         $cookie = CookieConfigMapper::mapToCookie($this->consentConfiguration['consent_configuration']['consent_cookie'], '');
         if ($cookie === null) {
-            throw new InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
+            throw new \InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
         }
         $headers = new ResponseHeaderBag();
         $headers->setCookie($this->preferenceStorage->clear($request, $cookie));
@@ -92,11 +95,7 @@ class CookieConsentService
     }
 
     /**
-     * Check if user gave consent for vendor in category
-     * @param string $vendorName
-     * @param string $categoryName
-     * @param Request $request
-     * @return bool
+     * Check if user gave consent for vendor in category.
      */
     public function isVendorAllowedByUser(string $vendorName, string $categoryName, Request $request): bool
     {
@@ -116,7 +115,6 @@ class CookieConsentService
 
     /**
      * Check if cookie consent has already been saved.
-     * @return bool
      */
     public function isCookieConsentFormSubmittedByUser(Request $request): bool
     {
@@ -131,12 +129,11 @@ class CookieConsentService
         $consentCookie = CookieConfigMapper::mapToCookie($this->consentConfiguration['consent_configuration']['consent_cookie'], ConsentType::CUSTOM_CONSENT);
 
         if ($consentCookie == null) {
-            throw new InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
+            throw new \InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
         }
 
         $this->persistConsentSettings($request, $formData);
         $consentCookie = $this->preferenceStorage->write($request, $formData, $consentCookie);
-
 
         $headerBag = new ResponseHeaderBag();
         $headerBag->setCookie($consentCookie);
@@ -171,9 +168,7 @@ class CookieConsentService
     }
 
     /**
-     * @param Request $request
-     * @return ResponseHeaderBag
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function acceptAllCookies(Request $request): ResponseHeaderBag
     {
@@ -181,13 +176,12 @@ class CookieConsentService
         $consentCookie = CookieConfigMapper::mapToCookie($this->consentConfiguration['consent_configuration']['consent_cookie'], ConsentType::FULL_CONSENT);
 
         if ($consentCookie == null) {
-            throw new InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
+            throw new \InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
         }
 
         $settings = $this->createDetailedForm(consentGiven: true);
         $this->persistConsentSettings($request, $settings);
         $consentCookie = $this->preferenceStorage->write($request, $settings, $consentCookie);
-
 
         $headerBag = new ResponseHeaderBag();
         $headerBag->setCookie($consentCookie);
@@ -200,8 +194,8 @@ class CookieConsentService
         // Use fresh configured models: binding an invalid form must never mutate
         // the objects already stored as preferences.
         if (!$this->isCookieConsentFormSubmittedByUser($request)) {
-            // Preselect the form only; actual permission still requires a saved choice.
-            return $this->createDetailedForm(consentGiven: true);
+            // Initial form defaults never grant permission before a submitted choice.
+            return $this->createDetailedForm(consentGiven: $this->consentConfiguration['preselect_optional_vendors'] ?? false);
         }
         $model = $this->createDetailedForm();
         foreach ($model->getCategories() as $category) {
@@ -209,6 +203,7 @@ class CookieConsentService
                 $vendor->setConsentGiven($this->isVendorAllowedByUser($vendor->getName(), $category->getName(), $request));
             }
         }
+
         return $model;
     }
 
@@ -219,7 +214,6 @@ class CookieConsentService
         $formModel = new ConsentDetailedTypeModel();
 
         foreach ($consentConfig['consent_categories'] as $categoryKey => $category) {
-
             $consentCategory = new ConsentCategoryTypeModel();
             $consentCategory->setName($categoryKey);
 
@@ -241,9 +235,7 @@ class CookieConsentService
     }
 
     /**
-     * @param Request $request
-     * @return ResponseHeaderBag
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function rejectAllCookies(Request $request): ResponseHeaderBag
     {
@@ -251,13 +243,12 @@ class CookieConsentService
         $consentCookie = CookieConfigMapper::mapToCookie($this->consentConfiguration['consent_configuration']['consent_cookie'], ConsentType::NO_CONSENT);
 
         if ($consentCookie == null) {
-            throw new InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
+            throw new \InvalidArgumentException("Cookie configuration can't be mapped to a Cookie");
         }
 
         $settings = $this->createDetailedForm(consentGiven: false);
         $this->persistConsentSettings($request, $settings);
         $consentCookie = $this->preferenceStorage->write($request, $settings, $consentCookie);
-
 
         $headerBag = new ResponseHeaderBag();
         $headerBag->setCookie($consentCookie);

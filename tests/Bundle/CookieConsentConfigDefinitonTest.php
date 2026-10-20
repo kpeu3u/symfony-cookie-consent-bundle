@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
 
 namespace CookieConsentBundle\tests\Bundle;
 
@@ -16,17 +20,15 @@ use Symfony\Component\Yaml\Parser;
 
 class CookieConsentConfigDefinitonTest extends TestCase
 {
-
     private Processor $processor;
     private ContainerBuilder $containerBuilder;
     private Configuration $configuration;
 
-
     public function setUp(): void
     {
         $this->containerBuilder = new ContainerBuilder();
-        $this->processor = new Processor();
-        $this->configuration = new Configuration(new CookieConsentBundle(), $this->containerBuilder, 'cookie_consent');
+        $this->processor        = new Processor();
+        $this->configuration    = new Configuration(new CookieConsentBundle(), $this->containerBuilder, 'cookie_consent');
     }
 
     public function tearDown(): void
@@ -69,6 +71,20 @@ class CookieConsentConfigDefinitonTest extends TestCase
         self::assertSame('policy-2', $config['consent_version']);
     }
 
+    public function testOptionalVendorPreselectionDefaultsToFalseAndCanBeEnabled(): void
+    {
+        $defaults = $this->processor->processConfiguration($this->configuration, []);
+        self::assertFalse($defaults['preselect_optional_vendors']);
+        $config = $this->processor->processConfiguration($this->configuration, [['preselect_optional_vendors' => true]]);
+        self::assertTrue($config['preselect_optional_vendors']);
+    }
+
+    public function testInvalidOptionalVendorPreselectionIsRejected(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->processor->processConfiguration($this->configuration, [['preselect_optional_vendors' => 'invalid']]);
+    }
+
     public function testUnknownPreferenceStorageIsRejected(): void
     {
         $this->expectException(InvalidConfigurationException::class);
@@ -96,7 +112,7 @@ class CookieConsentConfigDefinitonTest extends TestCase
         $defaults = $this->processor->processConfiguration($this->configuration, []);
         self::assertSame([], $defaults['necessary_cookies']);
         $cookies = ['session' => ['name' => 'Session', 'description' => 'Retains your session.']];
-        $config = $this->processor->processConfiguration($this->configuration, [['necessary_cookies' => $cookies]]);
+        $config  = $this->processor->processConfiguration($this->configuration, [['necessary_cookies' => $cookies]]);
         self::assertSame($cookies, $config['necessary_cookies']);
     }
 

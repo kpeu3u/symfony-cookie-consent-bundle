@@ -1,7 +1,13 @@
 <?php
 
-namespace CookieConsentBundle\tests\Fixtures\Configuration;
+declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
+namespace CookieConsentBundle\tests\Fixtures\Configuration;
 
 use CookieConsentBundle\Enum\CookieName;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -13,12 +19,12 @@ class ConsentBundleConfiguration
         return [
             'consent_configuration' => [
                 'consent_cookie' => [
-                    'name' => CookieName::COOKIE_CONSENT_NAME,
+                    'name'      => CookieName::COOKIE_CONSENT_NAME,
                     'http_only' => true,
-                    'secure' => true,
+                    'secure'    => true,
                     'same_site' => Cookie::SAMESITE_LAX,
-                    'domain' => null,
-                    'expires' => 'P180D'
+                    'domain'    => null,
+                    'expires'   => 'P180D',
                 ],
                 'consent_categories' => [
                     'functional' => [
@@ -41,12 +47,11 @@ class ConsentBundleConfiguration
                     ],
                     'marketing' => [
                         'google_adsense',
-
-                    ]
-                ]
+                    ],
+                ],
             ],
             'persist_consent' => false,
-            'position' => 'dialog'
+            'position'        => 'dialog',
         ];
     }
 
@@ -57,7 +62,7 @@ class ConsentBundleConfiguration
                 'consent_categories' => [
                     'functional' => [
                         'bookmark',
-                        'shopping_cart'
+                        'shopping_cart',
                     ],
                     'social_media' => [
                         'twitter',
@@ -71,11 +76,11 @@ class ConsentBundleConfiguration
                     ],
                     'marketing' => [
                         'google_adsense',
-                    ]
-                ]
+                    ],
+                ],
             ],
             'persist_consent' => false,
-            'position' => 'dialog'
+            'position'        => 'dialog',
         ];
     }
 }

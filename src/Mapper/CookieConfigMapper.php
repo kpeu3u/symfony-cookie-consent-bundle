@@ -2,9 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\Mapper;
 
-use DateInterval;
 use Symfony\Component\HttpFoundation\Cookie;
 
 class CookieConfigMapper
@@ -18,12 +22,12 @@ class CookieConfigMapper
             return null;
         }
 
-        $name = $cookieConfiguration['name'] ?? null;
+        $name      = $cookieConfiguration['name'] ?? null;
         $http_only = $cookieConfiguration['http_only'] ?? null;
-        $secure = $cookieConfiguration['secure'] ?? null;
+        $secure    = $cookieConfiguration['secure'] ?? null;
         $same_site = $cookieConfiguration['same_site'] ?? null;
-        $domain = $cookieConfiguration['domain'] ?? null;
-        $expires = $cookieConfiguration['expires'] ?? null;
+        $domain    = $cookieConfiguration['domain'] ?? null;
+        $expires   = $cookieConfiguration['expires'] ?? null;
 
         if ($name === null || $http_only === null || $secure === null || $same_site === null || $expires === null) {
             return null;
@@ -38,6 +42,7 @@ class CookieConfigMapper
     public static function convertExpireToDate(string $maxAge): \DateTimeInterface
     {
         $now = new \DateTimeImmutable();
-        return $now->add(new DateInterval($maxAge));
+
+        return $now->add(new \DateInterval($maxAge));
     }
 }

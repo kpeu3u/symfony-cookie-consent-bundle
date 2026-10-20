@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 use CookieConsentBundle\Controller\CookieConsentController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
@@ -16,8 +21,7 @@ return function (RoutingConfigurator $routes): void {
         // the controller value has the format [controller_class, method_name]
         ->controller([CookieConsentController::class, 'viewIfNoConsent']);
 
-        // if the action is implemented as the __invoke() method of the
-        // controller class, you can skip the 'method_name' part:
-        // ->controller(BlogController::class)
-
+    // if the action is implemented as the __invoke() method of the
+    // controller class, you can skip the 'method_name' part:
+    // ->controller(BlogController::class)
 };

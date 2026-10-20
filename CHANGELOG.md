@@ -4,9 +4,29 @@ Notable user-facing changes are recorded here. Changes under **Unreleased** are
 not a published release. See the [upgrade guide](docs/upgrading.md) for required
 application changes and the [deprecation policy](DEPRECATIONS.md) for API status.
 
-## Unreleased
+## 2.1.1 — 2026-10-20
 
-No changes recorded yet.
+### Added
+
+- `preselect_optional_vendors` configures the initial optional-vendor form state.
+  It defaults to `false`; enabling it only preselects the form and does not grant
+  permission before submission or override saved preferences.
+
+### Fixed
+
+- Optional vendors now start unchecked when no valid saved preferences exist.
+  Saving the initial detailed form no longer opts visitors into all services.
+  Existing accepted, rejected and custom choices are preserved when reopening settings.
+- Add regression coverage for initial choices and consent withdrawal with both
+  session and signed cookie storage, and clarify the single-banner settings-page example.
+
+### Upgrade considerations
+
+- Applications can remove form extensions that only disable the bundle's former
+  initial preselection after installing this fix. No migration or configuration
+  change is required. Explicit "Accept all" behavior is unchanged.
+- See the [2.1.1 upgrade instructions](docs/upgrading.md#upgrading-from-210-to-211)
+  for configuration and deployment checks. No APIs are newly deprecated.
 
 ## 2.1.0 — 2026-10-19
 

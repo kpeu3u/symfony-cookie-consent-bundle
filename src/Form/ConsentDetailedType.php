@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\Form;
 
 use CookieConsentBundle\Enum\FormSubmitName;
@@ -12,13 +19,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConsentDetailedType extends AbstractType
 {
-
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly bool                $csrfProtection = true,
-        private readonly bool                $showRejectAll = true
-    )
-    {
+        private readonly bool $csrfProtection = true,
+        private readonly bool $showRejectAll = true,
+    ) {
     }
 
     /**
@@ -28,34 +33,34 @@ class ConsentDetailedType extends AbstractType
     {
         // build collection of categories
         $builder->add('categories', CollectionType::class, [
-            'entry_type' => ConsentCategoryType::class,
+            'entry_type'    => ConsentCategoryType::class,
             'entry_options' => [
                 'attr' => ['class' => 'consent-form-category'],
             ],
             'attr' => [
-                'class' => 'consent-form-categories'
-            ]
+                'class' => 'consent-form-categories',
+            ],
         ]);
 
         // add submit buttons
         $builder
             ->add(FormSubmitName::ACCEPT_ALL, SubmitType::class, [
                 'label' => $this->translate('cookie_consent.accept_all'),
-                'attr' => [
-                    'class' => 'cookie-consent__btn js-accept-all-cookies'
-                ]
+                'attr'  => [
+                    'class' => 'cookie-consent__btn js-accept-all-cookies',
+                ],
             ])
             ->add(FormSubmitName::REJECT_ALL, SubmitType::class, [
                 'label' => $this->translate('cookie_consent.reject_all'),
-                'attr' => [
-                    'class' => 'cookie-consent__btn js-reject-all-cookies'
-                ]
+                'attr'  => [
+                    'class' => 'cookie-consent__btn js-reject-all-cookies',
+                ],
             ])
             ->add(FormSubmitName::SAVE_CONSENT_SETTINGS, SubmitType::class, [
                 'label' => $this->translate('cookie_consent.save'),
-                'attr' => [
-                    'class' => 'cookie-consent__btn js-save-settings'
-                ]
+                'attr'  => [
+                    'class' => 'cookie-consent__btn js-save-settings',
+                ],
             ]);
 
         if (!$this->showRejectAll) {
@@ -69,10 +74,10 @@ class ConsentDetailedType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ConsentDetailedTypeModel::class,
+            'data_class'         => ConsentDetailedTypeModel::class,
             'translation_domain' => 'CookieConsentBundle',
-            'csrf_protection' => $this->csrfProtection,
-            'csrf_token_id' => 'csrf_cookie_consent',
+            'csrf_protection'    => $this->csrfProtection,
+            'csrf_token_id'      => 'csrf_cookie_consent',
         ]);
     }
 

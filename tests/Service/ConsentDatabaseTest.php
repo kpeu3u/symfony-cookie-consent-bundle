@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Service;
 
 use CookieConsentBundle\Entity\CookieConsentLog;
@@ -17,7 +24,7 @@ class ConsentDatabaseTest extends KernelTestCase
     {
         self::bootKernel();
         $registry = self::getContainer()->get('doctrine');
-        $manager = $registry->getManagerForClass(CookieConsentLog::class);
+        $manager  = $registry->getManagerForClass(CookieConsentLog::class);
         (new SchemaTool($manager))->createSchema([$manager->getClassMetadata(CookieConsentLog::class)]);
         $service = new CookieConsentService(ConsentBundleConfiguration::testCaseConfiguration(), true, $registry);
         $request = Request::create('/');

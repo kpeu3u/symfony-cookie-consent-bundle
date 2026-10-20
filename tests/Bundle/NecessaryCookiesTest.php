@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Bundle;
 
 use CookieConsentBundle\tests\Fixtures\App\AppKernel;
@@ -34,7 +39,7 @@ class NecessaryCookiesTest extends WebTestCase
 
     public function testNecessaryCookiesRemainVisibleAfterRejectingOptionalCookies(): void
     {
-        $client = self::createClient([], ['HTTPS' => 'on']);
+        $client  = self::createClient([], ['HTTPS' => 'on']);
         $crawler = $client->request('GET', '/cookie-consent/view');
         self::assertResponseIsSuccessful();
         self::assertSelectorTextContains('.cookie-consent__necessary', 'Session <example>');
@@ -61,9 +66,9 @@ class NecessaryCookiesKernel extends AppKernel
         ]);
         $container->loadFromExtension('cookie_consent', [
             'necessary_cookies' => [
-                'session' => ['name' => 'Session <example>', 'description' => 'Keeps the session available.'],
+                'session'     => ['name' => 'Session <example>', 'description' => 'Keeps the session available.'],
                 'preferences' => [
-                    'name' => 'app.cookies.preferences.name',
+                    'name'        => 'app.cookies.preferences.name',
                     'description' => 'app.cookies.preferences.description',
                 ],
             ],

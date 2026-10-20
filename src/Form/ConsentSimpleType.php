@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\Form;
 
 use CookieConsentBundle\Enum\FormSubmitName;
@@ -13,13 +18,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConsentSimpleType extends AbstractType
 {
-
     public function __construct(
         private readonly TranslatorInterface $translator,
-        private readonly bool                $csrfProtection = true,
-        private readonly bool                $showRejectAll = true
-    )
-    {
+        private readonly bool $csrfProtection = true,
+        private readonly bool $showRejectAll = true,
+    ) {
     }
 
     /**
@@ -30,15 +33,15 @@ class ConsentSimpleType extends AbstractType
         $builder
             ->add(FormSubmitName::ACCEPT_ALL, SubmitType::class, [
                 'label' => $this->translate('cookie_consent.accept_all'),
-                'attr' => [
-                    'class' => 'cookie-consent__btn js-accept-all-cookies'
-                ]
+                'attr'  => [
+                    'class' => 'cookie-consent__btn js-accept-all-cookies',
+                ],
             ])
             ->add(FormSubmitName::REJECT_ALL, SubmitType::class, [
                 'label' => $this->translate('cookie_consent.reject_all'),
-                'attr' => [
-                    'class' => 'cookie-consent__btn js-reject-all-cookies'
-                ]
+                'attr'  => [
+                    'class' => 'cookie-consent__btn js-reject-all-cookies',
+                ],
             ]);
 
         if (!$this->showRejectAll) {
@@ -53,8 +56,8 @@ class ConsentSimpleType extends AbstractType
     {
         $resolver->setDefaults([
             'translation_domain' => 'CookieConsentBundle',
-            'csrf_protection' => $this->csrfProtection,
-            'csrf_token_id' => 'csrf_cookie_consent',
+            'csrf_protection'    => $this->csrfProtection,
+            'csrf_token_id'      => 'csrf_cookie_consent',
         ]);
     }
 

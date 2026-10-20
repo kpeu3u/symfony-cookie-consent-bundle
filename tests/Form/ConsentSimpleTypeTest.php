@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Form;
 
 use CookieConsentBundle\Enum\FormSubmitName;
@@ -64,14 +71,14 @@ class ConsentSimpleTypeTest extends TypeTestCase
                 [
                     FormSubmitName::ACCEPT_ALL => true,
                 ],
-                FormSubmitName::ACCEPT_ALL
+                FormSubmitName::ACCEPT_ALL,
             ],
             'reject_all_clicked' => [
                 [
                     FormSubmitName::REJECT_ALL => true,
                 ],
-                FormSubmitName::REJECT_ALL
-            ]
+                FormSubmitName::REJECT_ALL,
+            ],
         ];
     }
 }

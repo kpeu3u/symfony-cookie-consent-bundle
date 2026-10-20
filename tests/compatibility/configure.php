@@ -1,6 +1,12 @@
 <?php
 
-// Configure a disposable CI checkout before resolving a Symfony version matrix.
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 $version = $argv[1] ?? '';
 if (!in_array($version, ['7.4.*', '8.1.*'], true)) {
     throw new InvalidArgumentException('Expected a maintained Symfony test version (7.4.* or 8.1.*).');
@@ -13,7 +19,7 @@ $migrationsVersion = $argv[3] ?? null;
 if ($migrationsVersion !== null && !in_array($migrationsVersion, ['^3.3', '^4.0'], true)) {
     throw new InvalidArgumentException('Expected a supported DoctrineMigrationsBundle test version.');
 }
-$path = dirname(__DIR__, 2).'/composer.json';
+$path   = dirname(__DIR__, 2).'/composer.json';
 $config = json_decode(file_get_contents($path), true, flags: JSON_THROW_ON_ERROR);
 foreach (['require', 'require-dev'] as $section) {
     foreach ($config[$section] as $package => $constraint) {

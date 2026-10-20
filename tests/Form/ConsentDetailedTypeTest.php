@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Form;
 
 use CookieConsentBundle\Enum\FormSubmitName;
@@ -27,7 +34,6 @@ class ConsentDetailedTypeTest extends TypeTestCase
         $formModel = new ConsentDetailedTypeModel();
 
         foreach ($formData['categories'] ?? [] as $category) {
-
             $consentCategory = new ConsentCategoryTypeModel();
             $consentCategory->setName($category['name']);
 
@@ -54,7 +60,6 @@ class ConsentDetailedTypeTest extends TypeTestCase
         $this->assertEquals($form->getClickedButton()->getName(), $expectedClickedButton);
     }
 
-
     #[Test]
     public function shouldReturnFormWithSubmitButtons(): void
     {
@@ -76,7 +81,7 @@ class ConsentDetailedTypeTest extends TypeTestCase
 
         $consentDetailedType = new ConsentDetailedType($translatorInterfaceMock);
         $consentCategoryType = new ConsentCategoryType($translatorInterfaceMock);
-        $consentCookieType = new ConsentVendorType($translatorInterfaceMock);
+        $consentCookieType   = new ConsentVendorType($translatorInterfaceMock);
 
         return [
             new PreloadedExtension([$consentDetailedType, $consentCategoryType, $consentCookieType], []),
@@ -89,40 +94,40 @@ class ConsentDetailedTypeTest extends TypeTestCase
             'dataset:save_consent_settings_clicked' => [
                 [
                     FormSubmitName::SAVE_CONSENT_SETTINGS => true,
-                    'categories' => [
+                    'categories'                          => [
                         [
-                            'name' => 'analytics',
+                            'name'    => 'analytics',
                             'vendors' => [
                                 [
-                                    'name' => 'googleanalytics',
-                                    'consentGiven' => false,
+                                    'name'           => 'googleanalytics',
+                                    'consentGiven'   => false,
                                     'descriptionKey' => 'googleanalytics',
-                                ]
+                                ],
                             ],
                         ],
                         [
-                            'name' => 'tracking',
+                            'name'    => 'tracking',
                             'vendors' => [
                                 [
-                                    'name' => 'googletagmanager',
-                                    'consentGiven' => true,
+                                    'name'           => 'googletagmanager',
+                                    'consentGiven'   => true,
                                     'descriptionKey' => 'googletagmanager',
-                                ]
+                                ],
                             ],
                         ],
                         [
-                            'name' => 'social_media',
+                            'name'    => 'social_media',
                             'vendors' => [
                                 [
-                                    'name' => 'meta',
-                                    'consentGiven' => false,
+                                    'name'           => 'meta',
+                                    'consentGiven'   => false,
                                     'descriptionKey' => 'meta',
                                 ],
                                 [
-                                    'name' => 'google',
-                                    'consentGiven' => true,
+                                    'name'           => 'google',
+                                    'consentGiven'   => true,
                                     'descriptionKey' => 'google',
-                                ]
+                                ],
                             ],
                         ],
                     ],

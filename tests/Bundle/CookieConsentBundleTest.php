@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Bundle;
 
 use PHPUnit\Framework\Attributes\Test;
@@ -8,7 +15,6 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 class CookieConsentBundleTest extends KernelTestCase
 {
-
     public function setUp(): void
     {
         self::bootKernel();

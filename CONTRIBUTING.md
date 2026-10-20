@@ -72,10 +72,10 @@ reproduction and version information; remove credentials and visitor data.
 
 Composer/Packagist derives the published bundle version from Git tags; do not add
 an explicit `version` field to `composer.json`. The README and changelog identify
-the planned release while it is unreleased. Keep the frontend package version in
+the current release or explicitly label a planned release as unreleased. Keep the frontend package version in
 `package.json` and the root entries of `package-lock.json` aligned with that target.
 
-The release target is **2.1.0**. Before publishing a new release, review compatibility changes,
+The current release is **2.1.1**. Before publishing a new release, review compatibility changes,
 finish the release checks and replace the changelog's unreleased heading with the
 actual version and release date. Publishing a matching Git tag/release is a separate
 step; editing these files does not publish the package.

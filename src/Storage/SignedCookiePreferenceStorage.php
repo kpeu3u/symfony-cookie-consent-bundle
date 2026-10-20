@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\Storage;
 
 use CookieConsentBundle\Form\ConsentCategoryTypeModel;
@@ -93,8 +98,8 @@ final class SignedCookiePreferenceStorage implements PreferenceStorageInterface
         }
         $payload = rtrim(strtr(base64_encode(json_encode([
             'configuration' => $this->configurationHash,
-            'expires' => $cookie->getExpiresTime(),
-            'choices' => $choices,
+            'expires'       => $cookie->getExpiresTime(),
+            'choices'       => $choices,
         ], JSON_THROW_ON_ERROR)), '+/', '-_'), '=');
         $value = $payload.'.'.$this->sign($payload);
         if (strlen(rawurlencode($cookie->getName()).'='.rawurlencode($value)) > 3800) {

@@ -2,7 +2,7 @@
 
 ## Current status
 
-Version 2.1.0 introduces **no formal API deprecations** and emits
+Version 2.1.1 introduces **no formal API deprecations** and emits
 no bundle-specific deprecation notices. A compatibility alias, an old example or
 an unfinished feature is not automatically a deprecated public API.
 

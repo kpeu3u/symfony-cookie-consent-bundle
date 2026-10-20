@@ -1,6 +1,6 @@
 {
   "name": "symfony-cookie-consent-bundle",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Symfony bundle to ask the visitors for their consent to use cookies to comply to AVG/GDPR.",
   "scripts": {
     "build:prod": "node build.mjs && rollup --config rollup.config.mjs",

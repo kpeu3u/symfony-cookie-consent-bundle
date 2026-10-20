@@ -2,9 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\Controller;
 
-use Exception;
 use CookieConsentBundle\Enum\FormSubmitName;
 use CookieConsentBundle\Form\ConsentDetailedType;
 use CookieConsentBundle\Form\ConsentSimpleType;
@@ -13,14 +17,13 @@ use CookieConsentBundle\Ui\ConsentFormDto;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\SubmitButton;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
-use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Twig\Environment;
@@ -32,20 +35,19 @@ use Twig\Error\SyntaxError;
 class CookieConsentController
 {
     public function __construct(
-        private readonly Environment          $twigEnvironment,
+        private readonly Environment $twigEnvironment,
         private readonly FormFactoryInterface $formFactory,
-        private readonly RouterInterface      $router,
+        private readonly RouterInterface $router,
         private readonly LocaleAwareInterface $translator,
-        private readonly string|null          $formAction,
-        private readonly string|null          $readMoreRoute,
+        private readonly ?string $formAction,
+        private readonly ?string $readMoreRoute,
         private readonly CookieConsentService $cookieConsentService,
-        private readonly string               $position,
-        private readonly RequestStack         $requestStack,
-        private readonly LoggerInterface      $logger,
-        private readonly string               $theme = 'light',
-        private readonly array $necessaryCookies = []
-    )
-    {
+        private readonly string $position,
+        private readonly RequestStack $requestStack,
+        private readonly LoggerInterface $logger,
+        private readonly string $theme = 'light',
+        private readonly array $necessaryCookies = [],
+    ) {
     }
 
     #[Route('/cookie-consent/update', name: 'cookie_consent.update')]
@@ -68,24 +70,23 @@ class CookieConsentController
 
         try {
             $headers = match ($form->getClickedButton()->getName()) {
-                FormSubmitName::REJECT_ALL => $this->cookieConsentService->rejectAllCookies($request),
-                FormSubmitName::ACCEPT_ALL => $this->cookieConsentService->acceptAllCookies($request),
+                FormSubmitName::REJECT_ALL            => $this->cookieConsentService->rejectAllCookies($request),
+                FormSubmitName::ACCEPT_ALL            => $this->cookieConsentService->acceptAllCookies($request),
                 FormSubmitName::SAVE_CONSENT_SETTINGS => $this->cookieConsentService->saveConsentSettings($form->getData(), $request),
             };
             $response = new JsonResponse('ok', Response::HTTP_CREATED);
             foreach ($headers->getCookies() as $cookie) {
                 $response->headers->setCookie($cookie);
             }
+
             return $response;
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $this->logger->error('Unable to save cookie consent.', ['exception' => $exception]);
+
             return new JsonResponse('error', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    /**
-     * @return Request|null
-     */
     public function getCurrentRequest(): ?Request
     {
         return $this->requestStack->getCurrentRequest();
@@ -95,7 +96,7 @@ class CookieConsentController
     {
         if ($request->request->has('consent_simple') && !$request->request->has('consent_detailed')) {
             return $this->createSimpleConsentForm();
-        } else if ($request->request->has('consent_detailed') && !$request->request->has('consent_simple')) {
+        } elseif ($request->request->has('consent_detailed') && !$request->request->has('consent_simple')) {
             return $this->createDetailedConsentForm();
         }
 
@@ -142,6 +143,7 @@ class CookieConsentController
         $response = new Response();
         $response->setPrivate();
         $response->headers->addCacheControlDirective('no-store');
+
         return $response;
     }
 

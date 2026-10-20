@@ -1,21 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name: "cookieconsent_cookies")]
+#[ORM\Table(name: 'cookieconsent_cookies')]
 class BrowserCookie
 {
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: TYPES::STRING ,length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private string $name;
 
     #[ORM\Column(type: Types::BOOLEAN)]
@@ -35,10 +41,10 @@ class BrowserCookie
 
     public function __construct(string $name, string $expires, ?string $domain, bool $secure, bool $httpOnly, ?string $sameSite)
     {
-        $this->name = $name;
-        $this->expires = $expires;
-        $this->domain = $domain;
-        $this->secure = $secure;
+        $this->name     = $name;
+        $this->expires  = $expires;
+        $this->domain   = $domain;
+        $this->secure   = $secure;
         $this->httpOnly = $httpOnly;
         $this->sameSite = $sameSite;
     }

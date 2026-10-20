@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Bundle;
 
 use CookieConsentBundle\tests\Fixtures\App\AppKernel;
@@ -26,7 +31,7 @@ class CookieConsentRejectButtonTest extends WebTestCase
     #[DataProvider('visibility')]
     public function testBothFormsRespectVisibility(string $environment, int $buttons): void
     {
-        $client = self::createClient(['environment' => $environment]);
+        $client  = self::createClient(['environment' => $environment]);
         $crawler = $client->request('GET', '/cookie-consent/view');
         self::assertResponseIsSuccessful();
         self::assertSelectorCount($buttons, '.js-reject-all-cookies');
@@ -38,9 +43,9 @@ class CookieConsentRejectButtonTest extends WebTestCase
 
     public function testCanSaveAllVendorsUncheckedWithoutRejectButton(): void
     {
-        $client = self::createClient(['environment' => 'reject_hidden'], ['HTTPS' => 'on']);
+        $client  = self::createClient(['environment' => 'reject_hidden'], ['HTTPS' => 'on']);
         $crawler = $client->request('GET', '/cookie-consent/view');
-        $form = $crawler->selectButton('consent_detailed[save_consent_settings]')->form();
+        $form    = $crawler->selectButton('consent_detailed[save_consent_settings]')->form();
         foreach ($crawler->filter('.consent-form-vendors input[type="checkbox"]') as $input) {
             $form[$input->getAttribute('name')]->untick();
         }

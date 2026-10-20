@@ -2,9 +2,13 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Controller;
 
-use App\Utils\Validator;
 use CookieConsentBundle\Controller\CookieConsentController;
 use CookieConsentBundle\Form\ConsentDetailedType;
 use CookieConsentBundle\Form\ConsentSimpleType;
@@ -13,7 +17,6 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Log\Logger;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 class CookieConsentControllerTest extends TestCase
@@ -43,13 +45,13 @@ class CookieConsentControllerTest extends TestCase
      */
     public function setUp(): void
     {
-        $this->templating = $this->createMock(Environment::class);
-        $this->formFactory = $this->createMock(FormFactoryInterface::class);
-        $this->translator = $this->createMock(LocaleAwareInterface::class);
-        $router = $this->createMock(RouterInterface::class);
+        $this->templating           = $this->createMock(Environment::class);
+        $this->formFactory          = $this->createMock(FormFactoryInterface::class);
+        $this->translator           = $this->createMock(LocaleAwareInterface::class);
+        $router                     = $this->createMock(RouterInterface::class);
         $this->cookieConsentService = $this->createMock(CookieConsentService::class);
-        $this->requestStack = $this->createMock(RequestStack::class);
-        $this->logger = $this->createMock(Logger::class);
+        $this->requestStack         = $this->createMock(RequestStack::class);
+        $this->logger               = $this->createMock(Logger::class);
 
         $this->request = new Request();
         $this->request->setLocale($this->locale);
@@ -158,7 +160,6 @@ class CookieConsentControllerTest extends TestCase
     }
 
     /**
-     * @return void
      * @throws Exception
      */
     public function expectFormsAreRendered(): void
@@ -170,9 +171,6 @@ class CookieConsentControllerTest extends TestCase
             ->willReturn($this->createMock(FormBuilderInterface::class));
     }
 
-    /**
-     * @return void
-     */
     public function givenTemplateRendersTest(): void
     {
         $this->templating
