@@ -16,8 +16,8 @@ optionally record submissions in a database.
 make an application legally compliant.** Load optional integrations only after
 checking consent, and provide your own privacy information.
 
-**Version: 2.1.0.** See the [changelog](CHANGELOG.md) and the
-[upgrade guide](docs/upgrading.md) before upgrading from 2.0.0 or 1.x. The stable-version
+**Version: 2.1.1.** See the [changelog](CHANGELOG.md) and the
+[upgrade guide](docs/upgrading.md) before upgrading from 2.1.0, 2.0.0 or 1.x. The stable-version
 badge above reports the latest version indexed by Packagist.
 
 This documentation describes the current source branch. For an installed release,
