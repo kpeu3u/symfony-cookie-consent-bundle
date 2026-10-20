@@ -2,12 +2,16 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 use CookieConsentBundle\Enum\ConsentBannerPosition;
 use CookieConsentBundle\Enum\CookieName;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
-require_once __DIR__ . '/utils/cookie.php';
-
+require_once __DIR__.'/utils/cookie.php';
 
 return static function (DefinitionConfigurator $definition) {
     // @formatter:off
@@ -49,6 +53,9 @@ return static function (DefinitionConfigurator $definition) {
                 ->end()
                 ->scalarNode('consent_version')
                     ->defaultValue('1')->cannotBeEmpty()
+                ->end()
+                ->booleanNode('preselect_optional_vendors')
+                    ->defaultFalse()
                 ->end()
                 ->booleanNode('persist_consent')
                     ->defaultTrue()

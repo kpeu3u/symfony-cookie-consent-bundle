@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Bundle;
 
 use CookieConsentBundle\tests\Fixtures\Configuration\ConsentBundleConfiguration;
@@ -19,7 +26,6 @@ class CookieConsentBundleWebTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
     }
-
 
     #[Test]
     public function shouldRenderConsentFormInDialog()
@@ -58,9 +64,9 @@ class CookieConsentBundleWebTest extends WebTestCase
 
         // assert detailed form contains all categories set in bundle config
         // TODO: Find a nice way to check if the consent categories from the bundle settings are parts of the consent form
-//        foreach (ConsentBundleConfiguration::kernelTestCaseConfiguration()['consent_configuration']['consent_categories'] as $key => $category) {
-//            $this->assertSelectorExists('.consent-form-category input[name*=' . $key . ']');
-//            $this->assertSelectorExists('.cookie-consent-detail .category-' . $key);
-//        }
+        //        foreach (ConsentBundleConfiguration::kernelTestCaseConfiguration()['consent_configuration']['consent_categories'] as $key => $category) {
+        //            $this->assertSelectorExists('.consent-form-category input[name*=' . $key . ']');
+        //            $this->assertSelectorExists('.cookie-consent-detail .category-' . $key);
+        //        }
     }
 }

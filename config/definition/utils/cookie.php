@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -10,7 +14,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 function consentCookie(string $key, string $name): ArrayNodeDefinition
 {
     $builder = new TreeBuilder($key);
-    $node = $builder->getRootNode();
+    $node    = $builder->getRootNode();
 
     // @formatter:off
     $node

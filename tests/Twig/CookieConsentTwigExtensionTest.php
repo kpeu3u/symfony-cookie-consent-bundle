@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
 
 namespace CookieConsentBundle\tests\Twig;
 
@@ -22,7 +26,7 @@ class CookieConsentTwigExtensionTest extends TestCase
     public function setUp(): void
     {
         $this->cookieConsentService = $this->createMock(CookieConsentService::class);
-        $this->requestStack = $this->createMock(RequestStack::class);
+        $this->requestStack         = $this->createMock(RequestStack::class);
 
         $this->requestStack
             ->expects($this->any())

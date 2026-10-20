@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
 
 namespace CookieConsentBundle\Form;
 
@@ -14,11 +18,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ConsentVendorType extends AbstractType
 {
-
     public function __construct(
-        private readonly TranslatorInterface $translator
-    )
-    {
+        private readonly TranslatorInterface $translator,
+    ) {
     }
 
     /**
@@ -39,8 +41,8 @@ class ConsentVendorType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => ConsentVendorTypeModel::class,
-            'translation_domain' => 'CookieConsentBundle'
+            'data_class'         => ConsentVendorTypeModel::class,
+            'translation_domain' => 'CookieConsentBundle',
         ]);
     }
 

@@ -1,11 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Fixtures\App;
 
-use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
 use CookieConsentBundle\CookieConsentBundle;
 use CookieConsentBundle\tests\Fixtures\Configuration\ConsentBundleConfiguration;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\MakerBundle\MakerBundle;
@@ -27,7 +34,7 @@ class AppKernel extends Kernel
             new DoctrineBundle(),
             new MakerBundle(),
             new DoctrineMigrationsBundle(),
-            new CookieConsentBundle()
+            new CookieConsentBundle(),
         ];
     }
 
@@ -36,40 +43,38 @@ class AppKernel extends Kernel
         $container->setParameter('kernel.secret', 'thisIsASecret');
 
         $container->loadFromExtension('framework', [
-            'test' => true,
+            'test'           => true,
             'default_locale' => 'en',
-            'translator' =>
-                ['default_path' => '%kernel.project_dir%/translations'],
-            'session' => [
-                'enabled' => true,
-                'cookie_secure' => 'auto',
+            'translator'     => ['default_path' => '%kernel.project_dir%/translations'],
+            'session'        => [
+                'enabled'         => true,
+                'cookie_secure'   => 'auto',
                 'cookie_samesite' => Cookie::SAMESITE_STRICT,
-                'handler_id' => 'session.handler.native_file',
-                'save_path' => '%kernel.project_dir%/var/sessions/%kernel.environment%'
-            ]
+                'handler_id'      => 'session.handler.native_file',
+                'save_path'       => '%kernel.project_dir%/var/sessions/%kernel.environment%',
+            ],
         ]);
 
         $container->loadFromExtension('doctrine', [
             'dbal' => [
                 'driver' => 'pdo_sqlite',
-                'url' => 'sqlite:///:memory:',
-//                'path' => '%kernel.project_dir%/data/test.db',
+                'url'    => 'sqlite:///:memory:',
+                //                'path' => '%kernel.project_dir%/data/test.db',
             ],
             'orm' => [
                 // ASK: Why is 'auto_mapping' => true required to successfully run CookieConsentBundleServicesTest#shouldProvideController() ?
-                'auto_mapping' => true
-            ]
+                'auto_mapping' => true,
+            ],
         ]);
-
 
         $container->loadFromExtension('doctrine_migrations', [
             'migrations_paths' => [
-                "CookieConsentBundle" => "%kernel.project_dir%/migrations"
-            ]
+                'CookieConsentBundle' => '%kernel.project_dir%/migrations',
+            ],
         ]);
 
         $container->loadFromExtension('maker', [
-            'root_namespace' => "CookieConsentBundle"
+            'root_namespace' => 'CookieConsentBundle',
         ]);
 
         $container->loadFromExtension('cookie_consent', ConsentBundleConfiguration::kernelTestCaseConfiguration());

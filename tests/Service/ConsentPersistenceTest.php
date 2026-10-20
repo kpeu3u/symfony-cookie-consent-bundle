@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Service;
 
 use CookieConsentBundle\Entity\CookieConsentLog;
@@ -38,10 +45,10 @@ class ConsentPersistenceTest extends TestCase
 
     public function testExpiredConsentCookieDeniesStaleSessionChoices(): void
     {
-        $config = ConsentBundleConfiguration::testCaseConfiguration();
+        $config                                                    = ConsentBundleConfiguration::testCaseConfiguration();
         $config['consent_configuration']['consent_cookie']['name'] = 'custom-consent';
-        $service = new CookieConsentService($config, false);
-        $request = Request::create('/');
+        $service                                                   = new CookieConsentService($config, false);
+        $request                                                   = Request::create('/');
         $request->setSession(new Session(new MockArraySessionStorage()));
         $service->acceptAllCookies($request);
         self::assertFalse($service->isCategoryAllowedByUser('analytics', $request));

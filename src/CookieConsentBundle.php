@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle;
 
 use CookieConsentBundle\Controller\CookieConsentController;
@@ -15,8 +20,10 @@ use CookieConsentBundle\Storage\SignedCookiePreferenceStorage;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
+
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 class CookieConsentBundle extends AbstractBundle
 {
@@ -61,7 +68,6 @@ class CookieConsentBundle extends AbstractBundle
         $services->set(CookieConsentLogRepository::class)->args([service('doctrine')])->tag('doctrine.repository_service');
         $services->set(ConsentSimpleType::class)->tag('form.type')->args([service('translator'), $config['csrf_protection'], $config['show_reject_all']]);
         $services->set(ConsentDetailedType::class)->tag('form.type')->args([service('translator'), $config['csrf_protection'], $config['show_reject_all']]);
-
 
         //        Register pre-compile classes here?
         //        $this->addAnnotatedClassesToCompile([

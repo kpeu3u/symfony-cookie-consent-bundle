@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
 
 namespace CookieConsentBundle\Cookie;
 
+use CookieConsentBundle\Entity\CookieConsentLog;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
-use CookieConsentBundle\Entity\CookieConsentLog;
 use Symfony\Component\HttpFoundation\Request;
 
 class CookieLogger
@@ -65,6 +68,7 @@ class CookieLogger
 
         if (str_contains($ip, ':')) {
             $packed = inet_pton($ip);
+
             return $packed === false ? 'unknown' : inet_ntop(substr($packed, 0, 6).str_repeat("\0", 10));
         }
 

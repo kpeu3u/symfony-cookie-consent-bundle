@@ -158,6 +158,27 @@ preserve the `data-cookie-consent-theme` attributes on those elements and pass t
 `theme` template variable through. See the [current screenshots](integration.md#light-and-dark-appearance-references)
 for both palettes.
 
+## Initial optional-vendor selection
+
+Optional vendors start unchecked by default. Applications can configure their
+initial form state explicitly:
+
+```yaml
+cookie_consent:
+    preselect_optional_vendors: false
+```
+
+Set `true` to initially check all optional vendors when no valid saved preferences
+exist. This affects form presentation only: the Twig permission helpers still
+return false until the visitor submits a choice. Saving a preselected detailed
+form allows the selected vendors; "Accept all" and "Reject all" retain their
+existing behavior. Reopening settings preserves saved choices, including rejection
+and individual vendor selections, regardless of this setting.
+
+Keep the default `false` for an opt-in interface. Enabling preselection does not
+establish valid consent by itself; the application must assess the requirements
+that apply to its services and visitors.
+
 ## Reject-all button
 
 By default, both forms include a “Reject all” button. To remove it from both the

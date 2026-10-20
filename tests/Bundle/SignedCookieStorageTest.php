@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Bundle;
 
 use CookieConsentBundle\tests\Fixtures\App\AppKernel;
@@ -17,6 +22,25 @@ class SignedCookieStorageTest extends WebTestCase
         return SignedCookieStorageKernel::class;
     }
 
+    public function testInitialChoicesStayUncheckedAndAcceptedChoicesCanBeWithdrawn(): void
+    {
+        $client  = self::createClient(['environment' => 'signed_cookie']);
+        $crawler = $client->request('GET', 'https://localhost/cookie-consent/view');
+        self::assertSame(0, $crawler->filter('input[type="checkbox"][checked]')->count());
+        $client->submit($crawler->selectButton('consent_detailed[save_consent_settings]')->form());
+        self::assertResponseStatusCodeSame(201);
+        $crawler = $client->request('GET', 'https://localhost/cookie-consent/view');
+        self::assertSame(0, $crawler->filter('input[type="checkbox"][checked]')->count());
+        $client->submit($crawler->selectButton('consent_simple[accept_all]')->form());
+        self::assertResponseStatusCodeSame(201);
+        $crawler = $client->request('GET', 'https://localhost/cookie-consent/view');
+        self::assertGreaterThan(0, $crawler->filter('.consent-form-vendors input[checked]')->count());
+        $client->submit($crawler->selectButton('consent_simple[reject_all]')->form());
+        self::assertResponseStatusCodeSame(201);
+        $crawler = $client->request('GET', 'https://localhost/cookie-consent/view');
+        self::assertSame(0, $crawler->filter('input[type="checkbox"][checked]')->count());
+    }
+
     public static function buttons(): iterable
     {
         yield 'accept' => ['accept_all'];
@@ -26,7 +50,7 @@ class SignedCookieStorageTest extends WebTestCase
     #[DataProvider('buttons')]
     public function testBannerRemainsHiddenAfterSessionCookieIsRemoved(string $button): void
     {
-        $client = self::createClient(['environment' => 'signed_cookie']);
+        $client  = self::createClient(['environment' => 'signed_cookie']);
         $crawler = $client->request('GET', 'https://localhost/cookie-consent/view');
         $client->submit($crawler->selectButton('consent_simple['.$button.']')->form());
         self::assertResponseStatusCodeSame(201);

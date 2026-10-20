@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Service;
 
 use CookieConsentBundle\Service\CookieConsentService;
@@ -16,6 +21,7 @@ class SignedCookiePreferencesTest extends TestCase
     private function service(?array $config = null, string $secret = 'test-secret', string $version = '1'): CookieConsentService
     {
         $config ??= ConsentBundleConfiguration::testCaseConfiguration();
+
         return new CookieConsentService($config, false, null, new SignedCookiePreferenceStorage(
             $config['consent_configuration']['consent_cookie']['name'], $secret,
             $config['consent_configuration']['consent_categories'], $version,
@@ -32,7 +38,7 @@ class SignedCookiePreferencesTest extends TestCase
     public function testChoiceSurvivesWithoutSession(string $method, bool $allowed): void
     {
         $service = $this->service();
-        $cookie = $service->$method(Request::create('/'))->getCookies()[0];
+        $cookie  = $service->$method(Request::create('/'))->getCookies()[0];
         self::assertTrue($cookie->isHttpOnly());
         self::assertTrue($cookie->isSecure());
         $request = Request::create('/', cookies: [$cookie->getName() => $cookie->getValue()]);
@@ -48,10 +54,10 @@ class SignedCookiePreferencesTest extends TestCase
 
     public function testCustomChoicesAndFormPrefill(): void
     {
-        $service = $this->service();
+        $service  = $this->service();
         $settings = $service->createDetailedForm();
         $settings->getCategories()->first()->getVendors()->first()->setConsentGiven(true);
-        $cookie = $service->saveConsentSettings($settings, Request::create('/'))->getCookies()[0];
+        $cookie  = $service->saveConsentSettings($settings, Request::create('/'))->getCookies()[0];
         $request = Request::create('/', cookies: [$cookie->getName() => $cookie->getValue()]);
         self::assertTrue($service->isVendorAllowedByUser('bookmark', 'functional', $request));
         self::assertFalse($service->isVendorAllowedByUser('shopping_cart', 'functional', $request));
@@ -64,10 +70,10 @@ class SignedCookiePreferencesTest extends TestCase
 
     public function testInvalidExpiredAndOutdatedCookiesDenyConsent(): void
     {
-        $service = $this->service();
-        $cookie = $service->acceptAllCookies(Request::create('/'))->getCookies()[0];
-        $request = Request::create('/', cookies: [$cookie->getName() => $cookie->getValue()]);
-        $config = ConsentBundleConfiguration::testCaseConfiguration();
+        $service                                                              = $this->service();
+        $cookie                                                               = $service->acceptAllCookies(Request::create('/'))->getCookies()[0];
+        $request                                                              = Request::create('/', cookies: [$cookie->getName() => $cookie->getValue()]);
+        $config                                                               = ConsentBundleConfiguration::testCaseConfiguration();
         $config['consent_configuration']['consent_categories']['analytics'][] = 'new_vendor';
         foreach ([$this->service(secret: 'changed'), $this->service(version: '2'), $this->service($config)] as $changed) {
             self::assertFalse($changed->isCookieConsentFormSubmittedByUser($request));
@@ -81,8 +87,8 @@ class SignedCookiePreferencesTest extends TestCase
         // Sign expired and malformed payloads to exercise validation after HMAC verification.
         foreach ([['expires' => time() - 1], ['choices' => [true]], ['choices' => ['yes']], ['expires' => 'future']] as $override) {
             [$payload] = explode('.', $cookie->getValue());
-            $data = json_decode(base64_decode(strtr($payload, '-_', '+/')), true);
-            $payload = rtrim(strtr(base64_encode(json_encode(array_replace($data, $override))), '+/', '-_'), '=');
+            $data      = json_decode(base64_decode(strtr($payload, '-_', '+/')), true);
+            $payload   = rtrim(strtr(base64_encode(json_encode(array_replace($data, $override))), '+/', '-_'), '=');
             $signature = hash_hmac('sha256', 'cookie-consent:'.$cookie->getName().':'.$payload, 'test-secret');
             $request->cookies->set($cookie->getName(), $payload.'.'.$signature);
             self::assertFalse($service->isCookieConsentFormSubmittedByUser($request));
@@ -91,7 +97,7 @@ class SignedCookiePreferencesTest extends TestCase
 
     public function testOversizedPreferencesFailExplicitly(): void
     {
-        $config = ConsentBundleConfiguration::testCaseConfiguration();
+        $config                                                = ConsentBundleConfiguration::testCaseConfiguration();
         $config['consent_configuration']['consent_categories'] = ['analytics' => array_map(fn ($n) => 'vendor'.$n, range(1, 1000))];
         $this->expectException(\LengthException::class);
         $this->service($config)->acceptAllCookies(Request::create('/'));

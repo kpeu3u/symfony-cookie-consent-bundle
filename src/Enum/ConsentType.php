@@ -2,12 +2,16 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
 
 namespace CookieConsentBundle\Enum;
 
 class ConsentType
 {
-    const FULL_CONSENT = 'full-consent';
-    const NO_CONSENT = 'no-consent';
-    const CUSTOM_CONSENT = 'custom-consent';
+    public const FULL_CONSENT   = 'full-consent';
+    public const NO_CONSENT     = 'no-consent';
+    public const CUSTOM_CONSENT = 'custom-consent';
 }

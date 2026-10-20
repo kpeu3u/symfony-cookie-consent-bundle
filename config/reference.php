@@ -1,6 +1,11 @@
 <?php
 
-// This file is auto-generated and is for apps only. Bundles SHOULD NOT rely on its content.
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
@@ -1010,6 +1015,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     theme?: "light"|"dark"|"auto"|Param, // Default: "light"
  *     preference_storage?: "session"|"signed_cookie"|Param, // Default: "session"
  *     consent_version?: scalar|Param|null, // Default: "1"
+ *     preselect_optional_vendors?: bool|Param, // Default: false
  *     persist_consent?: bool|Param, // Default: true
  *     form_action?: scalar|Param|null, // Default: "cookie_consent.update"
  *     read_more_route?: scalar|Param|null, // Default: null

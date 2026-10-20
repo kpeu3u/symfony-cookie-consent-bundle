@@ -1,5 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the CookieConsentBundle Symfony bundle.
+ * Created by Radoslav Georgiev.
+ */
+
 namespace CookieConsentBundle\tests\Controller;
 
 use CookieConsentBundle\Enum\ConsentType;
@@ -75,9 +82,9 @@ class CookieConsentControllerKernelTest extends WebTestCase
     #[Test]
     public function shouldSaveCustomConsentAndHideBanner(): void
     {
-        $client = static::createClient([], ['HTTPS' => 'on']);
+        $client  = static::createClient([], ['HTTPS' => 'on']);
         $crawler = $client->request('GET', '/cookie-consent/view');
-        $form = $crawler->selectButton('consent_detailed[save_consent_settings]')->form();
+        $form    = $crawler->selectButton('consent_detailed[save_consent_settings]')->form();
         $form['consent_detailed[categories][0][vendors][0][consentGiven]']->tick();
         $form['consent_detailed[categories][0][vendors][1][consentGiven]']->untick();
         $client->submit($form);
@@ -95,12 +102,12 @@ class CookieConsentControllerKernelTest extends WebTestCase
     #[Test]
     public function invalidDetailedSubmissionMustNotChangeSavedConsent(): void
     {
-        $client = static::createClient([], ['HTTPS' => 'on']);
+        $client  = static::createClient([], ['HTTPS' => 'on']);
         $crawler = $client->request('GET', '/cookie-consent/view');
         $client->submit($crawler->selectButton('consent_simple[reject_all]')->form());
         self::assertResponseStatusCodeSame(201);
         $crawler = $client->request('GET', '/cookie-consent/view');
-        $form = $crawler->selectButton('consent_detailed[save_consent_settings]')->form();
+        $form    = $crawler->selectButton('consent_detailed[save_consent_settings]')->form();
         $form['consent_detailed[categories][0][vendors][0][consentGiven]']->tick();
         $form['consent_detailed[_token]'] = 'invalid';
         $client->submit($form);
@@ -109,9 +116,38 @@ class CookieConsentControllerKernelTest extends WebTestCase
         self::assertSame(0, $crawler->filter('input[name="consent_detailed[categories][0][vendors][0][consentGiven]"][checked]')->count());
     }
 
-    /**
-     * @return Crawler
-     */
+    #[Test]
+    public function shouldLeaveInitialOptionalChoicesUncheckedAndSaveWithoutConsent(): void
+    {
+        $client  = static::createClient([], ['HTTPS' => 'on']);
+        $crawler = $client->request('GET', '/cookie-consent/view');
+        self::assertResponseIsSuccessful();
+        self::assertSame(0, $crawler->filter('input[type="checkbox"][checked]')->count());
+        $client->submit($crawler->selectButton('consent_detailed[save_consent_settings]')->form());
+        self::assertResponseStatusCodeSame(201);
+        $crawler = $client->request('GET', '/cookie-consent/view');
+        self::assertSame(0, $crawler->filter('input[type="checkbox"][checked]')->count());
+        $client->request('GET', '/cookie-consent/view-if-no-consent');
+        self::assertSame('', $client->getResponse()->getContent());
+    }
+
+    #[Test]
+    public function shouldReopenAcceptedSettingsAndWithdrawConsent(): void
+    {
+        $client  = static::createClient([], ['HTTPS' => 'on']);
+        $crawler = $client->request('GET', '/cookie-consent/view');
+        $client->submit($crawler->selectButton('consent_simple[accept_all]')->form());
+        self::assertResponseStatusCodeSame(201);
+        $client->request('GET', '/cookie-consent/view-if-no-consent');
+        self::assertSame('', $client->getResponse()->getContent());
+        $crawler = $client->request('GET', '/cookie-consent/view');
+        self::assertGreaterThan(0, $crawler->filter('.consent-form-vendors input[checked]')->count());
+        $client->submit($crawler->selectButton('consent_simple[reject_all]')->form());
+        self::assertResponseStatusCodeSame(201);
+        $crawler = $client->request('GET', '/cookie-consent/view');
+        self::assertSame(0, $crawler->filter('input[type="checkbox"][checked]')->count());
+    }
+
     private function givenSuccessfulRequest(): Crawler
     {
         $client = static::createClient();
@@ -123,9 +159,6 @@ class CookieConsentControllerKernelTest extends WebTestCase
         return $crawler;
     }
 
-    /**
-     * @return void
-     */
     public function allCookiesAllowed(): void
     {
         $this->assertResponseIsSuccessful();
