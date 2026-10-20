@@ -17,6 +17,25 @@ class SignedCookieStorageTest extends WebTestCase
         return SignedCookieStorageKernel::class;
     }
 
+    public function testInitialChoicesStayUncheckedAndAcceptedChoicesCanBeWithdrawn(): void
+    {
+        $client = self::createClient(['environment' => 'signed_cookie']);
+        $crawler = $client->request('GET', 'https://localhost/cookie-consent/view');
+        self::assertSame(0, $crawler->filter('input[type="checkbox"][checked]')->count());
+        $client->submit($crawler->selectButton('consent_detailed[save_consent_settings]')->form());
+        self::assertResponseStatusCodeSame(201);
+        $crawler = $client->request('GET', 'https://localhost/cookie-consent/view');
+        self::assertSame(0, $crawler->filter('input[type="checkbox"][checked]')->count());
+        $client->submit($crawler->selectButton('consent_simple[accept_all]')->form());
+        self::assertResponseStatusCodeSame(201);
+        $crawler = $client->request('GET', 'https://localhost/cookie-consent/view');
+        self::assertGreaterThan(0, $crawler->filter('.consent-form-vendors input[checked]')->count());
+        $client->submit($crawler->selectButton('consent_simple[reject_all]')->form());
+        self::assertResponseStatusCodeSame(201);
+        $crawler = $client->request('GET', 'https://localhost/cookie-consent/view');
+        self::assertSame(0, $crawler->filter('input[type="checkbox"][checked]')->count());
+    }
+
     public static function buttons(): iterable
     {
         yield 'accept' => ['accept_all'];

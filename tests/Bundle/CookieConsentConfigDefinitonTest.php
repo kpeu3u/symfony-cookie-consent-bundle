@@ -69,6 +69,20 @@ class CookieConsentConfigDefinitonTest extends TestCase
         self::assertSame('policy-2', $config['consent_version']);
     }
 
+    public function testOptionalVendorPreselectionDefaultsToFalseAndCanBeEnabled(): void
+    {
+        $defaults = $this->processor->processConfiguration($this->configuration, []);
+        self::assertFalse($defaults['preselect_optional_vendors']);
+        $config = $this->processor->processConfiguration($this->configuration, [['preselect_optional_vendors' => true]]);
+        self::assertTrue($config['preselect_optional_vendors']);
+    }
+
+    public function testInvalidOptionalVendorPreselectionIsRejected(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->processor->processConfiguration($this->configuration, [['preselect_optional_vendors' => 'invalid']]);
+    }
+
     public function testUnknownPreferenceStorageIsRejected(): void
     {
         $this->expectException(InvalidConfigurationException::class);
